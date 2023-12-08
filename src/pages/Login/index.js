@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import { Button, View, Text, TextInput,StyleSheet,TouchableOpacity} from "react-native";
+import { Image,Button, View, Text, TextInput,StyleSheet,TouchableOpacity} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -10,6 +10,10 @@ function Login({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text style={styles.text}>D-DISTANCE</Text>
+      <Image
+        source={require('../../assets/img/truck.png')}
+        style={styles.logo}
+      />
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -46,12 +50,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   input: {
-    height: 40,
-    width: '100%',
-    borderColor: 'gray',
+    height: 50,
+    width: '80%',
+    borderColor: '#F36C21',
     borderWidth: 1,
     marginBottom: 16,
+    borderRadius:10,
     padding: 8,
+    textAlign:'center',
   },
   masuk: {
     borderRadius: 10,
@@ -59,7 +65,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 16,
     width: 310,
-    height: 60,
+    height: 50,
     justifyContent: 'center',
   },
   text: {
@@ -79,6 +85,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  logo: {
+    marginBottom: 16,
+    marginRight: 30,
   },
 });
 

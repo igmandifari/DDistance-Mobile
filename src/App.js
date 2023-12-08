@@ -33,7 +33,8 @@ function App() {
       <Stack.Navigator>
         <Stack.Screen name="landing-page" component={LandingPage}  options={{headerShown:false,
           }} />
-        <Stack.Screen name="login" component={Login} />
+        <Stack.Screen name="login" component={Login}  options={{headerShown:false,
+          }} />
         <Stack.Screen name="register" component={Register} />
       </Stack.Navigator>
     </NavigationContainer>

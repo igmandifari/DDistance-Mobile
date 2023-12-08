@@ -6,13 +6,13 @@ const LandingPage = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.logoBankContainer}>
         <Image
-          source={require('../assets/img/danamon.png')}
+          source={require('../../assets/img/danamon.png')}
           style={styles.logoBank}
         />
       </View>
       <Text style={styles.text}>D-DISTANCE</Text>
       <Image
-        source={require('../assets/img/LogoDD2.png')}
+        source={require('../../assets/img/LogoDD2.png')}
         style={styles.logo}
       />
       <TouchableOpacity
