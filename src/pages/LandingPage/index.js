@@ -6,13 +6,13 @@ const LandingPage = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.logoBankContainer}>
         <Image
-          source={require('../../assets/img/danamon.png')}
+          source={require("../../assets/img/danamon.png")}
           style={styles.logoBank}
         />
       </View>
       <Text style={styles.text}>D-DISTANCE</Text>
       <Image
-        source={require('../../assets/img/LogoDD2.png')}
+        source={require("../../assets/img/LogoDD2.png")}
         style={styles.logo}
       />
       <TouchableOpacity
@@ -37,12 +37,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    backgroundColor: '#F36C21',
+    backgroundColor: "#F36C21",
   },
   logoBankContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
-    left: 5,  
+    left: 5,
     padding: 5,
   },
   input: {
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   logoBank: {
     width: 105,
     height: 64,
-    resizeMode: 'stretch',
+    resizeMode: "stretch",
   },
   text: {
     color: "#FFF",
@@ -80,22 +80,22 @@ const styles = StyleSheet.create({
   },
   masuk: {
     borderRadius: 10,
-    backgroundColor: '#F8DD91',
+    backgroundColor: "#F8DD91",
     padding: 10,
     marginBottom: 16,
     width: 300,
     height: 60,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   daftar: {
     borderRadius: 10,
-    backgroundColor: '#FFF7E1',
+    backgroundColor: "#FFF7E1",
     padding: 10,
     marginBottom: 16,
     width: 300,
     height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonText: {
     color: "#9D7F2C",

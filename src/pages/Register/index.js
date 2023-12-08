@@ -1,97 +1,149 @@
-import React,{useState} from "react";
-import { Button, View, Text, TextInput,StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { Image, View, Text, TextInput, StyleSheet, Alert } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import CustomButton from "../../components/CustomButton";
+import { colors } from "../../constant/colors";
 
 function Register({ navigation }) {
-  const [name, setName] = useState('');
-  const [address, setAdress] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [norek, setNorek] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirpassword, setConfirPassword] = useState('');
+  const [form, setForm] = useState({
+    name: "",
+    address: "",
+    phone: "",
+    email: "",
+    accountNumber: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-
-  const handleFormSubmit = () => {
-    console.log('Nama Toko:', name);
-    console.log('Alamat Toko:', address);
-    console.log('No HP:', phone);
-    console.log('Email:', email);
-    console.log('No Rekening:', norek);
-    console.log('Password:', password);
-    console.log('Confirm Password:', confirpassword);
+  const handleChange = (name, value) => {
+    setForm((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
+
+  const handeSubmit = () => {
+    const {
+      name,
+      address,
+      phone,
+      email,
+      accountNumber,
+      password,
+      confirmPassword,
+    } = form;
+    if (
+      !name ||
+      !address ||
+      !phone ||
+      !email ||
+      !accountNumber ||
+      !password ||
+      !confirmPassword
+    ) {
+      Alert.alert("form is required");
+      return;
+    }
+    navigation.navigate("register-success");
+  };
+
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>D-Distance</Text>
+    <View style={styles.container}>
+      <Text style={styles.text}>D-DISTANCE</Text>
+      <Image
+        style={styles.image}
+        source={require("../../assets/img/truck.png")}
+      />
       <TextInput
         style={styles.input}
         placeholder="Nama Lengkap Pemilik Toko"
-        onChangeText={(text) => setName(text)}
-        value={name}
+        onChangeText={(text) => handleChange("name", text)}
+        value={form.name}
       />
       <TextInput
         style={styles.input}
         placeholder="Alamat Toko"
-        onChangeText={(text) => setAdress(text)}
-        value={address}
+        onChangeText={(text) => handleChange("address", text)}
+        value={form.address}
       />
       <TextInput
         style={styles.input}
+        keyboardType="number-pad"
         placeholder="No. HP"
-        onChangeText={(text) => setPhone(text)}
-        value={phone}
+        onChangeText={(text) => handleChange("phone", text)}
+        value={form.phone}
       />
       <TextInput
         style={styles.input}
+        keyboardType="email-address"
         placeholder="Email"
-        onChangeText={(text) => setEmail(text)}
-        value={email}
+        onChangeText={(text) => handleChange("email", text)}
+        value={form.email}
       />
       <TextInput
         style={styles.input}
         placeholder="No. Rekening Danamon"
-        onChangeText={(text) => setNorek(text)}
-        value={norek}
+        onChangeText={(text) => handleChange("accountNumber", text)}
+        value={form.accountNumber}
       />
       <TextInput
         style={styles.input}
         placeholder="Kata Sandi"
         secureTextEntry
-        onChangeText={(text) => setPassword(text)}
-        value={password}
+        onChangeText={(text) => handleChange("password", text)}
+        value={form.password}
       />
       <TextInput
         style={styles.input}
-        placeholder="Kondifmari Kata Sandi"
+        placeholder="Konfirmasi Kata Sandi"
         secureTextEntry
-        onChangeText={(text) => setConfirPassword(text)}
-        value={password}
+        onChangeText={(text) => handleChange("confirmPassword", text)}
+        value={form.confirpassword}
       />
-      <Button title="Register" onPress={handleFormSubmit} />
+      {/* <Button title="Register" onPress={handleFormSubmit} /> */}
+      <CustomButton text="Register" handleClick={() => handeSubmit()} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 8,
+    backgroundColor: colors.FLORAL_WHITE,
+    height: "100%",
+    paddingHorizontal: 25,
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 16,
   },
   input: {
-    height: 40,
-    width: '100%',
-    borderColor: 'gray',
+    height: 50,
+    width: "100%",
+    borderColor: "#F36C21",
+    backgroundColor: "white",
     borderWidth: 1,
-    marginBottom: 16,
+    borderRadius: 10,
     padding: 8,
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  text: {
+    color: "#F36C21",
+    textAlign: "center",
+    textShadowColor: "#00000040",
+    textShadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    textShadowRadius: 4,
+    fontSize: 40,
+    fontStyle: "normal",
+    fontWeight: "800",
+  },
+  image: {
+    paddingVertical: 0,
+    margin: 0,
+    width: 170,
+    resizeMode: "contain",
   },
 });
 

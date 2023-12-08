@@ -8,22 +8,36 @@ import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import header from "./components/header";
+import RegisterSuccess from "./pages/Register/components/RegisterSuccess";
+import Dashboard from "./pages/Merchant/Dashboard";
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Home Screen</Text>
-    </View>
-  );
-}
-
-function DetailsScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Details Screen</Text>
-    </View>
-  );
-}
+const routerList = [
+  {
+    name: "landing-page",
+    component: LandingPage,
+    headerShown: false,
+  },
+  {
+    name: "login",
+    component: Login,
+    headerShown: false,
+  },
+  {
+    name: "register",
+    component: Register,
+    headerShown: false,
+  },
+  {
+    name: "register-success",
+    component: RegisterSuccess,
+    headerShown: false,
+  },
+  {
+    name: "dashboard",
+    component: Dashboard,
+    headerShown: false,
+  },
+];
 
 const Stack = createNativeStackNavigator();
 
@@ -31,11 +45,15 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="landing-page" component={LandingPage}  options={{headerShown:false,
-          }} />
-        <Stack.Screen name="login" component={Login}  options={{headerShown:false,
-          }} />
-        <Stack.Screen name="register" component={Register} />
+        {routerList.map((item) => {
+          return (
+            <Stack.Screen
+              name={item.name}
+              component={item.component}
+              options={{ headerShown: item.headerShown }}
+            />
+          );
+        })}
       </Stack.Navigator>
     </NavigationContainer>
   );
