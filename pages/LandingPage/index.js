@@ -6,24 +6,6 @@ const LandingPage = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = ({ navigation }) => {
-    if (username === "user" && password === "password") {
-      setError("");
-
-      alert("Login berhasil!");
-    } else {
-      setError("Username atau password salah");
-    }
-  };
-  const handleRegister = () => {
-    if (username === "user" && password === "password") {
-      setError("");
-
-      alert("Login berhasil!");
-    } else {
-      setError("Username atau password salah");
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -39,10 +21,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    marginBottom: 16,
   },
   input: {
     height: 40,
