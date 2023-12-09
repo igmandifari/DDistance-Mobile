@@ -1,9 +1,20 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import {Dimensions, View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+
+import Svg from 'react-native-svg';
+import Polygon from '../../assets/img/Polygon.svg';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const LandingPage = ({ navigation }) => {
   return (
     <View style={styles.container}>
+    <View style={styles.polygon}>
+    <Svg style={{width:windowWidth}}>
+      <Polygon/>
+    </Svg>
+    </View>
       <View style={styles.logoBankContainer}>
         <Image
           source={require("../../assets/img/danamon.png")}
@@ -15,6 +26,7 @@ const LandingPage = ({ navigation }) => {
         source={require("../../assets/img/LogoDD2.png")}
         style={styles.logo}
       />
+      <View style={styles.bawah}>
       <TouchableOpacity
         style={styles.masuk}
         onPress={() => navigation.navigate("login")}
@@ -27,9 +39,13 @@ const LandingPage = ({ navigation }) => {
       >
         <Text style={styles.buttonText}>Daftar</Text>
       </TouchableOpacity>
+      </View>
+
     </View>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -44,22 +60,6 @@ const styles = StyleSheet.create({
     top: 0,
     left: 5,
     padding: 5,
-  },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 16,
-    padding: 8,
-    width: "100%",
-  },
-  errorText: {
-    color: "red",
-    marginBottom: 16,
-  },
-  logo: {
-    marginBottom: 16,
-    marginRight: 30,
   },
   logoBank: {
     width: 105,
@@ -77,13 +77,14 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     lineHeight: 48,
     marginBottom: 30,
+    marginTop:130,
   },
   masuk: {
     borderRadius: 10,
     backgroundColor: "#F8DD91",
     padding: 10,
     marginBottom: 16,
-    width: 300,
+    width: 360,
     height: 60,
     justifyContent: "center",
   },
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF7E1",
     padding: 10,
     marginBottom: 16,
-    width: 300,
+    width: 360,
     height: 60,
     justifyContent: "center",
     alignItems: "center",
@@ -103,6 +104,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  polygon:{
+    position:'absolute',
+    top:-50,
+    height:windowHeight,
+    width:windowWidth,
+  },
+  logo: {
+    marginRight: 30,
+  },
+  bawah:{
+    marginTop: 200,
+  }
+
 });
 
 export default LandingPage;

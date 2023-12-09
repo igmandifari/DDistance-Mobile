@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image,Alert } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome'; // Import the appropriate icon from the library
 import { colors } from "../../constant/colors";
+import CustomButton from "../../components/CustomButton";
 
 function Login({ navigation }) {
   const [form, setForm] = useState({
@@ -58,18 +59,14 @@ function Login({ navigation }) {
           onChangeText={(text) => handleChange("password", text)}
           value={form.password}
         />
-        <TouchableOpacity onPress={handleTogglePassword} style={styles.eyeIcon}>
+        <TouchableOpacity onPress={() => navigation.navigate("dashboard")} style={styles.eyeIcon}>
           <Icon name={form.showPassword ? 'eye-slash' : 'eye'} size={20} color="#F36C21" />
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.forgetPassword} onPress={handleForgotPassword}>
         <Text style={styles.textLink}>Lupa Kata Sandi?</Text>
       </TouchableOpacity>
-    
-      <TouchableOpacity style={styles.masuk} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Masuk</Text>
-      </TouchableOpacity>
-
+      <CustomButton text={'Masuk'} handleClick={handleLogin}/>
     </View>
   );
 }
@@ -77,14 +74,16 @@ function Login({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.FLORAL_WHITE,
+    // backgroundColor:'blue',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     gap: 16,
+    paddingHorizontal:25,
   },
   input: {
     height: 50,
-    width: '80%',
+    width: '100%',
     borderColor: '#F36C21',
     borderWidth: 1,
     backgroundColor: 'white',
@@ -100,11 +99,13 @@ const styles = StyleSheet.create({
     borderColor: '#F36C21',
     borderWidth: 1,
     backgroundColor: 'white',
+    width: '100%',
     
   },
   passwordInput: {
     flex: 1,
     height: 50,
+    width: '100%',
     padding: 8,
     textAlign: 'center',
     marginLeft:40
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#F36C21',
     padding: 10,
-    width: 310,
+    width: 330,
     height: 50,
     justifyContent: 'center',
   },
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
     marginRight: 30,
   },
   forgetPassword: {
-    width:'80%',
+    width:'100%',
   },
   textLink:{
     textAlign:'right',
