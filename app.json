@@ -11,10 +11,8 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "entryPoint" : "./src/App.js",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "entryPoint": "./src/App.js",
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
