@@ -13,6 +13,11 @@ import Dashboard from "./pages/Merchant/Dashboard";
 
 const routerList = [
   {
+    name: "dashboard",
+    component: Dashboard,
+    headerShown: false,
+  },
+  {
     name: "landing-page",
     component: LandingPage,
     headerShown: false,
@@ -32,11 +37,7 @@ const routerList = [
     component: RegisterSuccess,
     headerShown: false,
   },
-  {
-    name: "dashboard",
-    component: Dashboard,
-    headerShown: false,
-  },
+ 
 ];
 
 const Stack = createNativeStackNavigator();

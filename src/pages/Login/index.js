@@ -1,14 +1,44 @@
-import React,{useState} from "react";
-import { Image,Button, View, Text, TextInput,StyleSheet,TouchableOpacity} from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from "react-native";
+import Icon from 'react-native-vector-icons/FontAwesome'; // Import the appropriate icon from the library
+import { colors } from "../../constant/colors";
 
 function Login({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    showPassword: false,
+  });
+
+  const handleChange = (key, value) => {
+    setForm((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
+
+  const handleTogglePassword = () => {
+    setForm((prevState) => ({
+      ...prevState,
+      showPassword: !prevState.showPassword,
+    }));
+  };
+
+  const handleForgotPassword = () => {
+    navigation.navigate("ForgotPassword");
+  };
+
+  const handleLogin = () => {
+    const { email, password } = form;
+    if (!email || !password) {
+      Alert.alert("Form is required");
+      return;
+    }
+    navigation.navigate("dashboard");
+  };
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <View style={styles.container}>
       <Text style={styles.text}>D-DISTANCE</Text>
       <Image
         source={require('../../assets/img/truck.png')}
@@ -17,53 +47,76 @@ function Login({ navigation }) {
       <TextInput
         style={styles.input}
         placeholder="Email"
-        onChangeText={(text) => setEmail(text)}
-        value={email}
+        onChangeText={(text) => handleChange("email", text)}
+        value={form.email}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Kata Sandi"
-        secureTextEntry
-        onChangeText={(text) => setPassword(text)}
-        value={password}
-      />
-      <Text>Lupa Kata Sandi?</Text>
-      <TouchableOpacity
-        style={styles.masuk}
-        onPress={() => navigation.navigate("login")}
-      >
+      <View style={styles.passwordInputContainer}>
+        <TextInput
+          style={styles.passwordInput}
+          placeholder="Kata Sandi"
+          secureTextEntry={!form.showPassword}
+          onChangeText={(text) => handleChange("password", text)}
+          value={form.password}
+        />
+        <TouchableOpacity onPress={handleTogglePassword} style={styles.eyeIcon}>
+          <Icon name={form.showPassword ? 'eye-slash' : 'eye'} size={20} color="#F36C21" />
+        </TouchableOpacity>
+      </View>
+      <TouchableOpacity style={styles.forgetPassword} onPress={handleForgotPassword}>
+        <Text style={styles.textLink}>Lupa Kata Sandi?</Text>
+      </TouchableOpacity>
+    
+      <TouchableOpacity style={styles.masuk} onPress={handleLogin}>
         <Text style={styles.buttonText}>Masuk</Text>
       </TouchableOpacity>
+
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: colors.FLORAL_WHITE,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 8,
+    gap: 16,
   },
   input: {
     height: 50,
     width: '80%',
     borderColor: '#F36C21',
     borderWidth: 1,
-    marginBottom: 16,
-    borderRadius:10,
+    backgroundColor: 'white',
+    borderRadius: 10,
     padding: 8,
-    textAlign:'center',
+    textAlign: 'center',
+  },
+  passwordInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '80%',
+    borderRadius: 10,
+    borderColor: '#F36C21',
+    borderWidth: 1,
+    backgroundColor: 'white',
+    
+  },
+  passwordInput: {
+    flex: 1,
+    height: 50,
+    padding: 8,
+    textAlign: 'center',
+    marginLeft:40
+    
+  },
+  eyeIcon: {
+    padding: 10,
   },
   masuk: {
     borderRadius: 10,
     backgroundColor: '#F36C21',
     padding: 10,
-    marginBottom: 16,
     width: 310,
     height: 50,
     justifyContent: 'center',
@@ -71,6 +124,7 @@ const styles = StyleSheet.create({
   text: {
     color: "#F36C21",
     textAlign: "center",
+    textShadowColor: "#00000040",
     textShadowColor: "rgba(0, 0, 0, 0.25)",
     textShadowOffset: { width: 0, height: 4 },
     textShadowRadius: 4,
@@ -90,6 +144,14 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     marginRight: 30,
   },
+  forgetPassword: {
+    width:'80%',
+  },
+  textLink:{
+    textAlign:'right',
+    color: 'blue',
+    textDecorationLine: 'underline',
+  }
 });
 
 export default Login;

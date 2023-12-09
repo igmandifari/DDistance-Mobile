@@ -202,12 +202,15 @@ const styles = StyleSheet.create({
   },
   merchantContainer: {
     gap: 20,
+    padding:3,
+    // backgroundColor:'red',
   },
   item: {
     backgroundColor: colors.FLORAL,
+    borderRadius:5,
     elevation: 5,
     flexDirection: "row",
-    padding: 10,
+    padding: 5,
     alignItems: "center",
     gap: 20,
   },
