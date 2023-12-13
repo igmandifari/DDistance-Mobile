@@ -116,6 +116,9 @@ const styles = StyleSheet.create({
   bawah:{
     marginTop: 200,
   }
+  // svg {
+  //   filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+  // }
 
 });
 

@@ -1,5 +1,3 @@
-// In App.js in a new project
-
 import * as React from "react";
 import { View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -9,7 +7,13 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import header from "./components/header";
 import RegisterSuccess from "./pages/Register/components/RegisterSuccess";
-import Dashboard from "./pages/Merchant/Dashboard";
+import DashboardDistributor from "./pages/Distributor/Dashboard";
+import DashboardMerchant from "./pages/Merchant/Dashboard";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
+import BottomNavigator from "./components/BottomNavigator";
+
+
 
 const routerList = [
   {
@@ -33,8 +37,18 @@ const routerList = [
     headerShown: false,
   },
   {
-    name: "dashboard",
-    component: Dashboard,
+    name: "dashboard-distributor",
+    component: DashboardDistributor,
+    headerShown: false,
+  },
+  {
+    name:"bottom-navigator",
+    component: BottomNavigator,
+    headerShown:false,
+  },
+  {
+    name: "dashboard-merchant",
+    component: DashboardMerchant,
     headerShown: false,
   },
  
@@ -57,6 +71,7 @@ function App() {
         })}
       </Stack.Navigator>
     </NavigationContainer>
+
   );
 }
 

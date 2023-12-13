@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image,Alert } from "react-native";
-import Icon from 'react-native-vector-icons/FontAwesome'; // Import the appropriate icon from the library
+import Icon from 'react-native-vector-icons/FontAwesome'; 
 import { colors } from "../../constant/colors";
 import CustomButton from "../../components/CustomButton";
 
@@ -30,12 +30,20 @@ function Login({ navigation }) {
   };
 
   const handleLogin = () => {
+    const mockEmail = 'user'
+    const mockPassword = '12345'
     const { email, password } = form;
+  
     if (!email || !password) {
       Alert.alert("Form is required");
       return;
     }
-    navigation.navigate("dashboard");
+
+    if (email===mockEmail&&password===mockPassword){
+      navigation.navigate("dashboard-merchant");
+    } else{
+      alert('Invalid Credentials')
+    }
   };
 
   return (
@@ -52,14 +60,14 @@ function Login({ navigation }) {
         value={form.email}
       />
       <View style={styles.passwordInputContainer}>
-        <TextInput
+      <TextInput
           style={styles.passwordInput}
-          placeholder="Kata Sandi"
+          placeholder="Password"
           secureTextEntry={!form.showPassword}
           onChangeText={(text) => handleChange("password", text)}
           value={form.password}
         />
-        <TouchableOpacity onPress={() => navigation.navigate("dashboard")} style={styles.eyeIcon}>
+        <TouchableOpacity onPress={handleTogglePassword} style={styles.eyeIcon}>
           <Icon name={form.showPassword ? 'eye-slash' : 'eye'} size={20} color="#F36C21" />
         </TouchableOpacity>
       </View>
