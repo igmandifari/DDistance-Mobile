@@ -9,11 +9,9 @@ import header from "./components/header";
 import RegisterSuccess from "./pages/Register/components/RegisterSuccess";
 import DashboardDistributor from "./pages/Distributor/Dashboard";
 import DashboardMerchant from "./pages/Merchant/Dashboard";
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Ionicons } from "@expo/vector-icons";
 import BottomNavigator from "./components/BottomNavigator";
-
-
 
 const routerList = [
   {
@@ -42,16 +40,16 @@ const routerList = [
     headerShown: false,
   },
   {
-    name:"bottom-navigator",
+    name: "bottom-navigator",
     component: BottomNavigator,
-    headerShown:false,
+    headerShown: false,
   },
+
   {
     name: "dashboard-merchant",
     component: DashboardMerchant,
     headerShown: false,
   },
- 
 ];
 
 const Stack = createNativeStackNavigator();
@@ -71,7 +69,6 @@ function App() {
         })}
       </Stack.Navigator>
     </NavigationContainer>
-
   );
 }
 

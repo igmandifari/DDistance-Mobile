@@ -4,49 +4,58 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CustomButton from "../../components/CustomButton";
 import { colors } from "../../constant/colors";
+import { useFormik } from "formik";
 
 function Register({ navigation }) {
-  const [form, setForm] = useState({
-    name: "",
-    address: "",
-    phone: "",
-    email: "",
-    accountNumber: "",
-    password: "",
-    confirmPassword: "",
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      address: "",
+      phone: "",
+      email: "",
+      accountNumber: "",
+      password: "",
+      confirmPassword: "",
+    },
+    onSubmit: (values) => {
+      console.log(values);
+    },
   });
 
-  const handleChange = (name, value) => {
-    setForm((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  // const handeSubmit = () => {
+  //   const {
+  //     name,
+  //     address,
+  //     phone,
+  //     email,
+  //     accountNumber,
+  //     password,
+  //     confirmPassword,
+  //   } = form;
+  //   if (
+  //     !name ||
+  //     !address ||
+  //     !phone ||
+  //     !email ||
+  //     !accountNumber ||
+  //     !password ||
+  //     !confirmPassword
+  //   ) {
+  //     Alert.alert("form is required");
+  //     return;
+  //   }
+  //   navigation.navigate("register-success");
+  // };
 
-  const handeSubmit = () => {
-    const {
-      name,
-      address,
-      phone,
-      email,
-      accountNumber,
-      password,
-      confirmPassword,
-    } = form;
-    if (
-      !name ||
-      !address ||
-      !phone ||
-      !email ||
-      !accountNumber ||
-      !password ||
-      !confirmPassword
-    ) {
-      Alert.alert("form is required");
-      return;
-    }
-    navigation.navigate("register-success");
-  };
+  const {
+    name,
+    address,
+    phone,
+    email,
+    accountNumber,
+    password,
+    confirmPassword,
+  } = formik.values;
 
   return (
     <View style={styles.container}>
@@ -58,51 +67,52 @@ function Register({ navigation }) {
       <TextInput
         style={styles.input}
         placeholder="Nama Lengkap Pemilik Toko"
-        onChangeText={(text) => handleChange("name", text)}
-        value={form.name}
+        // onChangeTextText={(text) => handleChange("name", text)}
+        onChangeText={formik.handleChange("name")}
+        value={name}
       />
       <TextInput
         style={styles.input}
         placeholder="Alamat Toko"
-        onChangeText={(text) => handleChange("address", text)}
-        value={form.address}
+        onChangeText={formik.handleChange("address")}
+        value={address}
       />
       <TextInput
         style={styles.input}
         keyboardType="number-pad"
         placeholder="No. HP"
-        onChangeText={(text) => handleChange("phone", text)}
-        value={form.phone}
+        onChangeText={formik.handleChange("phone")}
+        value={phone}
       />
       <TextInput
         style={styles.input}
         keyboardType="email-address"
         placeholder="Email"
-        onChangeText={(text) => handleChange("email", text)}
-        value={form.email}
+        onChangeText={formik.handleChange("email")}
+        value={email}
       />
       <TextInput
         style={styles.input}
         placeholder="No. Rekening Danamon"
-        onChangeText={(text) => handleChange("accountNumber", text)}
-        value={form.accountNumber}
+        onChangeText={formik.handleChange("accountNumber")}
+        value={accountNumber}
       />
       <TextInput
         style={styles.input}
         placeholder="Kata Sandi"
         secureTextEntry
-        onChangeText={(text) => handleChange("password", text)}
-        value={form.password}
+        onChangeText={formik.handleChange("password")}
+        value={password}
       />
       <TextInput
         style={styles.input}
         placeholder="Konfirmasi Kata Sandi"
         secureTextEntry
-        onChangeText={(text) => handleChange("confirmPassword", text)}
-        value={form.confirpassword}
+        onChangeText={formik.handleChange("confirmPassword")}
+        value={confirmPassword}
       />
       {/* <Button title="Register" onPress={handleFormSubmit} /> */}
-      <CustomButton text="Register" handleClick={() => handeSubmit()} />
+      <CustomButton text="Register" handleClick={() => formik.handleSubmit()} />
     </View>
   );
 }

@@ -1,6 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image,Alert } from "react-native";
-import Icon from 'react-native-vector-icons/FontAwesome'; 
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Alert,
+} from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 import { colors } from "../../constant/colors";
 import CustomButton from "../../components/CustomButton";
 
@@ -30,19 +38,19 @@ function Login({ navigation }) {
   };
 
   const handleLogin = () => {
-    const mockEmail = 'user'
-    const mockPassword = '12345'
+    const mockEmail = "user";
+    const mockPassword = "12345";
     const { email, password } = form;
-  
+
     if (!email || !password) {
       Alert.alert("Form is required");
       return;
     }
 
-    if (email===mockEmail&&password===mockPassword){
+    if (email === mockEmail && password === mockPassword) {
       navigation.navigate("dashboard-merchant");
-    } else{
-      alert('Invalid Credentials')
+    } else {
+      alert("Invalid Credentials");
     }
   };
 
@@ -50,7 +58,7 @@ function Login({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.text}>D-DISTANCE</Text>
       <Image
-        source={require('../../assets/img/truck.png')}
+        source={require("../../assets/img/truck.png")}
         style={styles.logo}
       />
       <TextInput
@@ -60,7 +68,7 @@ function Login({ navigation }) {
         value={form.email}
       />
       <View style={styles.passwordInputContainer}>
-      <TextInput
+        <TextInput
           style={styles.passwordInput}
           placeholder="Password"
           secureTextEntry={!form.showPassword}
@@ -68,13 +76,20 @@ function Login({ navigation }) {
           value={form.password}
         />
         <TouchableOpacity onPress={handleTogglePassword} style={styles.eyeIcon}>
-          <Icon name={form.showPassword ? 'eye-slash' : 'eye'} size={20} color="#F36C21" />
+          <Icon
+            name={form.showPassword ? "eye-slash" : "eye"}
+            size={20}
+            color="#F36C21"
+          />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.forgetPassword} onPress={handleForgotPassword}>
+      <TouchableOpacity
+        style={styles.forgetPassword}
+        onPress={handleForgotPassword}
+      >
         <Text style={styles.textLink}>Lupa Kata Sandi?</Text>
       </TouchableOpacity>
-      <CustomButton text={'Masuk'} handleClick={handleLogin}/>
+      <CustomButton text={"Masuk"} handleClick={handleLogin} />
     </View>
   );
 }
@@ -84,51 +99,49 @@ const styles = StyleSheet.create({
     backgroundColor: colors.FLORAL_WHITE,
     // backgroundColor:'blue',
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     gap: 16,
-    paddingHorizontal:25,
+    paddingHorizontal: 25,
   },
   input: {
     height: 50,
-    width: '100%',
-    borderColor: '#F36C21',
+    width: "100%",
+    borderColor: "#F36C21",
     borderWidth: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 10,
     padding: 8,
-    textAlign: 'center',
+    textAlign: "center",
   },
   passwordInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '80%',
+    flexDirection: "row",
+    alignItems: "center",
+    width: "80%",
     borderRadius: 10,
-    borderColor: '#F36C21',
+    borderColor: "#F36C21",
     borderWidth: 1,
-    backgroundColor: 'white',
-    width: '100%',
-    
+    backgroundColor: "white",
+    width: "100%",
   },
   passwordInput: {
     flex: 1,
     height: 50,
-    width: '100%',
+    width: "100%",
     padding: 8,
-    textAlign: 'center',
-    marginLeft:40
-    
+    textAlign: "center",
+    marginLeft: 40,
   },
   eyeIcon: {
     padding: 10,
   },
   masuk: {
     borderRadius: 10,
-    backgroundColor: '#F36C21',
+    backgroundColor: "#F36C21",
     padding: 10,
     width: 330,
     height: 50,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   text: {
     color: "#F36C21",
@@ -154,13 +167,13 @@ const styles = StyleSheet.create({
     marginRight: 30,
   },
   forgetPassword: {
-    width:'100%',
+    width: "100%",
   },
-  textLink:{
-    textAlign:'right',
-    color: 'blue',
-    textDecorationLine: 'underline',
-  }
+  textLink: {
+    textAlign: "right",
+    color: "blue",
+    textDecorationLine: "underline",
+  },
 });
 
 export default Login;
