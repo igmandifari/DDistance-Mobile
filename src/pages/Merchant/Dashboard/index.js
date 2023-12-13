@@ -12,19 +12,55 @@ import React from "react";
 import { colors } from "../../../constant/colors";
 import BottomNavigation from "../../../components/BottomNavigator";
 
-const filterList = [
-  {
-    name: "Lancar",
-  },
-  {
-    name: "Tidak Lancar",
-  },
-  {
-    name: "Gagal",
-  },
-];
-
 const DashboardMerchant = () => {
+  const statusTypes = {
+    lancar: { label: "Lancar", style: styles.statusTagihanLancar },
+    tidakLancar: {
+      label: "Tidak Lancar",
+      style: styles.statusTagihanTidakLancar,
+    },
+    gagal: { label: "Gagal", style: styles.statusTagihanGagal },
+  };
+
+  const filterTypes = {
+    lancar: { label: "Lancar", value: "lancar" },
+    tidakLancar: { label: "Tidak Lancar", value: "tidakLancar" },
+    gagal: { label: "Gagal", value: "gagal" },
+  };
+
+  const distributorList = [
+    {
+      name: "Distributor A",
+      totalTagihan: 100000000,
+      statusPembayaran: "lancar",
+    },
+    {
+      name: "Distributor B",
+      totalTagihan: 300000000,
+      statusPembayaran: "tidakLancar",
+    },
+    {
+      name: "Distributor C",
+      totalTagihan: 200000000,
+      statusPembayaran: "gagal",
+    },
+    {
+      name: "Distributor D",
+      totalTagihan: 100000000,
+      statusPembayaran: "lancar",
+    },
+    {
+      name: "Distributor E",
+      totalTagihan: 300000000,
+      statusPembayaran: "tidakLancar",
+    },
+    {
+      name: "Distributor F",
+      totalTagihan: 200000000,
+      statusPembayaran: "gagal",
+    },
+  ];
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -83,20 +119,20 @@ const DashboardMerchant = () => {
             />
           </View>
           <View style={styles.filterContainer}>
-            {filterList.map((item) => {
-              return (
-                <Pressable key={item} style={styles.filter}>
-                  <Text>{item.name}</Text>
-                </Pressable>
-              );
-            })}
+            {Object.values(filterTypes).map((filter) => (
+              <Pressable key={filter.value} style={styles.filter}>
+                <Text>{filter.label}</Text>
+              </Pressable>
+            ))}
           </View>
         </View>
         <ScrollView>
           <View id="merchants" style={styles.merchantContainer}>
-            {[1, 2, 3, 4, 5, 6].map((item) => {
+            {distributorList.map((distributor, index) => {
+              const { name, totalTagihan, statusPembayaran } = distributor;
+
               return (
-                <View key={item} style={styles.item}>
+                <View key={index} style={styles.item}>
                   <View
                     style={{
                       width: 65,
@@ -106,14 +142,18 @@ const DashboardMerchant = () => {
                     }}
                   ></View>
                   <View>
-                    <Text style={styles.textName}>Distributor A</Text>
+                    <Text style={styles.textName}>{name}</Text>
                     <View style={styles.tagihanContainer}>
                       <Text style={styles.jumlahagihan}>Jumlah Tagihan:</Text>
-                      <Text style={styles.angkaTagihan}>Rp. 10,000,000</Text>
+                      <Text style={styles.angkaTagihan}>
+                        Rp. {totalTagihan.toLocaleString()}
+                      </Text>
                     </View>
                     <View style={styles.statusContainer}>
                       <Text style={styles.textStatus}>Status Pembayaran:</Text>
-                      <Text style={styles.statusTagihan}>Tidak Lancar</Text>
+                      <Text style={statusTypes[statusPembayaran].style}>
+                        {statusTypes[statusPembayaran].label}
+                      </Text>
                     </View>
                   </View>
                 </View>
@@ -122,7 +162,6 @@ const DashboardMerchant = () => {
           </View>
         </ScrollView>
       </View>
-      {/* <BottomNavigation /> */}
     </View>
   );
 };
@@ -277,13 +316,33 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
   },
-  statusTagihan: {
+  statusTagihanTidakLancar: {
     color: "white",
     textAlign: "center",
     fontSize: 16,
     fontWeight: "600",
     borderRadius: 10,
     backgroundColor: "#FFC700",
+    width: 122,
+    height: 32,
+  },
+  statusTagihanLancar: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "600",
+    borderRadius: 10,
+    backgroundColor: "#00E817",
+    width: 122,
+    height: 32,
+  },
+  statusTagihanGagal: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "600",
+    borderRadius: 10,
+    backgroundColor: "#FC0000",
     width: 122,
     height: 32,
   },
