@@ -12,8 +12,20 @@ import DashboardMerchant from "./pages/Merchant/Dashboard";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import BottomNavigator from "./components/BottomNavigator";
+import MyTabBar from "./components/Navigator";
+import MyTabs from "./components/Navigator";
 
 const routerList = [
+  {
+    name: "dashboard-merchant",
+    component: MyTabs,
+    headerShown: false,
+  },
+  // {
+  //   name: "dashboard-merchant",
+  //   component: DashboardMerchant,
+  //   headerShown: false,
+  // },
   {
     name: "landing-page",
     component: LandingPage,
@@ -44,12 +56,6 @@ const routerList = [
     component: BottomNavigator,
     headerShown: false,
   },
-
-  {
-    name: "dashboard-merchant",
-    component: DashboardMerchant,
-    headerShown: false,
-  },
 ];
 
 const Stack = createNativeStackNavigator();
@@ -58,9 +64,10 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {routerList.map((item) => {
+        {routerList.map((item, index) => {
           return (
             <Stack.Screen
+              key={index}
               name={item.name}
               component={item.component}
               options={{ headerShown: item.headerShown }}
