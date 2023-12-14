@@ -1,19 +1,12 @@
 import * as React from "react";
-import { View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import header from "./components/header";
 import RegisterSuccess from "./pages/Register/components/RegisterSuccess";
-import DashboardDistributor from "./pages/Distributor/Dashboard";
-import DashboardMerchant from "./pages/Merchant/Dashboard";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
-import BottomNavigator from "./components/BottomNavigator";
-import MyTabBar from "./components/Navigator";
-import MyTabs from "./components/Navigator";
+import MyTabsDashboard from "./pages/Distributor/Navigator/NavigatorDashboard";
+import MyTabsMerchant from "./pages/Merchant/Navigator/Navigator";
 
 const routerList = [
   {
@@ -23,7 +16,12 @@ const routerList = [
   },
   {
     name: "dashboard-merchant",
-    component: MyTabs,
+    component: MyTabsMerchant,
+    headerShown: false,
+  },
+  {
+    name: "dashboard-distributor",
+    component: MyTabsDashboard,
     headerShown: false,
   },
   {
@@ -39,16 +37,6 @@ const routerList = [
   {
     name: "register-success",
     component: RegisterSuccess,
-    headerShown: false,
-  },
-  {
-    name: "dashboard-distributor",
-    component: DashboardDistributor,
-    headerShown: false,
-  },
-  {
-    name: "bottom-navigator",
-    component: BottomNavigator,
     headerShown: false,
   },
 ];

@@ -1,21 +1,20 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Dashboard from "../pages/Distributor/Dashboard";
-import Profile from "../pages/Merchant/Profile";
-import Bill from "../pages/Merchant/Bill";
-import History from "../pages/Merchant/History";
-import DashboardMerchant from "../pages/Merchant/Dashboard";
-import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
+import Profile from "../../Merchant/Profile/index";
+import Bill from "../../Merchant/Bill";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import History from "../../Merchant/History/index";
+import DashboardDistributor from "../Dashboard/index";
 
 const Tab = createBottomTabNavigator();
 
 const tablist = [
   {
     name: "Dasbor",
-    component: DashboardMerchant,
+    component: DashboardDistributor,
     iconName: "home",
   },
   {
-    name: "Pengajuan",
+    name: "History",
     component: History,
     iconName: "file-document-edit-outline",
   },
@@ -36,7 +35,7 @@ const tablist = [
 <FontAwesome5 name="file-invoice" color={color} size={size} /> */
 }
 
-function MyTabs() {
+function MyTabsDashboard() {
   return (
     <Tab.Navigator>
       {tablist.map((item, index) => {
@@ -77,4 +76,4 @@ function MyTabs() {
   );
 }
 
-export default MyTabs;
+export default MyTabsDashboard;

@@ -103,10 +103,10 @@ const DashboardMerchant = () => {
               />
             </View>
             <View style={styles.filterContainer}>
-              {filterTypes.map((filter) => (
+              {filterTypes.map((filter, index) => (
                 <TouchableOpacity
                   onPress={() => setFilter(filter.name)}
-                  key={filter.value}
+                  key={index}
                   style={styles.filter}
                 >
                   <Text>{filter.name}</Text>

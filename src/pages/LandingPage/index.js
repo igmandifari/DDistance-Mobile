@@ -1,20 +1,28 @@
 import React, { useState } from "react";
-import {Dimensions, View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import {
+  Dimensions,
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Button,
+} from "react-native";
 
-import Svg from 'react-native-svg';
-import Polygon from '../../assets/img/Polygon.svg';
+import Svg from "react-native-svg";
+import Polygon from "../../assets/img/Polygon.svg";
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 const LandingPage = ({ navigation }) => {
   return (
     <View style={styles.container}>
-    <View style={styles.polygon}>
-    <Svg style={{width:windowWidth}}>
-      <Polygon/>
-    </Svg>
-    </View>
+      <View style={styles.polygon}>
+        <Svg style={{ width: windowWidth }}>
+          <Polygon />
+        </Svg>
+      </View>
       <View style={styles.logoBankContainer}>
         <Image
           source={require("../../assets/img/danamon.png")}
@@ -27,25 +35,32 @@ const LandingPage = ({ navigation }) => {
         style={styles.logo}
       />
       <View style={styles.bawah}>
-      <TouchableOpacity
-        style={styles.masuk}
-        onPress={() => navigation.navigate("login")}
-      >
-        <Text style={styles.buttonText}>Masuk</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.daftar}
-        onPress={() => navigation.navigate("register")}
-      >
-        <Text style={styles.buttonText}>Daftar</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.masuk}
+          onPress={() => navigation.navigate("login")}
+        >
+          <Text style={styles.buttonText}>Masuk</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.daftar}
+          onPress={() => navigation.navigate("register")}
+        >
+          <Text style={styles.buttonText}>Daftar</Text>
+        </TouchableOpacity>
       </View>
-
+      <TouchableOpacity
+        onPress={() => navigation.navigate("dashboard-distributor")}
+      >
+        <Text style={styles.buttonText}>Ke dashboard distributor</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("dashboard-merchant")}
+      >
+        <Text style={styles.buttonText}>Ke dashboard merchant</Text>
+      </TouchableOpacity>
     </View>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -77,7 +92,7 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     lineHeight: 48,
     marginBottom: 30,
-    marginTop:130,
+    marginTop: 130,
   },
   masuk: {
     borderRadius: 10,
@@ -104,22 +119,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-  polygon:{
-    position:'absolute',
-    top:-50,
-    height:windowHeight,
-    width:windowWidth,
+  polygon: {
+    position: "absolute",
+    top: -50,
+    height: windowHeight,
+    width: windowWidth,
   },
   logo: {
     marginRight: 30,
   },
-  bawah:{
+  bawah: {
     marginTop: 200,
-  }
+  },
   // svg {
   //   filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
   // }
-
 });
 
 export default LandingPage;

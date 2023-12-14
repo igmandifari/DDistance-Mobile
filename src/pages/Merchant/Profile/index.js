@@ -4,7 +4,11 @@ import React from "react";
 const Profile = () => {
   return (
     <View>
-      <Text>Profile</Text>
+      <Text>
+        Profile ini halama propil ini halama propil ini halama propil ini halama
+        propil ini halama propil ini halama propil ini halama propil ini halama
+        propil ini halama propil
+      </Text>
     </View>
   );
 };
