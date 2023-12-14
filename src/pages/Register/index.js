@@ -14,6 +14,7 @@ import { colors } from "../../constant/colors";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ErrorText from "../../components/ErrorText";
+import { register } from "../../services/AuthService";
 
 function Register({ navigation }) {
   const SignupSchema = Yup.object().shape({
@@ -21,11 +22,11 @@ function Register({ navigation }) {
       .min(3, "Too Short!")
       .max(20, "Too Long!")
       .required("Required"),
-    address: Yup.string()
+    addres: Yup.string()
       .min(3, "Too Short!")
       .max(20, "Too Long!")
       .required("Required"),
-    phone: Yup.string()
+    phoneNumber: Yup.string()
       .min(10, "Too Short!")
       .max(15, "Too Long!")
       .required("Required"),
@@ -43,16 +44,33 @@ function Register({ navigation }) {
   const { values, isValid, errors, handleChange, handleSubmit } = useFormik({
     initialValues: {
       name: "",
-      address: "",
-      phone: "",
+      addres: "",
+      phoneNumber: "",
       email: "",
       accountNumber: "",
       password: "",
       confirmPassword: "",
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (isValid) {
-        console.log(values);
+        const payload = {
+          email,
+          password,
+          addres,
+          phoneNumber,
+          pan: accountNumber,
+          name,
+        };
+
+        try {
+          const data = await register(payload);
+          console.log(data.data);
+          if (data.statusCode == 201);
+          alert("Success Register");
+          navigation.navigate("landing-page");
+        } catch (error) {
+          alert(error);
+        }
       } else {
         alert("Register Failed");
       }
@@ -73,8 +91,8 @@ function Register({ navigation }) {
 
   const {
     name,
-    address,
-    phone,
+    addres,
+    phoneNumber,
     email,
     accountNumber,
     password,
@@ -99,21 +117,21 @@ function Register({ navigation }) {
       <TextInput
         style={styles.input}
         placeholder="Alamat Toko"
-        onChangeText={handleChange("address")}
-        value={address}
+        onChangeText={handleChange("addres")}
+        value={addres}
       />
-      <ErrorText text={errors.address} />
+      <ErrorText text={errors.addres} />
       <TextInput
         style={styles.input}
         keyboardType="number-pad"
         placeholder="No. HP"
-        onChangeText={handleChange("phone")}
-        value={phone}
+        onChangeText={handleChange("phoneNumber")}
+        value={phoneNumber}
       />
-      <ErrorText text={errors.phone} />
+      <ErrorText text={errors.phoneNumber} />
       <TextInput
         style={styles.input}
-        keyboardType="email-address"
+        keyboardType="email-addres"
         placeholder="Email"
         onChangeText={handleChange("email")}
         value={email}
