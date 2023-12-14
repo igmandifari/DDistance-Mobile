@@ -6,3 +6,9 @@ export const register = (payload) => {
     payload
   );
 };
+
+export const login = (payload) => {
+  return axiosInstance.post(
+    "http://10.0.2.2:8080/api/auth/login",payload
+  )
+}

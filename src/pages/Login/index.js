@@ -11,6 +11,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import { colors } from "../../constant/colors";
 import CustomButton from "../../components/CustomButton";
+import { login } from "../../services/AuthService";
 
 function Login({ navigation }) {
   const [form, setForm] = useState({
@@ -36,21 +37,25 @@ function Login({ navigation }) {
   const handleForgotPassword = () => {
     navigation.navigate("ForgotPassword");
   };
-
-  const handleLogin = () => {
-    const mockEmail = "user";
-    const mockPassword = "12345";
+  
+  const handleLogin = async () => {
     const { email, password } = form;
-
-    if (!email || !password) {
-      Alert.alert("Form is required");
-      return;
+    const payload = {
+      email,
+      password,
     }
-
-    if (email === mockEmail && password === mockPassword) {
-      navigation.navigate("dashboard-merchant");
-    } else {
-      alert("Invalid Credentials");
+    try{
+      const {data} = await login(payload)
+      const token = data.data.token
+      if(token){
+        alert('success login')
+        navigation.navigate("dashboard-merchant")
+      } else {
+        alert('bad credential')
+      }
+      // console.log(token);
+    } catch(e){
+      alert(e); 
     }
   };
 
