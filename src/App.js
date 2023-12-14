@@ -17,18 +17,13 @@ import MyTabs from "./components/Navigator";
 
 const routerList = [
   {
-    name: "dashboard-merchant",
-    component: MyTabs,
-    headerShown: false,
-  },
-  // {
-  //   name: "dashboard-merchant",
-  //   component: DashboardMerchant,
-  //   headerShown: false,
-  // },
-  {
     name: "landing-page",
     component: LandingPage,
+    headerShown: false,
+  },
+  {
+    name: "dashboard-merchant",
+    component: MyTabs,
     headerShown: false,
   },
   {

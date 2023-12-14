@@ -5,164 +5,227 @@ import {
   Image,
   Icon,
   TextInput,
-  Pressable,
   ScrollView,
+  TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";
-import BottomNavigation from "../../../components/BottomNavigator";
-
+import { distributorList } from "./data";
 const DashboardMerchant = () => {
-  const statusTypes = {
-    lancar: { label: "Lancar", style: styles.statusTagihanLancar },
-    tidakLancar: {
-      label: "Tidak Lancar",
-      style: styles.statusTagihanTidakLancar,
-    },
-    gagal: { label: "Gagal", style: styles.statusTagihanGagal },
-  };
+  const [filter, setFilter] = useState("");
+  const [data, setData] = useState(distributorList);
 
-  const filterTypes = {
-    lancar: { label: "Lancar", value: "lancar" },
-    tidakLancar: { label: "Tidak Lancar", value: "tidakLancar" },
-    gagal: { label: "Gagal", value: "gagal" },
-  };
-
-  const distributorList = [
+  const filterTypes = [
     {
-      name: "Distributor A",
-      totalTagihan: 100000000,
-      statusPembayaran: "lancar",
+      name: "Lancar",
     },
     {
-      name: "Distributor B",
-      totalTagihan: 300000000,
-      statusPembayaran: "tidakLancar",
+      name: "Tidak Lancar",
     },
     {
-      name: "Distributor C",
-      totalTagihan: 200000000,
-      statusPembayaran: "gagal",
-    },
-    {
-      name: "Distributor D",
-      totalTagihan: 100000000,
-      statusPembayaran: "lancar",
-    },
-    {
-      name: "Distributor E",
-      totalTagihan: 300000000,
-      statusPembayaran: "tidakLancar",
-    },
-    {
-      name: "Distributor F",
-      totalTagihan: 200000000,
-      statusPembayaran: "gagal",
+      name: "Gagal",
     },
   ];
 
+  handleChangeFilter = (name) => {
+    setFilter(name);
+  };
+
+  useEffect(() => {
+    if (!filter) {
+      setData(distributorList);
+      return;
+    }
+    const filtered = distributorList.filter((item) => item.status == filter);
+    setData(filtered);
+  }, [filter]);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <View style={styles.headerLeft}>
-          <Image
-            style={{ width: 37 }}
-            source={require("../../../assets/img/logo_DD.png")}
-          />
-          <Text style={styles.headerTitle}>D-DISTANCE</Text>
-        </View>
-        <View>
-          <Image
-            source={require("../../../assets/img/notification.png")}
-            style={{}}
-          />
-        </View>
-      </View>
-      <View id="profile" style={styles.profileContainer}>
-        <View style={styles.profile}></View>
-        <View style={styles.balanceContainer}>
-          <Text
-            style={{
-              color: colors.LIGHT_ORANGE,
-              fontWeight: "700",
-              fontSize: 16,
-            }}
-          >
-            Halo,
-            <Text style={{ fontSize: 20, color: colors.ORANGE }}> Joshua</Text>
-          </Text>
-          <View style={styles.balance}>
-            <Text
-              style={{ fontSize: 16, fontWeight: "700", color: colors.WHITE }}
-            >
-              Rp 10,855,297,353.00
-            </Text>
-            <Image source={require("../../../assets/img/View.png")} />
+    <SafeAreaView style={{ marginTop: 25 }}>
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <View style={styles.headerLeft}>
+            <Image
+              style={{ width: 37 }}
+              source={require("../../../assets/img/logo_DD.png")}
+            />
+            <Text style={styles.headerTitle}>D-DISTANCE</Text>
           </View>
           <View>
-            <Text>Sisa Limit: Rp. 70.000.0000/100/000/000</Text>
-            <View style={styles.progressBar}></View>
-          </View>
-        </View>
-      </View>
-      <View id="list-merchant" style={styles.listContainer}>
-        <View>
-          <Text style={{ fontSize: 20, marginBottom: 10 }}>
-            Daftar Distributor
-          </Text>
-          <View style={styles.searchContainer}>
-            <Image source={require("../../../assets/img/Search.png")} />
-            <TextInput
-              style={styles.search}
-              placeholder="Nama toko"
-              underlineColorAndroid="transparent"
+            <Image
+              source={require("../../../assets/img/notification.png")}
+              style={{}}
             />
           </View>
-          <View style={styles.filterContainer}>
-            {Object.values(filterTypes).map((filter) => (
-              <Pressable key={filter.value} style={styles.filter}>
-                <Text>{filter.label}</Text>
-              </Pressable>
-            ))}
+        </View>
+        <View id="profile" style={styles.profileContainer}>
+          <View style={styles.profile}></View>
+          <View style={styles.balanceContainer}>
+            <Text
+              style={{
+                color: colors.LIGHT_ORANGE,
+                fontWeight: "700",
+                fontSize: 16,
+              }}
+            >
+              Halo,
+              <Text style={{ fontSize: 20, color: colors.ORANGE }}>
+                {" "}
+                Joshua
+              </Text>
+            </Text>
+            <View style={styles.balance}>
+              <Text
+                style={{ fontSize: 16, fontWeight: "700", color: colors.WHITE }}
+              >
+                Rp 10,855,297,353.00
+              </Text>
+              <Image source={require("../../../assets/img/View.png")} />
+            </View>
+            <View>
+              <Text>Sisa Limit: Rp. 70.000.0000/100/000/000</Text>
+              <View style={styles.progressBar}></View>
+            </View>
           </View>
         </View>
-        <ScrollView>
-          <View id="merchants" style={styles.merchantContainer}>
-            {distributorList.map((distributor, index) => {
-              const { name, totalTagihan, statusPembayaran } = distributor;
+        <View id="list-merchant" style={styles.listContainer}>
+          <View>
+            <Text style={{ fontSize: 20, marginBottom: 10 }}>
+              Daftar Distributor
+            </Text>
+            <View style={styles.searchContainer}>
+              <Image source={require("../../../assets/img/Search.png")} />
+              <TextInput
+                style={styles.search}
+                placeholder="Nama distributor"
+                underlineColorAndroid="transparent"
+              />
+            </View>
+            <View style={styles.filterContainer}>
+              {filterTypes.map((filter) => (
+                <TouchableOpacity
+                  onPress={() => setFilter(filter.name)}
+                  key={filter.value}
+                  style={styles.filter}
+                >
+                  <Text>{filter.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+          <ScrollView>
+            <View id="merchants" style={styles.merchantContainer}>
+              {data.map((distributor, index) => {
+                const { name, totalTagihan, status } = distributor;
 
-              return (
-                <View key={index} style={styles.item}>
-                  <View
-                    style={{
-                      width: 65,
-                      height: 65,
-                      backgroundColor: colors.GRAY,
-                      borderRadius: 100,
-                    }}
-                  ></View>
-                  <View>
-                    <Text style={styles.textName}>{name}</Text>
-                    <View style={styles.tagihanContainer}>
-                      <Text style={styles.jumlahagihan}>Jumlah Tagihan:</Text>
-                      <Text style={styles.angkaTagihan}>
-                        Rp. {totalTagihan.toLocaleString()}
+                let bgColor;
+                switch (status) {
+                  case "Lancar":
+                    bgColor = colors.GREEN;
+                    break;
+                  case "Tidak Lancar":
+                    bgColor = colors.YELLOW_STATUS;
+                    break;
+                  case "Gagal":
+                    bgColor = colors.RED;
+                    break;
+                }
+
+                return (
+                  <View key={index} style={styles.item}>
+                    <View
+                      style={{
+                        width: 65,
+                        height: 65,
+                        backgroundColor: colors.GRAY,
+                        borderRadius: 100,
+                      }}
+                    ></View>
+                    <View
+                      style={{
+                        height: "100%",
+                        flex: 1,
+                        gap: 5,
+                      }}
+                    >
+                      <Text style={styles.city}>Jakarta</Text>
+                      <Text
+                        style={{
+                          fontSize: 15,
+                          fontWeight: "700",
+                        }}
+                      >
+                        Distributor A
                       </Text>
-                    </View>
-                    <View style={styles.statusContainer}>
-                      <Text style={styles.textStatus}>Status Pembayaran:</Text>
-                      <Text style={statusTypes[statusPembayaran].style}>
-                        {statusTypes[statusPembayaran].label}
-                      </Text>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            fontWeight: "700",
+                          }}
+                        >
+                          Jumlah Tagihan
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            fontWeight: "600",
+                            color: "rgba(0,0,0,0.25)",
+                          }}
+                        >
+                          Rp. 10,000,000
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 10,
+                          }}
+                        >
+                          Status Pembayaran
+                        </Text>
+                        <View
+                          style={{
+                            width: 120,
+                            bgColor: "red",
+                            borderRadius: 10,
+                            backgroundColor: bgColor,
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            paddingVertical: 5,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontWeight: "600",
+                              color: "white",
+                            }}
+                          >
+                            {status}
+                          </Text>
+                        </View>
+                      </View>
                     </View>
                   </View>
-                </View>
-              );
-            })}
-          </View>
-        </ScrollView>
+                );
+              })}
+            </View>
+          </ScrollView>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -170,7 +233,7 @@ export default DashboardMerchant;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: colors.FLORAL,
     justifyContent: "flex-start",
     height: "100%",
   },
@@ -181,8 +244,8 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     paddingHorizontal: 10,
-    marginTop: 25,
-    paddingVertical: 20,
+    marginTop: 0,
+    paddingVertical: 10,
     shadowOffset: { width: 10, height: 10 },
     shadowColor: "black",
     shadowOpacity: 1,
@@ -196,7 +259,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 24,
     fontWeight: "800",
-    color: colors.WHITE,
+    color: colors.FLORAL_WHITE,
   },
   profileContainer: {
     flexDirection: "row",
@@ -212,7 +275,7 @@ const styles = StyleSheet.create({
   },
   balanceContainer: {
     flex: 1,
-    gap: 3,
+    gap: 8,
   },
   balance: {
     backgroundColor: colors.YELLOW,
@@ -227,10 +290,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
   },
   listContainer: {
-    backgroundColor: colors.FLORAL_WHITE,
+    backgroundColor: colors.WHITE,
     gap: 20,
     flex: 1,
-    padding: 25,
+    padding: 15,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     shadowOffset: { width: 4, height: 4 },
@@ -274,76 +337,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     elevation: 5,
     flexDirection: "row",
-    padding: 5,
+    padding: 12,
     alignItems: "center",
-    gap: 20,
+    gap: 5,
+    position: "relative",
   },
-  progressBar: {
-    height: 23,
-    width: "100%",
-    backgroundColor: "white",
-    borderColor: "#000",
-    borderWidth: 1,
-    borderRadius: 10,
-    shadowColor: "rgba(0, 0, 0, 0.25)",
-    shadowOffset: { width: 0, height: 0 },
-    shadowRadius: 8.2,
-    shadowOpacity: 1,
-  },
-  textName: {
-    fontWeight: "700",
-    width: "107",
-    height: "24",
-  },
-  tagihanContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  jumlahagihan: {
-    fontSize: 14,
-    fontWeight: "600",
-  },
-  angkaTagihan: {
-    color: "#6C6C6C",
-    fontSize: 14,
-    fontWeight: "600",
-  },
-  statusContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  textStatus: {
-    fontSize: 14,
-    fontWeight: "600",
-  },
-  statusTagihanTidakLancar: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 16,
-    fontWeight: "600",
-    borderRadius: 10,
-    backgroundColor: "#FFC700",
-    width: 122,
-    height: 32,
-  },
-  statusTagihanLancar: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 16,
-    fontWeight: "600",
-    borderRadius: 10,
-    backgroundColor: "#00E817",
-    width: 122,
-    height: 32,
-  },
-  statusTagihanGagal: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 16,
-    fontWeight: "600",
-    borderRadius: 10,
-    backgroundColor: "#FC0000",
-    width: 122,
-    height: 32,
+  city: {
+    position: "absolute",
+    top: -4,
+    right: -2,
+    fontSize: 12,
   },
 });

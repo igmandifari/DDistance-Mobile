@@ -3,9 +3,12 @@ export const colors = {
   LIGHT_ORANGE: "#FF985F",
   DARK_GRAY: "#424753",
   FLORAL_WHITE: "#FFFAED",
+  FLORAL_WHITE2: "#FFF1CD",
   FLORAL: "#FFE7A4",
   WHITE: "white",
   YELLOW: "#FFBD13",
+  YELLOW_STATUS: "#FFC700",
+  GREEN: "#00E817",
+  RED: "#FC0000",
   GRAY: "#D9D9D9",
-  
 };

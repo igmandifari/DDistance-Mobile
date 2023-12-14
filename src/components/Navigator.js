@@ -1,35 +1,40 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Dashboard from "../pages/Distributor/Dashboard";
 import Profile from "../pages/Merchant/Profile";
 import Bill from "../pages/Merchant/Bill";
 import History from "../pages/Merchant/History";
 import DashboardMerchant from "../pages/Merchant/Dashboard";
+import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
 const tablist = [
   {
-    name: "Home",
+    name: "Dasbor",
     component: DashboardMerchant,
     iconName: "home",
   },
   {
-    name: "History",
+    name: "Pengajuan",
     component: History,
-    iconName: "home",
+    iconName: "file-document-edit-outline",
   },
   {
-    name: "Bill",
+    name: "Tagihan",
     component: Bill,
-    iconName: "home",
+    iconName: "file-document-multiple",
   },
   {
     name: "Profile",
     component: Profile,
-    iconName: "home",
+    iconName: "account",
   },
 ];
+
+{
+  /* <MaterialCommunityIcons name="account" color={color} size={size} />
+<FontAwesome5 name="file-invoice" color={color} size={size} /> */
+}
 
 function MyTabs() {
   return (
@@ -44,7 +49,11 @@ function MyTabs() {
               headerShown: false,
               tabBarLabel: item.name,
               tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons name="home" color={color} size={size} />
+                <MaterialCommunityIcons
+                  name={item.iconName}
+                  color={color}
+                  size={size}
+                />
               ),
             }}
           />
