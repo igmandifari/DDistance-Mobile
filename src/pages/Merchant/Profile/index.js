@@ -40,7 +40,7 @@ const details = [
   },
 ];
 
-const Profile = () => {
+const Profile = ({navigation}) => {
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
@@ -74,18 +74,20 @@ const Profile = () => {
               justifyContent: "space-evenly",
             }}
           >
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button}
+            onPress={() => navigation.navigate("edit-profile")}>
               <Text
                 style={{ color: colors.WHITE, fontWeight: "800", fontSize: 12 }}
               >
                 Edit Profil
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button}
+            onPress={() => navigation.navigate("keamanan-akun")}>
               <Text
                 style={{ color: colors.WHITE, fontWeight: "800", fontSize: 12 }}
               >
-                Edit Profil
+                Keamanan
               </Text>
             </TouchableOpacity>
           </View>

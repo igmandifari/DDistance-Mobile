@@ -44,18 +44,28 @@ function Login({ navigation }) {
       email,
       password,
     }
-    try{
-      const {data} = await login(payload)
-      const token = data.data.token
-      if(token){
-        alert('success login')
-        navigation.navigate("dashboard-merchant")
+    try {
+      const { data } = await login(payload);
+      const token = data.data.token;
+      const role = data.data.role; 
+      
+      // console.log(role.data);
+      if (token) {
+        alert('Success login');
+
+
+        if (role === 'ROLE_MERCHANT') {
+          navigation.navigate("dashboard-merchant");
+        } else if (role === 'ROLE_DISTRIBUTOR') {
+          navigation.navigate("dashboard-distributor");
+        } else {
+          alert('Unknown role'); 
+        }
       } else {
-        alert('bad credential')
+        alert('Bad credential');
       }
-      // console.log(token);
-    } catch(e){
-      alert(e); 
+    } catch (e) {
+      alert(e);
     }
   };
 

@@ -7,6 +7,11 @@ import Register from "./pages/Register";
 import RegisterSuccess from "./pages/Register/components/RegisterSuccess";
 import MyTabsDashboard from "./pages/Distributor/Navigator/NavigatorDashboard";
 import MyTabsMerchant from "./pages/Merchant/Navigator/Navigator";
+import EditProfile from "./pages/Merchant/Profile/components/EditProfile";
+import KeamananAkun from "./pages/Merchant/Profile/components/KeamananAkun";
+import ChangePassword from "./pages/Merchant/Profile/components/ChangePassword";
+import ChangePasswordSuccess from "./pages/Merchant/Profile/components/ChangePasswordSuccess";
+
 
 const routerList = [
   {
@@ -37,6 +42,26 @@ const routerList = [
   {
     name: "register-success",
     component: RegisterSuccess,
+    headerShown: false,
+  },
+  {
+    name: "edit-profile",
+    component: EditProfile,
+    headerShown: false,
+  },
+  {
+    name: "keamanan-akun",
+    component: KeamananAkun,
+    headerShown: false,
+  },
+  {
+    name: "change-password",
+    component: ChangePassword,
+    headerShown: false,
+  },
+  {
+    name: "change-password-success",
+    component: ChangePasswordSuccess,
     headerShown: false,
   },
 ];
