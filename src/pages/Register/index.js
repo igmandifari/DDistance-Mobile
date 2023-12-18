@@ -131,7 +131,7 @@ function Register({ navigation }) {
       <ErrorText text={errors.phoneNumber} />
       <TextInput
         style={styles.input}
-        keyboardType="email-addres"
+        keyboardType="email-address"
         placeholder="Email"
         onChangeText={handleChange("email")}
         value={email}
