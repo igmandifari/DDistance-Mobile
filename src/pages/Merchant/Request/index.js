@@ -6,13 +6,15 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import React from "react";
 import { colors } from "../../../constant/colors";
+import CustomButton from "../../../components/CustomButton";
 
 const vw = Dimensions.get("window").width;
 
-const request = [
+const requests = [
   {
     code: "#1",
     status: "Ditolak",
@@ -39,7 +41,7 @@ const request = [
   },
 ];
 
-const Request = () => {
+const RequestPage = ({ navigation }) => {
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
@@ -52,10 +54,7 @@ const Request = () => {
             <Text style={styles.headerTitle}>D-DISTANCE</Text>
           </View>
           <View>
-            <Image
-              source={require("../../../assets/img/notification.png")}
-              style={{}}
-            />
+            <Image source={require("../../../assets/img/notification.png")} />
           </View>
         </View>
         <View style={{ padding: 25 }}>
@@ -64,82 +63,118 @@ const Request = () => {
           </Text>
         </View>
         <View style={styles.detailContainer}>
-          <View style={{ gap: 12 }}>
-            {request.map((item, index) => {
-              const { status } = item;
+          <View style={{ height: "85%" }}>
+            <ScrollView>
+              <View style={{ gap: 10 }}>
+                {requests.map((item, index) => {
+                  const { status } = item;
 
-              let bgColor;
-              switch (status) {
-                case "Ditolak":
-                  bgColor = colors.RED;
-                  break;
-                case "Diterima":
-                  bgColor = colors.GREEN;
-                  break;
-                case "Dalam Proses":
-                  bgColor = colors.YELLOW;
-                  break;
+                  let bgColor;
+                  switch (status) {
+                    case "Ditolak":
+                      bgColor = colors.RED;
+                      break;
+                    case "Diterima":
+                      bgColor = colors.GREEN;
+                      break;
+                    case "Dalam Proses":
+                      bgColor = colors.YELLOW;
+                      break;
 
-                default:
-                  break;
-              }
-              return (
-                <View
-                  key={index}
-                  style={{
-                    backgroundColor: colors.FLORAL,
-                    padding: 20,
-                    elevation: 10,
-                    gap: 10,
-                  }}
-                >
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      alignItems: "flex-start",
-                    }}
-                  >
-                    <View style={{ alignItems: "center" }}>
-                      <Text style={{ fontSize: 24, fontWeight: 600 }}>
-                        Pengajuan
-                      </Text>
-                      <Text style={{ fontSize: 24, fontWeight: 600 }}>
-                        {item.code}
-                      </Text>
-                    </View>
-
-                    <TouchableOpacity
+                    default:
+                      break;
+                  }
+                  return (
+                    <View
+                      key={index}
                       style={{
-                        borderRadius: 10,
-                        backgroundColor: bgColor,
-                        paddingVertical: 10,
-                        width: 160,
-                        alignItems: "center",
-                        justifyContent: "center",
+                        backgroundColor: colors.FLORAL,
+                        padding: 20,
+                        elevation: 10,
+                        gap: 10,
                       }}
                     >
-                      <Text style={{ fontSize: 16, fontWeight: 600 }}>
-                        {status}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Text style={{ fontSize: 13, fontWeight: "600" }}>
-                      08/12/2023
-                    </Text>
-                    <TouchableOpacity>
-                      <Text>See MOre</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              );
-            })}
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        <View style={{ alignItems: "center" }}>
+                          <Text style={{ fontSize: 24, fontWeight: 600 }}>
+                            Pengajuan
+                          </Text>
+                          <Text style={{ fontSize: 24, fontWeight: 600 }}>
+                            {item.code}
+                          </Text>
+                        </View>
+
+                        <TouchableOpacity
+                          style={{
+                            borderRadius: 10,
+                            backgroundColor: bgColor,
+                            paddingVertical: 10,
+                            width: 160,
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontWeight: 600,
+                              color: colors.WHITE,
+                            }}
+                          >
+                            {status}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Text style={{ fontSize: 13, fontWeight: "600" }}>
+                          08/12/2023
+                        </Text>
+                        <TouchableOpacity>
+                          <Text>See More</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  );
+                })}
+              </View>
+            </ScrollView>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => navigation.navigate("form-request-assurance")}
+              style={{
+                backgroundColor: colors.ORANGE,
+                height: 49,
+                width: 49,
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 10,
+              }}
+            >
+              <Text
+                style={{ color: colors.WHITE, fontSize: 36, fontWeight: "800" }}
+              >
+                +
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -147,7 +182,7 @@ const Request = () => {
   );
 };
 
-export default Request;
+export default RequestPage;
 
 const styles = StyleSheet.create({
   container: {

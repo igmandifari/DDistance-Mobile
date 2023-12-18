@@ -1,10 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-// import Dashboard from "../../Distributor/Dashboard";
 import Profile from "../Profile";
 import Bill from "../Bill/index";
 import DashboardMerchant from "../Dashboard";
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
-import Request from "../Request";
+import RequestPage from "../Request";
 
 const Tab = createBottomTabNavigator();
 
@@ -16,7 +15,7 @@ const tablist = [
   },
   {
     name: "Pengajuan",
-    component: Request,
+    component: RequestPage,
     iconName: "file-document-edit-outline",
   },
   {

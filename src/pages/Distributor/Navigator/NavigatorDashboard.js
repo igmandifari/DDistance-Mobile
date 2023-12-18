@@ -2,8 +2,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Profile from "../../Merchant/Profile/index";
 import Bill from "../../Merchant/Bill";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import History from "../../Merchant/History/index";
 import DashboardDistributor from "../Dashboard/index";
+import RequestPage from "../../Merchant/Request";
 
 const Tab = createBottomTabNavigator();
 
@@ -15,7 +15,7 @@ const tablist = [
   },
   {
     name: "History",
-    component: History,
+    component: RequestPage,
     iconName: "file-document-edit-outline",
   },
   {

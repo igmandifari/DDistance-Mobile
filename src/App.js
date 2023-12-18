@@ -7,8 +7,14 @@ import Register from "./pages/Register";
 import RegisterSuccess from "./pages/Register/components/RegisterSuccess";
 import MyTabsDashboard from "./pages/Distributor/Navigator/NavigatorDashboard";
 import MyTabsMerchant from "./pages/Merchant/Navigator/Navigator";
+import FormRequest from "./pages/Merchant/Request/components/FormRequest";
 
 const routerList = [
+  {
+    name: "form-request-assurance",
+    component: FormRequest,
+    headerShown: false,
+  },
   {
     name: "landing-page",
     component: LandingPage,
