@@ -11,6 +11,9 @@ import EditProfile from "./pages/Merchant/Profile/components/EditProfile";
 import KeamananAkun from "./pages/Merchant/Profile/components/KeamananAkun";
 import ChangePassword from "./pages/Merchant/Profile/components/ChangePassword";
 import ChangePasswordSuccess from "./pages/Merchant/Profile/components/ChangePasswordSuccess";
+import FormInvoice from "./pages/Merchant/Bill/components/FormInvoice";
+import Bill from "./pages/Merchant/Bill";
+import DetailInvoice from "./pages/Merchant/Bill/components/DetailInvoice";
 
 
 const routerList = [
@@ -62,6 +65,21 @@ const routerList = [
   {
     name: "change-password-success",
     component: ChangePasswordSuccess,
+    headerShown: false,
+  },
+  {
+    name: "form-invoice",
+    component: FormInvoice,
+    headerShown: false,
+  },
+  {
+    name: "Bill",
+    component: Bill,
+    headerShown: false,
+  },
+  {
+    name: "detail-invoice",
+    component: DetailInvoice,
     headerShown: false,
   },
 ];
