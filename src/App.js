@@ -11,11 +11,6 @@ import FormRequest from "./pages/Merchant/Request/components/FormRequest";
 
 const routerList = [
   {
-    name: "form-request-assurance",
-    component: FormRequest,
-    headerShown: false,
-  },
-  {
     name: "landing-page",
     component: LandingPage,
     headerShown: false,
@@ -43,6 +38,11 @@ const routerList = [
   {
     name: "register-success",
     component: RegisterSuccess,
+    headerShown: false,
+  },
+  {
+    name: "form-request-assurance",
+    component: FormRequest,
     headerShown: false,
   },
 ];
