@@ -8,6 +8,13 @@ import RegisterSuccess from "./pages/Register/components/RegisterSuccess";
 import MyTabsDashboard from "./pages/Distributor/Navigator/NavigatorDashboard";
 import MyTabsMerchant from "./pages/Merchant/Navigator/Navigator";
 import FormRequest from "./pages/Merchant/Request/components/FormRequest";
+import EditProfile from "./pages/Merchant/Profile/components/EditProfile";
+import KeamananAkun from "./pages/Merchant/Profile/components/KeamananAkun";
+import ChangePassword from "./pages/Merchant/Profile/components/ChangePassword";
+import ChangePasswordSuccess from "./pages/Merchant/Profile/components/ChangePasswordSuccess";
+import FormInvoice from "./pages/Merchant/Bill/components/FormInvoice";
+import Bill from "./pages/Merchant/Bill";
+import DetailInvoice from "./pages/Merchant/Bill/components/DetailInvoice";
 
 const routerList = [
   {
@@ -43,6 +50,41 @@ const routerList = [
   {
     name: "form-request-assurance",
     component: FormRequest,
+    headerShown: false,
+  },
+  {
+    name: "edit-profile",
+    component: EditProfile,
+    headerShown: false,
+  },
+  {
+    name: "keamanan-akun",
+    component: KeamananAkun,
+    headerShown: false,
+  },
+  {
+    name: "change-password",
+    component: ChangePassword,
+    headerShown: false,
+  },
+  {
+    name: "change-password-success",
+    component: ChangePasswordSuccess,
+    headerShown: false,
+  },
+  {
+    name: "form-invoice",
+    component: FormInvoice,
+    headerShown: false,
+  },
+  {
+    name: "Bill",
+    component: Bill,
+    headerShown: false,
+  },
+  {
+    name: "detail-invoice",
+    component: DetailInvoice,
     headerShown: false,
   },
 ];

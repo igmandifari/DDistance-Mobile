@@ -67,7 +67,7 @@ function Register({ navigation }) {
           console.log(data.data);
           if (data.statusCode == 201);
           alert("Success Register");
-          navigation.navigate("landing-page");
+          navigation.navigate("register-success");
         } catch (error) {
           alert(error);
         }
