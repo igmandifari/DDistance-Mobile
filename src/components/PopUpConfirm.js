@@ -26,7 +26,7 @@ const PopUpConfirm = ({ handleOK, handleReject }) => {
           backgroundColor: colors.FLORAL_WHITE,
           borderRadius: 15,
           alignItems: "center",
-          gap: 11,
+          gap: 8,
         }}
       >
         <AlertIcon />
