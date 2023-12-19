@@ -1,12 +1,10 @@
 import {
   Dimensions,
   Image,
-  Pressable,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  Touchable,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -15,15 +13,18 @@ import { colors } from "../../../../constant/colors";
 import { Button, CheckBox } from "react-native-elements";
 import CustomButton from "../../../../components/CustomButton";
 import * as ImagePicker from "expo-image-picker";
+import { useValidateRequestAssurance } from "../../../../utils/useValidateRequestAssurance";
+import PopUpConfirm from "../../../../components/PopUpConfirm";
 
-const FormRequest = () => {
+const FormRequest = ({ navigation }) => {
   const [agree, setAgree] = useState(false);
-  const [selectedImage, setSelectedImage] = useState("");
   const [images, setImages] = useState({
     ktp: null,
     siup: null,
     agunan: null,
   });
+
+  const [popUp, setPopUp] = useState(false);
 
   const pickImage = async (id) => {
     // No permissions request is necessary for launching the image library
@@ -63,9 +64,30 @@ const FormRequest = () => {
     },
   ];
 
+  const handleSubmit = () => {
+    const payload = {
+      aggree: agree,
+      ktp: images.ktp,
+      siup: images.siup,
+      agunan: images.agunan,
+    };
+
+    if (!useValidateRequestAssurance(payload)) {
+      alert("data must not empty");
+      return;
+    }
+    setPopUp(false);
+  };
+
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
+        {popUp && (
+          <PopUpConfirm
+            handleOK={() => handleSubmit()}
+            handleReject={() => setPopUp(false)}
+          />
+        )}
         <ScrollView>
           <Image
             source={{ uri: images.ktp }}
@@ -215,7 +237,10 @@ const FormRequest = () => {
               paddingTop: 20,
             }}
           >
-            <CustomButton text={"Kirim Permohonan"} />
+            <CustomButton
+              handleClick={() => setPopUp(true)}
+              text={"Kirim Permohonan"}
+            />
           </View>
         </ScrollView>
       </View>
@@ -230,6 +255,7 @@ const styles = StyleSheet.create({
     padding: 30,
     backgroundColor: colors.FLORAL_WHITE,
     height: Dimensions.get("window").height,
+    position: "relative",
   },
   infoContainer: {
     backgroundColor: colors.FLORAL,
