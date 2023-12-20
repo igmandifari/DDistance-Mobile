@@ -77,6 +77,7 @@ const FormRequest = ({ navigation }) => {
       return;
     }
     setPopUp(false);
+    navigation.navigate("otp-request-insurance");
   };
 
   return (

@@ -140,7 +140,11 @@ const RequestPage = ({ navigation }) => {
                         <Text style={{ fontSize: 13, fontWeight: "600" }}>
                           08/12/2023
                         </Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() =>
+                            navigation.navigate("detail-request-insurance")
+                          }
+                        >
                           <Text>See More</Text>
                         </TouchableOpacity>
                       </View>

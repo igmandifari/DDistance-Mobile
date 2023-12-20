@@ -15,6 +15,8 @@ import ChangePasswordSuccess from "./pages/Merchant/Profile/components/ChangePas
 import FormInvoice from "./pages/Merchant/Bill/components/FormInvoice";
 import Bill from "./pages/Merchant/Bill";
 import DetailInvoice from "./pages/Merchant/Bill/components/DetailInvoice";
+import DetailRequest from "./pages/Merchant/Request/components/DetailRequest";
+import OtpRequestInsurance from "./pages/Merchant/Request/components/OtpRequestInsurance";
 
 const routerList = [
   {
@@ -50,6 +52,16 @@ const routerList = [
   {
     name: "form-request-assurance",
     component: FormRequest,
+    headerShown: false,
+  },
+  {
+    name: "otp-request-insurance",
+    component: OtpRequestInsurance,
+    headerShown: false,
+  },
+  {
+    name: "detail-request-insurance",
+    component: DetailRequest,
     headerShown: false,
   },
   {

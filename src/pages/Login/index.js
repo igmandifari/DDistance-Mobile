@@ -37,32 +37,30 @@ function Login({ navigation }) {
   const handleForgotPassword = () => {
     navigation.navigate("ForgotPassword");
   };
-  
+
   const handleLogin = async () => {
     const { email, password } = form;
     const payload = {
       email,
       password,
-    }
+    };
     try {
       const { data } = await login(payload);
       const token = data.data.token;
-      const role = data.data.role; 
-      
-      // console.log(role.data);
+      const role = data.data.role;
+
       if (token) {
-        alert('Success login');
+        alert("Success login");
 
-
-        if (role === 'ROLE_MERCHANT') {
+        if (role === "ROLE_MERCHANT") {
           navigation.navigate("dashboard-merchant");
-        } else if (role === 'ROLE_DISTRIBUTOR') {
+        } else if (role === "ROLE_DISTRIBUTOR") {
           navigation.navigate("dashboard-distributor");
         } else {
-          alert('Unknown role'); 
+          alert("Unknown role");
         }
       } else {
-        alert('Bad credential');
+        alert("Bad credential");
       }
     } catch (e) {
       alert(e);
