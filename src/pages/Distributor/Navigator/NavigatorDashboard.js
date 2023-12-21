@@ -1,9 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Profile from "../../Merchant/Profile/index";
-import Bill from "../../Merchant/Bill";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import DashboardDistributor from "../Dashboard/index";
 import RequestPage from "../../Merchant/Request";
+import BillDistributor from "../Bill";
 
 const Tab = createBottomTabNavigator();
 
@@ -20,7 +20,7 @@ const tablist = [
   },
   {
     name: "Tagihan",
-    component: Bill,
+    component: BillDistributor,
     iconName: "file-document-multiple",
   },
   {
