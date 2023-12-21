@@ -1,22 +1,22 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import LandingPage from "./pages/LandingPage";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import RegisterSuccess from "./pages/Register/components/RegisterSuccess";
-import MyTabsDashboard from "./pages/Distributor/Navigator/NavigatorDashboard";
-import MyTabsMerchant from "./pages/Merchant/Navigator/Navigator";
-import FormRequest from "./pages/Merchant/Request/components/FormRequest";
-import EditProfile from "./pages/Merchant/Profile/components/EditProfile";
-import KeamananAkun from "./pages/Merchant/Profile/components/KeamananAkun";
-import ChangePassword from "./pages/Merchant/Profile/components/ChangePassword";
-import ChangePasswordSuccess from "./pages/Merchant/Profile/components/ChangePasswordSuccess";
-import FormInvoice from "./pages/Merchant/Bill/components/FormInvoice";
-import Bill from "./pages/Merchant/Bill";
-import DetailInvoice from "./pages/Merchant/Bill/components/DetailInvoice";
-import DetailRequest from "./pages/Merchant/Request/components/DetailRequest";
-import OtpRequestInsurance from "./pages/Merchant/Request/components/OtpRequestInsurance";
+import LandingPage from "./src/pages/LandingPage";
+import Login from "./src/pages/Login";
+import Register from "./src/pages/Register";
+import RegisterSuccess from "./src/pages/Register/components/RegisterSuccess";
+import MyTabsDashboard from "./src/pages/Distributor/Navigator/NavigatorDashboard";
+import MyTabsMerchant from "./src/pages/Merchant/Navigator/Navigator";
+import FormRequest from "./src/pages/Merchant/Request/components/FormRequest";
+import EditProfile from "./src/pages/Merchant/Profile/components/EditProfile";
+import KeamananAkun from "./src/pages/Merchant/Profile/components/KeamananAkun";
+import ChangePassword from "./src/pages/Merchant/Profile/components/ChangePassword";
+import ChangePasswordSuccess from "./src/pages/Merchant/Profile/components/ChangePasswordSuccess";
+import FormInvoice from "./src/pages/Merchant/Bill/components/FormInvoice";
+import Bill from "./src/pages/Merchant/Bill";
+import DetailInvoice from "./src/pages/Merchant/Bill/components/DetailInvoice";
+import DetailRequest from "./src/pages/Merchant/Request/components/DetailRequest";
+import OtpRequestInsurance from "./src/pages/Merchant/Request/components/OtpRequestInsurance";
 
 const routerList = [
   {
