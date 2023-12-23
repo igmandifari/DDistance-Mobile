@@ -12,8 +12,11 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { colors } from "../../constant/colors";
 import CustomButton from "../../components/CustomButton";
 import { login } from "../../services/AuthService";
+import { useDispatch } from "react-redux";
+import { setIsAuthentication } from "../../store/userSlice";
 
 function Login({ navigation }) {
+  const dispatch = useDispatch();
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -55,6 +58,11 @@ function Login({ navigation }) {
         if (role === "ROLE_MERCHANT") {
           navigation.navigate("dashboard-merchant");
         } else if (role === "ROLE_DISTRIBUTOR") {
+          dispatch(
+            setIsAuthentication({
+              token: token,
+            })
+          );
           navigation.navigate("dashboard-distributor");
         } else {
           alert("Unknown role");

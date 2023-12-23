@@ -17,6 +17,11 @@ import Bill from "./src/pages/Merchant/Bill";
 import DetailInvoice from "./src/pages/Merchant/Bill/components/DetailInvoice";
 import DetailRequest from "./src/pages/Merchant/Request/components/DetailRequest";
 import OtpRequestInsurance from "./src/pages/Merchant/Request/components/OtpRequestInsurance";
+import store from "./src/store/store";
+import { Provider } from "react-redux";
+import OtpInvoiceMerchant from "./src/pages/Merchant/Bill/components/OtpInvoiceMerchant";
+import FormInvoiceDistributor from "./src/pages/Distributor/Bill/components/FormInvoiceDistributor";
+import DetailInvoiceDistributor from "./src/pages/Distributor/Bill/components/DetailInvoiceDistributor";
 
 const routerList = [
   {
@@ -99,26 +104,38 @@ const routerList = [
     component: DetailInvoice,
     headerShown: false,
   },
+  {
+    name: "otp-invoice-merchant",
+    component: OtpInvoiceMerchant,
+    headerShown: false,
+  },
+  {
+    name: "detail-invoice-distributor",
+    component: DetailInvoiceDistributor,
+    headerShown: false,
+  },
 ];
 
 const Stack = createNativeStackNavigator();
 
 function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {routerList.map((item, index) => {
-          return (
-            <Stack.Screen
-              key={index}
-              name={item.name}
-              component={item.component}
-              options={{ headerShown: item.headerShown }}
-            />
-          );
-        })}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {routerList.map((item, index) => {
+            return (
+              <Stack.Screen
+                key={index}
+                name={item.name}
+                component={item.component}
+                options={{ headerShown: item.headerShown }}
+              />
+            );
+          })}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
