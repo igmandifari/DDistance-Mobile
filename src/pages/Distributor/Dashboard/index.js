@@ -3,14 +3,16 @@ import {
   Text,
   View,
   Image,
-  Icon,
   TextInput,
-  Pressable,
   ScrollView,
   TouchableOpacity,
 } from "react-native";
 import React from "react";
 import { colors } from "../../../constant/colors";
+import { Button } from "react-native-elements/dist/buttons/Button";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getMerchants } from "../../../services/distributorService";
 
 const filterTypes = [
   {
@@ -73,6 +75,16 @@ const merchantList = [
 ];
 
 const DashboardDistributor = () => {
+  const { token } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    getData();
+  }, []);
+  const getData = () => {
+    const result = getMerchants();
+    console.log("result", result);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -109,6 +121,7 @@ const DashboardDistributor = () => {
             >
               Rp 10,855,297,353.00
             </Text>
+            <Button title={"test"} onPress={() => console.log(token)} />
             <Image source={require("../../../assets/img/View.png")} />
           </View>
         </View>
