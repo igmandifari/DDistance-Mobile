@@ -17,6 +17,9 @@ import Bill from "./src/pages/Merchant/Bill";
 import DetailInvoice from "./src/pages/Merchant/Bill/components/DetailInvoice";
 import DetailRequest from "./src/pages/Merchant/Request/components/DetailRequest";
 import OtpRequestInsurance from "./src/pages/Merchant/Request/components/OtpRequestInsurance";
+import OtpInvoiceMerchant from "./src/pages/Merchant/Bill/components/OtpInvoiceMerchant";
+import FormInvoiceDistributor from "./src/pages/Distributor/Bill/components/FormInvoiceDistributor";
+import DetailInvoiceDistributor from "./src/pages/Distributor/Bill/components/DetailInvoiceDistributor";
 
 const routerList = [
   {
@@ -97,6 +100,16 @@ const routerList = [
   {
     name: "detail-invoice",
     component: DetailInvoice,
+    headerShown: false,
+  },
+  {
+    name: "otp-invoice-merchant",
+    component: OtpInvoiceMerchant,
+    headerShown: false,
+  },
+  {
+    name: "detail-invoice-distributor",
+    component: DetailInvoiceDistributor,
     headerShown: false,
   },
 ];
