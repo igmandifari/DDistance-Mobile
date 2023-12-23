@@ -15,7 +15,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import DatePicker from "react-native-datepicker";
 // import RNDateTimePicker from "@react-native-community/datetimepicker";
 
-const FormInvoice = ({navigation}) => {
+const FormInvoiceDistributor = ({navigation}) => {
   const [agree, setAgree] = useState(false);
 
   const inputsImages = [
@@ -296,7 +296,7 @@ const FormInvoice = ({navigation}) => {
   );
 };
 
-export default FormInvoice;
+export default FormInvoiceDistributor;
 
 const styles = StyleSheet.create({
   container: {

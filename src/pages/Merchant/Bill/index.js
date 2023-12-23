@@ -8,7 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";
@@ -16,11 +16,10 @@ import { invoiceList } from "./data";
 
 const vw = Dimensions.get("window").width;
 
-const Bill = ({navigation}) => {
+const Bill = ({ navigation }) => {
   const [filter, setFilter] = useState("");
   const [data, setData] = useState(invoiceList);
 
-  
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
@@ -40,95 +39,93 @@ const Bill = ({navigation}) => {
           </View>
         </View>
         <View style={{ padding: 25 }}>
-          <Text style={{ fontWeight: "700", fontSize: 32 }}>
-            Invoicing
-          </Text>
+          <Text style={{ fontWeight: "700", fontSize: 32 }}>Invoicing</Text>
         </View>
-        <ScrollView>
         <View style={styles.detailContainer}>
-          <View style={{ gap: 12 }}>
-            {data.map((item, index) => {
-              const {name,invoiceNo,date, status } = item;
+          <View style={{ height: "85%" }}>
+            <ScrollView>
+              <View style={{ gap: 10 }}>
+                {data.map((item, index) => {
+                  const { name, invoiceNo, date, status } = item;
 
-              let bgColor;
-              switch (status) {
-                case "Ditolak":
-                  bgColor = colors.RED;
-                  break;
-                case "Diterima":
-                  bgColor = colors.GREEN;
-                  break;
-                case "Dalam Proses":
-                  bgColor = colors.YELLOW;
-                  break;
+                  let bgColor;
+                  switch (status) {
+                    case "Ditolak":
+                      bgColor = colors.RED;
+                      break;
+                    case "Diterima":
+                      bgColor = colors.GREEN;
+                      break;
+                    case "Dalam Proses":
+                      bgColor = colors.YELLOW;
+                      break;
 
-                default:
-                  break;
-              }
-              return (
-                <View
-                  key={index}
-                  style={{
-                    backgroundColor: colors.FLORAL,
-                    padding: 20,
-                    elevation: 10,
-                    gap: 10,
-                  }}
-                >
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      alignItems: "flex-start",
-                    }}
-                  >
-                    <View style={{ alignItems: "center" }}>
-                      <Text style={{ fontSize: 24, fontWeight: 600 }}>
-                        {name}
-                      </Text>
-                      <Text style={{ fontSize: 24, fontWeight: 600 }}>
-                        {item.code}
-                      </Text>
-                    </View>
-
-                    <TouchableOpacity
+                    default:
+                      break;
+                  }
+                  return (
+                    <View
+                      key={index}
                       style={{
-                        borderRadius: 10,
-                        backgroundColor: bgColor,
-                        paddingVertical: 10,
-                        width: 160,
-                        alignItems: "center",
-                        justifyContent: "center",
+                        backgroundColor: colors.FLORAL,
+                        padding: 20,
+                        elevation: 10,
+                        gap: 10,
                       }}
                     >
-                      <Text style={{ fontSize: 16, fontWeight: 600 }}>
-                        {status}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Text style={{ fontSize: 13, fontWeight: "600" }}>
-                      {date}
-                    </Text>
-                    <TouchableOpacity
-                    onPress={() => navigation.navigate("detail-invoice")}
-                    >
-                      <Text>See More</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              );
-            })}
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        <View style={{ alignItems: "center" }}>
+                          <Text style={{ fontSize: 24, fontWeight: 600 }}>
+                            {name}
+                          </Text>
+                          <Text style={{ fontSize: 24, fontWeight: 600 }}>
+                            {invoiceNo}
+                          </Text>
+                        </View>
+
+                        <TouchableOpacity
+                          style={{
+                            borderRadius: 10,
+                            backgroundColor: bgColor,
+                            paddingVertical: 10,
+                            width: 160,
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Text style={{ fontSize: 16, fontWeight: 600 }}>
+                            {status}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Text style={{ fontSize: 13, fontWeight: "600" }}>
+                          {date}
+                        </Text>
+                        <TouchableOpacity
+                          onPress={() => navigation.navigate("detail-invoice")}
+                        >
+                          <Text>See More</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  );
+                })}
+              </View>
+            </ScrollView>
           </View>
-        </View>
-        </ScrollView>
-        </View>
-        <View
+          <View
             style={{
               flex: 1,
               flexDirection: "row",
@@ -154,6 +151,8 @@ const Bill = ({navigation}) => {
               </Text>
             </TouchableOpacity>
           </View>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -164,7 +163,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.WHITE,
     justifyContent: "flex-start",
-    height: "95%",
+    height: "100%",
     alignContent: "center",
   },
   headerContainer: {

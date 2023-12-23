@@ -19,6 +19,9 @@ import DetailRequest from "./src/pages/Merchant/Request/components/DetailRequest
 import OtpRequestInsurance from "./src/pages/Merchant/Request/components/OtpRequestInsurance";
 import store from "./src/store/store";
 import { Provider } from "react-redux";
+import OtpInvoiceMerchant from "./src/pages/Merchant/Bill/components/OtpInvoiceMerchant";
+import FormInvoiceDistributor from "./src/pages/Distributor/Bill/components/FormInvoiceDistributor";
+import DetailInvoiceDistributor from "./src/pages/Distributor/Bill/components/DetailInvoiceDistributor";
 
 const routerList = [
   {
@@ -99,6 +102,16 @@ const routerList = [
   {
     name: "detail-invoice",
     component: DetailInvoice,
+    headerShown: false,
+  },
+  {
+    name: "otp-invoice-merchant",
+    component: OtpInvoiceMerchant,
+    headerShown: false,
+  },
+  {
+    name: "detail-invoice-distributor",
+    component: DetailInvoiceDistributor,
     headerShown: false,
   },
 ];
