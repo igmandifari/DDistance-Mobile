@@ -7,7 +7,6 @@ import Register from "./src/pages/Register";
 import RegisterSuccess from "./src/pages/Register/components/RegisterSuccess";
 import MyTabsDashboard from "./src/pages/Distributor/Navigator/NavigatorDashboard";
 import MyTabsMerchant from "./src/pages/Merchant/Navigator/Navigator";
-import FormRequest from "./src/pages/Merchant/Request/components/FormRequest";
 import EditProfile from "./src/pages/Merchant/Profile/components/EditProfile";
 import KeamananAkun from "./src/pages/Merchant/Profile/components/KeamananAkun";
 import ChangePassword from "./src/pages/Merchant/Profile/components/ChangePassword";
@@ -15,12 +14,12 @@ import ChangePasswordSuccess from "./src/pages/Merchant/Profile/components/Chang
 import FormInvoice from "./src/pages/Merchant/Bill/components/FormInvoice";
 import Bill from "./src/pages/Merchant/Bill";
 import DetailInvoice from "./src/pages/Merchant/Bill/components/DetailInvoice";
-import DetailRequest from "./src/pages/Merchant/Request/components/DetailRequest";
-import OtpRequestInsurance from "./src/pages/Merchant/Request/components/OtpRequestInsurance";
 import store from "./src/store/store";
 import { Provider } from "react-redux";
+import OtpRequestMerchant from "./src/pages/Merchant/Insurance/components/OtpRequestInsurance";
+import DetailRequestInsurance from "./src/pages/Merchant/Insurance/components/DetailRequest";
+import FormRequestInsurance from "./src/pages/Merchant/Insurance/components/FormRequest";
 import OtpInvoiceMerchant from "./src/pages/Merchant/Bill/components/OtpInvoiceMerchant";
-import FormInvoiceDistributor from "./src/pages/Distributor/Bill/components/FormInvoiceDistributor";
 import DetailInvoiceDistributor from "./src/pages/Distributor/Bill/components/DetailInvoiceDistributor";
 
 const routerList = [
@@ -56,17 +55,17 @@ const routerList = [
   },
   {
     name: "form-request-assurance",
-    component: FormRequest,
+    component: FormRequestInsurance,
     headerShown: false,
   },
   {
     name: "otp-request-insurance",
-    component: OtpRequestInsurance,
+    component: OtpRequestMerchant,
     headerShown: false,
   },
   {
     name: "detail-request-insurance",
-    component: DetailRequest,
+    component: DetailRequestInsurance,
     headerShown: false,
   },
   {

@@ -8,9 +8,14 @@ import {
 import React, { useState, useEffect } from "react";
 import { colors } from "../../../../constant/colors";
 import OtpInputs from "react-native-otp-inputs";
+import CustomButton from "../../../../components/CustomButton";
+import { sendOtpInsurance } from "../../../../services/merchantServices";
+import PopUpSuccess from "../../../../components/PopUpSuccess";
 
-const OtpRequestInsurance = ({ navigation }) => {
+const OtpRequestInsurance = ({ navigation, route }) => {
+  const [popUp, setPopUp] = useState(false);
   const [timer, setTimer] = useState(60);
+  const { payload } = route.params;
 
   useEffect(() => {
     if (!timer) return;
@@ -30,12 +35,32 @@ const OtpRequestInsurance = ({ navigation }) => {
   };
 
   const handleSubmit = () => {
-    console.log("otp", otp);
-    navigation.navigate("dashboard-distributor");
+    const otp = this.otpRef.current.state.otpCode.join("");
+    if (otp.length != 6) {
+      alert("OTP Not Valid");
+      return;
+    }
+    const bodyValue = {
+      ...payload,
+      otp: otp,
+    };
+    console.log("payload", bodyValue);
+    setPopUp(true);
+    setTimeout(() => {
+      navigation.navigate("dashboard-merchant");
+    }, 3000);
+  };
+
+  const sendOtp = async () => {
+    console.log("first");
+    await sendOtpInsurance();
+    this.otpRef.current.setState({ otpCode: [] });
+    setTimer(60);
   };
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
+        {popUp && <PopUpSuccess />}
         <View>
           <Text
             style={{ textAlign: "center", fontSize: 20, fontWeight: "400" }}
@@ -52,7 +77,7 @@ const OtpRequestInsurance = ({ navigation }) => {
             />
           </View>
           <View>
-            <TouchableOpacity onPress={() => handleSubmit()}>
+            <TouchableOpacity onPress={() => sendOtp()}>
               <Text
                 style={{
                   textDecorationLine: "underline",
@@ -65,6 +90,17 @@ const OtpRequestInsurance = ({ navigation }) => {
               </Text>
             </TouchableOpacity>
           </View>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "flex-end",
+          }}
+        >
+          <CustomButton
+            text={"Kirim Permohonan"}
+            handleClick={() => handleSubmit()}
+          />
         </View>
       </View>
     </SafeAreaView>

@@ -7,7 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { colors } from "../../../constant/colors";
 import { Button } from "react-native-elements/dist/buttons/Button";
 import { useSelector } from "react-redux";
@@ -76,14 +76,15 @@ const merchantList = [
 
 const DashboardDistributor = () => {
   const { token } = useSelector((state) => state.user);
+  const [merchants, setMerchants] = useState([]);
+  const getData = async () => {
+    const response = await getMerchants("Bearer");
+    setMerchants(response.data.data);
+  };
 
   useEffect(() => {
     getData();
   }, []);
-  const getData = () => {
-    const result = getMerchants();
-    console.log("result", result);
-  };
 
   return (
     <View style={styles.container}>
@@ -149,134 +150,136 @@ const DashboardDistributor = () => {
             ))}
           </View>
         </View>
+        <Button title={"test"} onPress={() => console.log(merchants)} />
         <ScrollView>
           <View id="merchants" style={styles.merchantContainer}>
-            {merchantList.map((item, index) => {
-              const { status } = item;
+            {merchants &&
+              merchants.map((item, index) => {
+                const { status } = item;
 
-              let bgColor;
-              switch (status) {
-                case "Lancar":
-                  bgColor = colors.GREEN;
-                  break;
-                case "Tidak Lancar":
-                  bgColor = colors.YELLOW_STATUS;
-                  break;
-                case "Gagal":
-                  bgColor = colors.RED;
-                  break;
-              }
-              return (
-                <View key={index} style={styles.item}>
-                  <View
-                    style={{
-                      width: 65,
-                      height: 65,
-                      backgroundColor: colors.GRAY,
-                      borderRadius: 100,
-                    }}
-                  ></View>
-                  <View
-                    style={{
-                      height: "100%",
-                      flex: 1,
-                      gap: 5,
-                      padding: 5,
-                    }}
-                  >
-                    <Text style={styles.cityText}>Jakarta</Text>
-                    <Text
-                      style={{
-                        fontSize: 15,
-                        fontWeight: "700",
-                      }}
-                    >
-                      Distributor A
-                    </Text>
+                let bgColor = colors.GREEN;
+                // switch (status) {
+                //   case "Lancar":
+                //     bgColor = colors.GREEN;
+                //     break;
+                //   case "Tidak Lancar":
+                //     bgColor = colors.YELLOW_STATUS;
+                //     break;
+                //   case "Gagal":
+                //     bgColor = colors.RED;
+                //     break;
+                // }
+                return (
+                  <View key={index} style={styles.item}>
                     <View
                       style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
+                        width: 65,
+                        height: 65,
+                        backgroundColor: colors.GRAY,
+                        borderRadius: 100,
                       }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          fontWeight: "400",
-                        }}
-                      >
-                        Sisa Limit:
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 13,
-                          fontWeight: "400",
-                          color: "rgba(0,0,0,0.25)",
-                        }}
-                      >
-                        {item.limit}
-                      </Text>
-                    </View>
+                    ></View>
                     <View
                       style={{
-                        backgroundColor: colors.WHITE,
-                        height: 20,
-                        borderRadius: 10,
-                        elevation: 5,
-                        overflow: "hidden",
+                        height: "100%",
+                        flex: 1,
+                        gap: 5,
+                        padding: 5,
                       }}
                     >
-                      <View
-                        style={{
-                          height: "100%",
-                          backgroundColor: colors.ORANGE,
-                          width: "50%",
-                          borderRadius: 10,
-                        }}
-                      ></View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                    >
+                      <Text style={styles.cityText}>{item.address}</Text>
                       <Text
                         style={{
-                          fontSize: 10,
+                          fontSize: 15,
+                          fontWeight: "700",
                         }}
                       >
-                        Status Pembayaran
+                        {item.name}
                       </Text>
                       <View
                         style={{
-                          width: 120,
-                          bgColor: "red",
-                          borderRadius: 10,
-                          backgroundColor: bgColor,
                           flexDirection: "row",
-                          justifyContent: "center",
-                          paddingVertical: 5,
+                          justifyContent: "space-between",
                           alignItems: "center",
                         }}
                       >
                         <Text
                           style={{
-                            fontSize: 16,
-                            fontWeight: "600",
-                            color: "white",
+                            fontSize: 12,
+                            fontWeight: "400",
                           }}
                         >
-                          {item.status}
+                          Sisa Limit:
                         </Text>
+                        <Text
+                          style={{
+                            fontSize: 13,
+                            fontWeight: "400",
+                            color: "rgba(0,0,0,0.25)",
+                          }}
+                        >
+                          {item.limit}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          backgroundColor: colors.WHITE,
+                          height: 20,
+                          borderRadius: 10,
+                          elevation: 5,
+                          overflow: "hidden",
+                        }}
+                      >
+                        <View
+                          style={{
+                            height: "100%",
+                            backgroundColor: colors.ORANGE,
+                            width: "50%",
+                            borderRadius: 10,
+                          }}
+                        ></View>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 10,
+                          }}
+                        >
+                          Status Pembayaran
+                        </Text>
+                        <View
+                          style={{
+                            width: 120,
+                            bgColor: "red",
+                            borderRadius: 10,
+                            backgroundColor: bgColor,
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            paddingVertical: 5,
+                            alignItems: "center",
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontWeight: "600",
+                              color: "white",
+                            }}
+                          >
+                            Lancar
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </View>
-                </View>
-              );
-            })}
+                );
+              })}
           </View>
         </ScrollView>
       </View>

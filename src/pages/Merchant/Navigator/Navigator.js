@@ -3,7 +3,7 @@ import Profile from "../Profile";
 import Bill from "../Bill/index";
 import DashboardMerchant from "../Dashboard";
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
-import RequestPage from "../Request";
+import RequestPage from "../Insurance";
 
 const Tab = createBottomTabNavigator();
 
