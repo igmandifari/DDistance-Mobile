@@ -20,6 +20,12 @@ import OtpRequestInsurance from "./src/pages/Merchant/Request/components/OtpRequ
 import OtpInvoiceMerchant from "./src/pages/Merchant/Bill/components/OtpInvoiceMerchant";
 import FormInvoiceDistributor from "./src/pages/Distributor/Bill/components/FormInvoiceDistributor";
 import DetailInvoiceDistributor from "./src/pages/Distributor/Bill/components/DetailInvoiceDistributor";
+import DetailDistributor from "./src/pages/Merchant/Dashboard/DetaiDistributor";
+import HistoryBillInvoiceMerchant from "./src/pages/Merchant/Bill/components/HistoryBillInvoiceMerchant";
+import DetailInvoiceBillMerchant from "./src/pages/Merchant/Bill/components/DetailInvoiceBillMerchant.js";
+import DetailToko from "./src/pages/Distributor/Bill/components/DetailToko";
+import HistoryInvoiceCicilanDistributor from "./src/pages/Distributor/Bill/components/HistoryInvoiceCicilanDistributor";
+import InvoiceDistributor from "./src/pages/Distributor/Bill/components/InvoiceDistributor";
 
 const routerList = [
   {
@@ -110,6 +116,36 @@ const routerList = [
   {
     name: "detail-invoice-distributor",
     component: DetailInvoiceDistributor,
+    headerShown: false,
+  },
+  {
+    name:"detail-distributor-merchant",
+    component: DetailDistributor,
+    headerShown: false,
+  },
+  {
+    name:"history-bill-merchant",
+    component: HistoryBillInvoiceMerchant,
+    headerShown: false,
+  },
+  {
+    name:"detail-invoice-bill-merchant",
+    component: DetailInvoiceBillMerchant,
+    headerShown: false,
+  },
+  {
+    name:"detail-toko",
+    component: DetailToko,
+    headerShown: false,
+  },
+  {
+    name:"history-bill-distributor",
+    component: HistoryInvoiceCicilanDistributor,
+    headerShown: false,
+  },
+  {
+    name:"invoice-distributor",
+    component: InvoiceDistributor,
     headerShown: false,
   },
 ];

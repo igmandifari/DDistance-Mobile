@@ -72,7 +72,7 @@ const merchantList = [
   },
 ];
 
-const DashboardDistributor = () => {
+const DashboardDistributor = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -249,6 +249,9 @@ const DashboardDistributor = () => {
                           alignItems: "center",
                         }}
                       >
+                      <TouchableOpacity
+                      onPress={() => navigation.navigate("detail-toko")}
+                      >
                         <Text
                           style={{
                             fontSize: 16,
@@ -258,6 +261,7 @@ const DashboardDistributor = () => {
                         >
                           {item.status}
                         </Text>
+                      </TouchableOpacity>
                       </View>
                     </View>
                   </View>
