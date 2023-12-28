@@ -2,8 +2,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Profile from "../../Merchant/Profile/index";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import DashboardDistributor from "../Dashboard/index";
-import RequestPage from "../../Merchant/Request";
 import BillDistributor from "../Bill";
+import RequestPage from "../../Merchant/Insurance";
 
 const Tab = createBottomTabNavigator();
 

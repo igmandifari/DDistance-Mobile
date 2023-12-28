@@ -15,6 +15,7 @@ import CustomButton from "../../../../components/CustomButton";
 import * as ImagePicker from "expo-image-picker";
 import { useValidateRequestAssurance } from "../../../../utils/useValidateRequestAssurance";
 import PopUpConfirm from "../../../../components/PopUpConfirm";
+import { sendOtpInsurance } from "../../../../services/merchantServices";
 
 const FormRequest = ({ navigation }) => {
   const [agree, setAgree] = useState(false);
@@ -64,7 +65,7 @@ const FormRequest = ({ navigation }) => {
     },
   ];
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const payload = {
       aggree: agree,
       ktp: images.ktp,
@@ -77,7 +78,11 @@ const FormRequest = ({ navigation }) => {
       return;
     }
     setPopUp(false);
-    navigation.navigate("otp-request-insurance");
+    await sendOtpInsurance("Bearer");
+    console.log("send otp");
+    navigation.navigate("otp-request-insurance", {
+      payload,
+    });
   };
 
   return (

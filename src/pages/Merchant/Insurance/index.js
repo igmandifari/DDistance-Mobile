@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";
-import CustomButton from "../../../components/CustomButton";
+import { getInsurances } from "../../../services/merchantServices";
 
 const vw = Dimensions.get("window").width;
 
@@ -42,6 +42,16 @@ const requests = [
 ];
 
 const RequestPage = ({ navigation }) => {
+  const [insurances, setInsurances] = useState([]);
+
+  getData = async () => {
+    const response = await getInsurances("Bearer");
+    setInsurances(response.data.data);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
@@ -62,11 +72,12 @@ const RequestPage = ({ navigation }) => {
             Pengajuan ke {"\n"}Danamon
           </Text>
         </View>
-        <View style={styles.detailContainer}>
-          <View style={{ height: "85%" }}>
-            <ScrollView>
-              <View style={{ gap: 10 }}>
-                {requests.map((item, index) => {
+        {/* <View style={styles.detailContainer}> */}
+        <View style={{ height: "85%", padding: 20 }}>
+          <ScrollView>
+            <View style={{ gap: 20 }}>
+              {insurances &&
+                insurances.map((item, index) => {
                   const { status } = item;
 
                   let bgColor;
@@ -80,8 +91,8 @@ const RequestPage = ({ navigation }) => {
                     case "Dalam Proses":
                       bgColor = colors.YELLOW;
                       break;
-
                     default:
+                      bgColor = colors.YELLOW;
                       break;
                   }
                   return (
@@ -90,7 +101,6 @@ const RequestPage = ({ navigation }) => {
                       style={{
                         backgroundColor: colors.FLORAL,
                         padding: 20,
-                        elevation: 10,
                         gap: 10,
                       }}
                     >
@@ -106,7 +116,7 @@ const RequestPage = ({ navigation }) => {
                             Pengajuan
                           </Text>
                           <Text style={{ fontSize: 24, fontWeight: 600 }}>
-                            {item.code}
+                            {`#${++index}`}
                           </Text>
                         </View>
 
@@ -138,7 +148,7 @@ const RequestPage = ({ navigation }) => {
                         }}
                       >
                         <Text style={{ fontSize: 13, fontWeight: "600" }}>
-                          08/12/2023
+                          {item.date}
                         </Text>
                         <TouchableOpacity
                           onPress={() =>
@@ -151,9 +161,9 @@ const RequestPage = ({ navigation }) => {
                     </View>
                   );
                 })}
-              </View>
-            </ScrollView>
-          </View>
+            </View>
+          </ScrollView>
+          {/* </View> */}
           <View
             style={{
               flex: 1,
@@ -224,12 +234,6 @@ const styles = StyleSheet.create({
     padding: 25,
     gap: 25,
     alignItems: "center",
-  },
-  profile: {
-    width: 120,
-    height: 120,
-    borderRadius: 200,
-    backgroundColor: colors.GRAY,
   },
   balanceContainer: {
     flex: 1,

@@ -7,7 +7,6 @@ import Register from "./src/pages/Register";
 import RegisterSuccess from "./src/pages/Register/components/RegisterSuccess";
 import MyTabsDashboard from "./src/pages/Distributor/Navigator/NavigatorDashboard";
 import MyTabsMerchant from "./src/pages/Merchant/Navigator/Navigator";
-import FormRequest from "./src/pages/Merchant/Request/components/FormRequest";
 import EditProfile from "./src/pages/Merchant/Profile/components/EditProfile";
 import KeamananAkun from "./src/pages/Merchant/Profile/components/KeamananAkun";
 import ChangePassword from "./src/pages/Merchant/Profile/components/ChangePassword";
@@ -15,13 +14,21 @@ import ChangePasswordSuccess from "./src/pages/Merchant/Profile/components/Chang
 import FormInvoice from "./src/pages/Merchant/Bill/components/FormInvoice";
 import Bill from "./src/pages/Merchant/Bill";
 import DetailInvoice from "./src/pages/Merchant/Bill/components/DetailInvoice";
-import DetailRequest from "./src/pages/Merchant/Request/components/DetailRequest";
-import OtpRequestInsurance from "./src/pages/Merchant/Request/components/OtpRequestInsurance";
 import store from "./src/store/store";
 import { Provider } from "react-redux";
+import OtpRequestMerchant from "./src/pages/Merchant/Insurance/components/OtpRequestInsurance";
+import DetailRequestInsurance from "./src/pages/Merchant/Insurance/components/DetailRequest";
+import FormRequestInsurance from "./src/pages/Merchant/Insurance/components/FormRequest";
 import OtpInvoiceMerchant from "./src/pages/Merchant/Bill/components/OtpInvoiceMerchant";
-import FormInvoiceDistributor from "./src/pages/Distributor/Bill/components/FormInvoiceDistributor";
 import DetailInvoiceDistributor from "./src/pages/Distributor/Bill/components/DetailInvoiceDistributor";
+import DetailDistributor from "./src/pages/Merchant/Dashboard/DetaiDistributor";
+import HistoryBillInvoiceMerchant from "./src/pages/Merchant/Bill/components/HistoryBillInvoiceMerchant";
+import DetailInvoiceBillMerchant from "./src/pages/Merchant/Bill/components/DetailInvoiceBillMerchant.js";
+import DetailToko from "./src/pages/Distributor/Bill/components/DetailToko";
+import HistoryInvoiceCicilanDistributor from "./src/pages/Distributor/Bill/components/HistoryInvoiceCicilanDistributor";
+import InvoiceDistributor from "./src/pages/Distributor/Bill/components/InvoiceDistributor";
+import TenorSetting from "./src/pages/Merchant/Payment";
+import OtpTenor from "./src/pages/Merchant/Payment/components/OtpTenor";
 
 const routerList = [
   {
@@ -29,6 +36,7 @@ const routerList = [
     component: LandingPage,
     headerShown: false,
   },
+
   {
     name: "dashboard-merchant",
     component: MyTabsMerchant,
@@ -56,17 +64,17 @@ const routerList = [
   },
   {
     name: "form-request-assurance",
-    component: FormRequest,
+    component: FormRequestInsurance,
     headerShown: false,
   },
   {
     name: "otp-request-insurance",
-    component: OtpRequestInsurance,
+    component: OtpRequestMerchant,
     headerShown: false,
   },
   {
     name: "detail-request-insurance",
-    component: DetailRequest,
+    component: DetailRequestInsurance,
     headerShown: false,
   },
   {
@@ -112,6 +120,46 @@ const routerList = [
   {
     name: "detail-invoice-distributor",
     component: DetailInvoiceDistributor,
+    headerShown: false,
+  },
+  {
+    name: "detail-distributor-merchant",
+    component: DetailDistributor,
+    headerShown: false,
+  },
+  {
+    name: "history-bill-merchant",
+    component: HistoryBillInvoiceMerchant,
+    headerShown: false,
+  },
+  {
+    name: "detail-invoice-bill-merchant",
+    component: DetailInvoiceBillMerchant,
+    headerShown: false,
+  },
+  {
+    name: "detail-toko",
+    component: DetailToko,
+    headerShown: false,
+  },
+  {
+    name: "history-bill-distributor",
+    component: HistoryInvoiceCicilanDistributor,
+    headerShown: false,
+  },
+  {
+    name: "invoice-distributor",
+    component: InvoiceDistributor,
+  },
+  // Payment menu
+  {
+    name: "tenor-setting",
+    component: TenorSetting,
+    headerShown: false,
+  },
+  {
+    name: "otp-tenor",
+    component: OtpTenor,
     headerShown: false,
   },
 ];
