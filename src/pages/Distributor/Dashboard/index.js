@@ -203,78 +203,18 @@ const DashboardDistributor = () => {
                           alignItems: "center",
                         }}
                       >
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            fontWeight: "400",
-                          }}
-                        >
-                          Sisa Limit:
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: 13,
-                            fontWeight: "400",
-                            color: "rgba(0,0,0,0.25)",
-                          }}
-                        >
-                          {item.limit}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          backgroundColor: colors.WHITE,
-                          height: 20,
-                          borderRadius: 10,
-                          elevation: 5,
-                          overflow: "hidden",
-                        }}
-                      >
-                        <View
-                          style={{
-                            height: "100%",
-                            backgroundColor: colors.ORANGE,
-                            width: "50%",
-                            borderRadius: 10,
-                          }}
-                        ></View>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: 10,
-                          }}
-                        >
-                          Status Pembayaran
-                        </Text>
-                        <View
-                          style={{
-                            width: 120,
-                            bgColor: "red",
-                            borderRadius: 10,
-                            backgroundColor: bgColor,
-                            flexDirection: "row",
-                            justifyContent: "center",
-                            paddingVertical: 5,
-                            alignItems: "center",
-                          }}
+                        <TouchableOpacity
+                          onPress={() => navigation.navigate("detail-toko")}
                         >
                           <Text
                             style={{
-                              fontSize: 16,
-                              fontWeight: "600",
-                              color: "white",
+                              fontSize: 12,
+                              fontWeight: "400",
                             }}
                           >
-                            Lancar
+                            Sisa Limit:
                           </Text>
-                        </View>
+                        </TouchableOpacity>
                       </View>
                     </View>
                   </View>

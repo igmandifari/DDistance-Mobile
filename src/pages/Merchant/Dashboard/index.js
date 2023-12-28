@@ -12,7 +12,8 @@ import {
 import React, { useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";
 import { distributorList } from "./data";
-const DashboardMerchant = () => {
+
+const DashboardMerchant = ({navigation}) => {
   const [filter, setFilter] = useState("");
   const [data, setData] = useState(distributorList);
 
@@ -206,6 +207,11 @@ const DashboardMerchant = () => {
                             paddingVertical: 5,
                           }}
                         >
+                        <TouchableOpacity
+                        onPress={()=>
+                          navigation.navigate("detail-distributor-merchant")
+                        }
+                         >
                           <Text
                             style={{
                               fontSize: 16,
@@ -215,6 +221,7 @@ const DashboardMerchant = () => {
                           >
                             {status}
                           </Text>
+                        </TouchableOpacity>
                         </View>
                       </View>
                     </View>

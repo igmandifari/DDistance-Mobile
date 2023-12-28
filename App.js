@@ -21,6 +21,14 @@ import DetailRequestInsurance from "./src/pages/Merchant/Insurance/components/De
 import FormRequestInsurance from "./src/pages/Merchant/Insurance/components/FormRequest";
 import OtpInvoiceMerchant from "./src/pages/Merchant/Bill/components/OtpInvoiceMerchant";
 import DetailInvoiceDistributor from "./src/pages/Distributor/Bill/components/DetailInvoiceDistributor";
+import DetailDistributor from "./src/pages/Merchant/Dashboard/DetaiDistributor";
+import HistoryBillInvoiceMerchant from "./src/pages/Merchant/Bill/components/HistoryBillInvoiceMerchant";
+import DetailInvoiceBillMerchant from "./src/pages/Merchant/Bill/components/DetailInvoiceBillMerchant.js";
+import DetailToko from "./src/pages/Distributor/Bill/components/DetailToko";
+import HistoryInvoiceCicilanDistributor from "./src/pages/Distributor/Bill/components/HistoryInvoiceCicilanDistributor";
+import InvoiceDistributor from "./src/pages/Distributor/Bill/components/InvoiceDistributor";
+import TenorSetting from "./src/pages/Merchant/Payment";
+import OtpTenor from "./src/pages/Merchant/Payment/components/OtpTenor";
 
 const routerList = [
   {
@@ -28,6 +36,7 @@ const routerList = [
     component: LandingPage,
     headerShown: false,
   },
+
   {
     name: "dashboard-merchant",
     component: MyTabsMerchant,
@@ -111,6 +120,46 @@ const routerList = [
   {
     name: "detail-invoice-distributor",
     component: DetailInvoiceDistributor,
+    headerShown: false,
+  },
+  {
+    name: "detail-distributor-merchant",
+    component: DetailDistributor,
+    headerShown: false,
+  },
+  {
+    name: "history-bill-merchant",
+    component: HistoryBillInvoiceMerchant,
+    headerShown: false,
+  },
+  {
+    name: "detail-invoice-bill-merchant",
+    component: DetailInvoiceBillMerchant,
+    headerShown: false,
+  },
+  {
+    name: "detail-toko",
+    component: DetailToko,
+    headerShown: false,
+  },
+  {
+    name: "history-bill-distributor",
+    component: HistoryInvoiceCicilanDistributor,
+    headerShown: false,
+  },
+  {
+    name: "invoice-distributor",
+    component: InvoiceDistributor,
+  },
+  // Payment menu
+  {
+    name: "tenor-setting",
+    component: TenorSetting,
+    headerShown: false,
+  },
+  {
+    name: "otp-tenor",
+    component: OtpTenor,
     headerShown: false,
   },
 ];

@@ -11,4 +11,6 @@ export const colors = {
   GREEN: "#00E817",
   RED: "#FC0000",
   GRAY: "#D9D9D9",
+  BUTTON_ORANGE: "#FF6B00",
+
 };
