@@ -11,6 +11,9 @@ import { colors } from "../../../../constant/colors";
 import { historyList } from "../../Dashboard/data";
 import { BottomSheet } from "react-native-sheet";
 import SheetPay from "../../Payment/components/SheetPay";
+import { Button } from "react-native-elements";
+import PaymentSuccess from "../../Payment/components/PaymentSuccess";
+import PaymentFailed from "../../Payment/components/PaymentFailed";
 
 const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
   const { isSuccess } = route.params;
@@ -18,6 +21,8 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
   const [data, setData] = useState(historyList);
   const [isProfileVisible, setIsProfileVisible] = useState(true);
   const sheetPay = useRef(null);
+  const paySuccess = useRef(null);
+  const payFailed = useRef(null);
 
   const filterTypes = [
     {
@@ -86,12 +91,48 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
             handlePay={() => navigation.navigate("pin-payment")}
           />
         </BottomSheet>
+        <BottomSheet
+          height={700}
+          sheetBackgroundColor="#ccc"
+          sheetStyle={{
+            backgroundColor: colors.FLORAL_WHITE,
+            paddingHorizontal: 25,
+            paddingVertical: 10,
+            gap: 10,
+          }}
+          ref={paySuccess}
+        >
+          <PaymentSuccess />
+        </BottomSheet>
+        <BottomSheet
+          height={700}
+          sheetBackgroundColor="#ccc"
+          sheetStyle={{
+            backgroundColor: colors.FLORAL_WHITE,
+            paddingHorizontal: 25,
+            paddingVertical: 10,
+            gap: 10,
+          }}
+          ref={payFailed}
+        >
+          <PaymentFailed />
+        </BottomSheet>
         {isProfileVisible && (
           <View id="profile" style={{}}>
             <View style={styles.profileContainer}>
               <Text style={{ fontSize: 32, fontWeight: "700" }}>
                 Distributor A
               </Text>
+              <Button
+                title={"pay success"}
+                onPress={() => {
+                  paySuccess.current.show();
+                }}
+              />
+              <Button
+                title={"pay failed"}
+                onPress={() => payFailed.current.show()}
+              />
             </View>
           </View>
         )}
