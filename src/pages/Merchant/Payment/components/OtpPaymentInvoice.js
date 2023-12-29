@@ -10,7 +10,7 @@ import { colors } from "../../../../constant/colors";
 import OtpInputs from "react-native-otp-inputs";
 import CustomButton from "../../../../components/CustomButton";
 
-const OtpTenor = ({ navigation }) => {
+const OtpPaymentInvoice = ({ navigation }) => {
   const [timer, setTimer] = useState(60);
 
   useEffect(() => {
@@ -35,15 +35,14 @@ const OtpTenor = ({ navigation }) => {
       alert("Otp is not valid");
       return;
     }
-    navigation.navigate("tenor-setting", { isSuccess: true });
+    navigation.navigate("history-bill-merchant", { isSuccess: true });
   };
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
         <Text style={{ textAlign: "center", fontSize: 20, fontWeight: "400" }}>
-          Masukkan Kode OTP yang telah {"\n"} dikirim ke alamat email Anda untuk{" "}
-          {"\n"}
-          verifikasi pengajuan ke Danamon:
+          Masukkan Kode OTP yang telah dikirim ke alamat email Anda untuk
+          verifikasi pembayaran Invoice:
         </Text>
         <View style={styles.otp}>
           <OtpInputs
@@ -83,7 +82,7 @@ const OtpTenor = ({ navigation }) => {
   );
 };
 
-export default OtpTenor;
+export default OtpPaymentInvoice;
 
 const styles = StyleSheet.create({
   container: {

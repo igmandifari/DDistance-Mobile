@@ -10,7 +10,7 @@ import { colors } from "../../../../constant/colors";
 import OtpInputs from "react-native-otp-inputs";
 import CustomButton from "../../../../components/CustomButton";
 
-const OtpTenor = ({ navigation }) => {
+const PinPayment = ({ navigation }) => {
   const [timer, setTimer] = useState(60);
 
   useEffect(() => {
@@ -32,18 +32,16 @@ const OtpTenor = ({ navigation }) => {
 
   const handleSubmit = () => {
     if (otp.length != 6) {
-      alert("Otp is not valid");
+      alert("PIN is not valid");
       return;
     }
-    navigation.navigate("tenor-setting", { isSuccess: true });
+    navigation.navigate("otp-payment-invoice");
   };
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
         <Text style={{ textAlign: "center", fontSize: 20, fontWeight: "400" }}>
-          Masukkan Kode OTP yang telah {"\n"} dikirim ke alamat email Anda untuk{" "}
-          {"\n"}
-          verifikasi pengajuan ke Danamon:
+          Masukan PIN Pembayaran
         </Text>
         <View style={styles.otp}>
           <OtpInputs
@@ -83,7 +81,7 @@ const OtpTenor = ({ navigation }) => {
   );
 };
 
-export default OtpTenor;
+export default PinPayment;
 
 const styles = StyleSheet.create({
   container: {

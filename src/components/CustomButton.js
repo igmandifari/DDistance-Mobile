@@ -1,7 +1,14 @@
 import { Button, StyleSheet, Text, TouchableOpacity } from "react-native";
 import React from "react";
 
-const CustomButton = ({ text, bgColor, color, handleClick, disabled }) => {
+const CustomButton = ({
+  text,
+  bgColor,
+  color,
+  handleClick,
+  disabled,
+  textStyle,
+}) => {
   const styles = StyleSheet.create({
     container: {
       width: "100%",
@@ -23,7 +30,7 @@ const CustomButton = ({ text, bgColor, color, handleClick, disabled }) => {
       style={styles.container}
       onPress={handleClick}
     >
-      <Text style={styles.text}>{text}</Text>
+      <Text style={[styles.text, textStyle]}>{text}</Text>
     </TouchableOpacity>
   );
 };

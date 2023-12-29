@@ -29,6 +29,8 @@ import HistoryInvoiceCicilanDistributor from "./src/pages/Distributor/Bill/compo
 import InvoiceDistributor from "./src/pages/Distributor/Bill/components/InvoiceDistributor";
 import TenorSetting from "./src/pages/Merchant/Payment";
 import OtpTenor from "./src/pages/Merchant/Payment/components/OtpTenor";
+import PinPayment from "./src/pages/Merchant/Payment/components/PinPayment.js";
+import OtpPaymentInvoice from "./src/pages/Merchant/Payment/components/OtpPaymentInvoice.js";
 
 const routerList = [
   {
@@ -162,6 +164,16 @@ const routerList = [
     component: OtpTenor,
     headerShown: false,
   },
+  {
+    name: "pin-payment",
+    component: PinPayment,
+    headerShown: false,
+  },
+  {
+    name: "otp-payment-invoice",
+    component: OtpPaymentInvoice,
+    headerShown: false,
+  },
 ];
 
 const Stack = createNativeStackNavigator();
@@ -178,6 +190,7 @@ function App() {
                 name={item.name}
                 component={item.component}
                 options={{ headerShown: item.headerShown }}
+                initialParams={{ isSuccess: false }}
               />
             );
           })}

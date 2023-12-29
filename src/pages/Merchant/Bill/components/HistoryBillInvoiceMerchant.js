@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,11 +9,15 @@ import {
 } from "react-native";
 import { colors } from "../../../../constant/colors";
 import { historyList } from "../../Dashboard/data";
+import { BottomSheet } from "react-native-sheet";
+import SheetPay from "../../Payment/components/SheetPay";
 
-const HistoryBillInvoiceMerchant = ({ navigation }) => {
+const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
+  const { isSuccess } = route.params;
   const [filter, setFilter] = useState("");
   const [data, setData] = useState(historyList);
   const [isProfileVisible, setIsProfileVisible] = useState(true);
+  const sheetPay = useRef(null);
 
   const filterTypes = [
     {
@@ -44,9 +48,44 @@ const HistoryBillInvoiceMerchant = ({ navigation }) => {
     setIsProfileVisible((prev) => !prev);
   };
 
+  const handleClickStatus = (status) => {
+    switch (status) {
+      case "Atur Tenor":
+        navigation.navigate("tenor-setting");
+        break;
+      case "Bayar":
+        sheetPay.current.show();
+        break;
+      default:
+        break;
+    }
+  };
+
+  if (isSuccess) {
+    console.log("success");
+  }
+
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
+        <BottomSheet
+          height={700}
+          sheetBackgroundColor="#ccc"
+          sheetStyle={{
+            backgroundColor: colors.FLORAL_WHITE,
+            paddingHorizontal: 25,
+            paddingVertical: 10,
+            gap: 10,
+          }}
+          ref={sheetPay}
+        >
+          <SheetPay
+            handlePayAll={() => {
+              console.log("pay all");
+            }}
+            handlePay={() => navigation.navigate("pin-payment")}
+          />
+        </BottomSheet>
         {isProfileVisible && (
           <View id="profile" style={{}}>
             <View style={styles.profileContainer}>
@@ -116,7 +155,7 @@ const HistoryBillInvoiceMerchant = ({ navigation }) => {
                               style={{
                                 fontSize: 15,
                                 fontWeight: "700",
-                                flex:1,
+                                flex: 1,
                               }}
                             >
                               Total Tagihan
@@ -188,9 +227,7 @@ const HistoryBillInvoiceMerchant = ({ navigation }) => {
                           }}
                         >
                           <TouchableOpacity
-                            onPress={() =>
-                              navigation.navigate("")
-                            }
+                            onPress={() => handleClickStatus(status)}
                           >
                             <Text
                               style={{

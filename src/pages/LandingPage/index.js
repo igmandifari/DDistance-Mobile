@@ -34,6 +34,16 @@ const LandingPage = ({ navigation }) => {
         source={require("../../assets/img/LogoDD2.png")}
         style={styles.logo}
       />
+      <TouchableOpacity
+        onPress={() => navigation.navigate("dashboard-distributor")}
+      >
+        <Text style={styles.buttonText}>Ke dashboard distributor</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("dashboard-merchant")}
+      >
+        <Text style={styles.buttonText}>Ke dashboard merchant</Text>
+      </TouchableOpacity>
       <View style={styles.bawah}>
         <TouchableOpacity
           style={styles.masuk}
@@ -48,16 +58,6 @@ const LandingPage = ({ navigation }) => {
           <Text style={styles.buttonText}>Daftar</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("dashboard-distributor")}
-      >
-        <Text style={styles.buttonText}>Ke dashboard distributor</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("dashboard-merchant")}
-      >
-        <Text style={styles.buttonText}>Ke dashboard merchant</Text>
-      </TouchableOpacity>
     </View>
   );
 };
