@@ -17,6 +17,8 @@ import Bill from "./src/pages/Merchant/Bill";
 import DetailInvoice from "./src/pages/Merchant/Bill/components/DetailInvoice";
 import DetailRequest from "./src/pages/Merchant/Request/components/DetailRequest";
 import OtpRequestInsurance from "./src/pages/Merchant/Request/components/OtpRequestInsurance";
+import NotificationDistributor from "./src/pages/Distributor/Notification/notification";
+import NotificationMerchant from "./src/pages/Merchant/Notification/notification";
 
 const routerList = [
   {
@@ -97,6 +99,16 @@ const routerList = [
   {
     name: "detail-invoice",
     component: DetailInvoice,
+    headerShown: false,
+  },
+  {
+    name: "notificationDistributor",
+    component: NotificationDistributor,
+    headerShown: false,
+  },
+  {
+    name: "notificationMerchant",
+    component: NotificationMerchant,
     headerShown: false,
   },
 ];

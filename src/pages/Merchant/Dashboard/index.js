@@ -12,7 +12,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";
 import { distributorList } from "./data";
-const DashboardMerchant = () => {
+const DashboardMerchant = ({ navigation }) => {
   const [filter, setFilter] = useState("");
   const [data, setData] = useState(distributorList);
 
@@ -53,10 +53,9 @@ const DashboardMerchant = () => {
             <Text style={styles.headerTitle}>D-DISTANCE</Text>
           </View>
           <View>
-            <Image
-              source={require("../../../assets/img/notification.png")}
-              style={{}}
-            />
+          <TouchableOpacity onPress={() => navigation.navigate("notificationMerchant")}>
+            <Image source={require("../../../assets/img/notification.png")} />
+          </TouchableOpacity>
           </View>
         </View>
         <View id="profile" style={styles.profileContainer}>

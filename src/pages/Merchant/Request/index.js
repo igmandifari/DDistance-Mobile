@@ -53,9 +53,9 @@ const RequestPage = ({ navigation }) => {
             />
             <Text style={styles.headerTitle}>D-DISTANCE</Text>
           </View>
-          <View>
+          <TouchableOpacity onPress={() => navigation.navigate("notificationDistributor")}>
             <Image source={require("../../../assets/img/notification.png")} />
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={{ padding: 25 }}>
           <Text style={{ fontWeight: "700", fontSize: 32 }}>
