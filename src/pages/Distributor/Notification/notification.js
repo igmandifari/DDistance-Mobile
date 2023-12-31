@@ -80,7 +80,7 @@ const NotificationDistributor = ({ navigation }) => {
                         backgroundColor: colors.FLORAL,
                         padding: 25,
                         backgroundColor: bgColor,
-                        height: 111,
+                        height: 115,
                         elevation: 100,
                         width: "100%",
                       }}

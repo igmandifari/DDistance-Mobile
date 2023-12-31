@@ -19,6 +19,7 @@ import DetailRequest from "./src/pages/Merchant/Request/components/DetailRequest
 import OtpRequestInsurance from "./src/pages/Merchant/Request/components/OtpRequestInsurance";
 import NotificationDistributor from "./src/pages/Distributor/Notification/notification";
 import NotificationMerchant from "./src/pages/Merchant/Notification/notification";
+import CreditHistory from "./src/pages/Distributor/CreditHistory/creditHistory";
 
 const routerList = [
   {
@@ -109,6 +110,11 @@ const routerList = [
   {
     name: "notificationMerchant",
     component: NotificationMerchant,
+    headerShown: false,
+  },
+  {
+    name: "creditHistory",
+    component: CreditHistory,
     headerShown: false,
   },
 ];

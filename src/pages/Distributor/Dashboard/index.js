@@ -72,7 +72,7 @@ const merchantList = [
   },
 ];
 
-const DashboardDistributor = () => {
+const DashboardDistributor = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -84,10 +84,9 @@ const DashboardDistributor = () => {
           <Text style={styles.headerTitle}>D-DISTANCE</Text>
         </View>
         <View>
-          <Image
-            source={require("../../../assets/img/notification.png")}
-            style={{}}
-          />
+        <TouchableOpacity onPress={() => navigation.navigate("notificationDistributor")}>
+            <Image source={require("../../../assets/img/notification.png")} />
+          </TouchableOpacity>
         </View>
       </View>
       <View id="profile" style={styles.profileContainer}>
