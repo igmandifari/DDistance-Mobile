@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import DashboardDistributor from "../Dashboard/index";
 import BillDistributor from "../Bill";
 import RequestPage from "../../Merchant/Insurance";
+import CreditHistory from "../CreditHistory/creditHistory";
 
 const Tab = createBottomTabNavigator();
 
@@ -15,13 +16,13 @@ const tablist = [
   },
   {
     name: "History",
-    component: RequestPage,
-    iconName: "file-document-edit-outline",
+    component: CreditHistory,
+    iconName: "file-document-multiple",
   },
   {
     name: "Tagihan",
     component: BillDistributor,
-    iconName: "file-document-multiple",
+    iconName: "file-document-edit-outline",
   },
   {
     name: "Profile",

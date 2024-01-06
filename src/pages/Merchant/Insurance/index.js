@@ -8,9 +8,12 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";
 import { getInsurances } from "../../../services/merchantServices";
+import { useSelector } from "react-redux";
+import { Button } from "react-native-elements";
+import { useFocusEffect } from "@react-navigation/native";
 
 const vw = Dimensions.get("window").width;
 
@@ -43,15 +46,17 @@ const requests = [
 
 const RequestPage = ({ navigation }) => {
   const [insurances, setInsurances] = useState([]);
+  const { token } = useSelector((state) => state.user);
 
   getData = async () => {
-    const response = await getInsurances("Bearer");
+    const response = await getInsurances(token);
     setInsurances(response.data.data);
   };
-
-  useEffect(() => {
-    getData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getData();
+    }, [])
+  );
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
@@ -71,6 +76,7 @@ const RequestPage = ({ navigation }) => {
           <Text style={{ fontWeight: "700", fontSize: 32 }}>
             Pengajuan ke {"\n"}Danamon
           </Text>
+          <Button title={"test"} onPress={() => console.log(insurances)} />
         </View>
         {/* <View style={styles.detailContainer}> */}
         <View style={{ height: "85%", padding: 20 }}>
@@ -151,9 +157,11 @@ const RequestPage = ({ navigation }) => {
                           {item.date}
                         </Text>
                         <TouchableOpacity
-                          onPress={() =>
-                            navigation.navigate("detail-request-insurance")
-                          }
+                          onPress={() => {
+                            navigation.navigate("detail-request-insurance", {
+                              idInsurance: item.id,
+                            });
+                          }}
                         >
                           <Text>See More</Text>
                         </TouchableOpacity>

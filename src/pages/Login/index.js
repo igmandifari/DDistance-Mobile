@@ -6,13 +6,12 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { colors } from "../../constant/colors";
 import CustomButton from "../../components/CustomButton";
 import { login } from "../../services/AuthService";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setIsAuthentication } from "../../store/userSlice";
 
 function Login({ navigation }) {
@@ -54,8 +53,9 @@ function Login({ navigation }) {
 
       if (token) {
         alert("Success login");
-
         if (role === "ROLE_MERCHANT") {
+          // console.log("token ==>", token);
+          dispatch(setIsAuthentication({ token: token }));
           navigation.navigate("dashboard-merchant");
         } else if (role === "ROLE_DISTRIBUTOR") {
           dispatch(

@@ -1,28 +1,16 @@
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { SafeAreaView, StyleSheet, Text, View, Image } from "react-native";
+import React, { useEffect, useState } from "react";
 import { colors } from "../../../../constant/colors";
 import BlankKtp from "../../../../assets/img/blank-ktp";
 import BlankSIUP from "../../../../assets/img/blank-siup";
 import BlankAgunan from "../../../../assets/img/blank-agunan";
-
-const details = [
-  {
-    key: "ID Pengajuan :",
-    value: "123456",
-  },
-  {
-    key: "Tanggal Pengajuan :",
-    value: "08/09/2023",
-  },
-  {
-    key: "Nama Toko :",
-    value: "Toko A",
-  },
-  {
-    key: "ID Pengajuan :",
-    value: "123456",
-  },
-];
+import { useSelector } from "react-redux";
+import {
+  getDetailInsurance,
+  getKtp,
+} from "../../../../services/merchantServices";
+import KtpComponent from "../../../../components/jsx/ktpImage";
+import { Button } from "react-native-elements";
 
 const files = [
   {
@@ -39,7 +27,63 @@ const files = [
   },
 ];
 
-const DetailRequest = () => {
+const DetailRequest = ({ route }) => {
+  const { token } = useSelector((state) => state.user);
+  const { idInsurance } = route.params;
+  const [data, setData] = useState({
+    id: null,
+    date: null,
+    name: null,
+    status: null,
+  });
+  const [images, setImages] = useState({
+    ktp: null,
+    agunan: null,
+    siup: null,
+  });
+
+  const getDetail = async () => {
+    const response = await getDetailInsurance(token, idInsurance);
+    const { id, date, nameStore: name, status } = response.data.data;
+    setData({
+      id,
+      date,
+      name,
+      status,
+    });
+  };
+
+  const getKtpImage = async () => {
+    const response = await getKtp(token, idInsurance);
+    setImages((p) => ({
+      ...p,
+      ktp: response.data,
+    }));
+  };
+
+  useEffect(() => {
+    getDetail();
+    getKtpImage();
+  }, []);
+
+  const details = [
+    {
+      key: "ID Pengajuan :",
+      value: data.id,
+    },
+    {
+      key: "Tanggal Pengajuan :",
+      value: data.date,
+    },
+    {
+      key: "Nama Toko :",
+      value: data.name,
+    },
+    {
+      key: "Status",
+      value: data.status,
+    },
+  ];
   return (
     <SafeAreaView style={{ marginTop: 20 }}>
       <View style={styles.container}>
@@ -52,6 +96,17 @@ const DetailRequest = () => {
             borderBottomWidth: StyleSheet.hairlineWidth,
           }}
         />
+        <Button title={"test"} onPress={() => console.log(images.ktp)} />
+        <View>
+          {images.ktp && (
+            <Image
+              source={{
+                uri: images.ktp,
+              }}
+              style={{ width: 400, height: 400 }}
+            />
+          )}
+        </View>
         {details.map((item, idx) => {
           return (
             <View

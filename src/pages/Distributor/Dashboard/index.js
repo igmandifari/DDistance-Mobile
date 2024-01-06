@@ -76,9 +76,9 @@ const merchantList = [
 
 const DashboardDistributor = () => {
   const { token } = useSelector((state) => state.user);
-  const [merchants, setMerchants] = useState([]);
+  const [merchants, setMerchants] = useState(merchantList);
   const getData = async () => {
-    const response = await getMerchants("Bearer");
+    const response = await getMerchants(token);
     setMerchants(response.data.data);
   };
 
@@ -97,10 +97,11 @@ const DashboardDistributor = () => {
           <Text style={styles.headerTitle}>D-DISTANCE</Text>
         </View>
         <View>
-          <Image
-            source={require("../../../assets/img/notification.png")}
-            style={{}}
-          />
+          <TouchableOpacity
+            onPress={() => navigation.navigate("notificationDistributor")}
+          >
+            <Image source={require("../../../assets/img/notification.png")} />
+          </TouchableOpacity>
         </View>
       </View>
       <View id="profile" style={styles.profileContainer}>
