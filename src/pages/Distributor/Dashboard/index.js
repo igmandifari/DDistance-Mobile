@@ -9,7 +9,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { colors } from "../../../constant/colors";
 
 const filterTypes = [
@@ -73,6 +73,7 @@ const merchantList = [
 ];
 
 const DashboardDistributor = ({ navigation }) => {
+  const [filter, setFilter] = useState(""); 
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -128,7 +129,10 @@ const DashboardDistributor = ({ navigation }) => {
               <TouchableOpacity
                 onPress={() => setFilter(filter.name)}
                 key={index}
-                style={styles.filter}
+                style={[
+                  styles.filter,
+                  filter.name === filter && { backgroundColor: colors.YELLOW },
+                ]}
               >
                 <Text>{filter.name}</Text>
               </TouchableOpacity>
@@ -136,8 +140,10 @@ const DashboardDistributor = ({ navigation }) => {
           </View>
         </View>
         <ScrollView>
-          <View id="merchants" style={styles.merchantContainer}>
-            {merchantList.map((item, index) => {
+        <View id="merchants" style={styles.merchantContainer}>
+            {merchantList
+              .filter((item) => !filter || item.status === filter)
+              .map((item, index) => {
               const { status } = item;
 
               let bgColor;

@@ -12,6 +12,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";
 import { distributorList } from "./data";
+
 const DashboardMerchant = ({ navigation }) => {
   const [filter, setFilter] = useState("");
   const [data, setData] = useState(distributorList);
@@ -53,9 +54,11 @@ const DashboardMerchant = ({ navigation }) => {
             <Text style={styles.headerTitle}>D-DISTANCE</Text>
           </View>
           <View>
-          <TouchableOpacity onPress={() => navigation.navigate("notificationMerchant")}>
-            <Image source={require("../../../assets/img/notification.png")} />
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("notificationMerchant")}
+            >
+              <Image source={require("../../../assets/img/notification.png")} />
+            </TouchableOpacity>
           </View>
         </View>
         <View id="profile" style={styles.profileContainer}>
@@ -205,15 +208,21 @@ const DashboardMerchant = ({ navigation }) => {
                             paddingVertical: 5,
                           }}
                         >
-                          <Text
-                            style={{
-                              fontSize: 16,
-                              fontWeight: "600",
-                              color: "white",
-                            }}
+                          <TouchableOpacity
+                            onPress={() =>
+                              navigation.navigate("detail-distributor-merchant")
+                            }
                           >
-                            {status}
-                          </Text>
+                            <Text
+                              style={{
+                                fontSize: 16,
+                                fontWeight: "600",
+                                color: "white",
+                              }}
+                            >
+                              {status}
+                            </Text>
+                          </TouchableOpacity>
                         </View>
                       </View>
                     </View>
