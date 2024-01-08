@@ -74,18 +74,8 @@ const merchantList = [
   },
 ];
 
-const DashboardDistributor = () => {
-  const { token } = useSelector((state) => state.user);
-  const [merchants, setMerchants] = useState(merchantList);
-  const getData = async () => {
-    const response = await getMerchants(token);
-    setMerchants(response.data.data);
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
-
+const DashboardDistributor = ({ navigation }) => {
+  const [filter, setFilter] = useState("");
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -144,7 +134,10 @@ const DashboardDistributor = () => {
               <TouchableOpacity
                 onPress={() => setFilter(filter.name)}
                 key={index}
-                style={styles.filter}
+                style={[
+                  styles.filter,
+                  filter.name === filter && { backgroundColor: colors.YELLOW },
+                ]}
               >
                 <Text>{filter.name}</Text>
               </TouchableOpacity>
@@ -154,8 +147,9 @@ const DashboardDistributor = () => {
         <Button title={"test"} onPress={() => console.log(merchants)} />
         <ScrollView>
           <View id="merchants" style={styles.merchantContainer}>
-            {merchants &&
-              merchants.map((item, index) => {
+            {merchantList
+              .filter((item) => !filter || item.status === filter)
+              .map((item, index) => {
                 const { status } = item;
 
                 let bgColor = colors.GREEN;
