@@ -10,15 +10,55 @@ import {
   SafeAreaView,
   Dimensions,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";
 import { invoiceList } from "./data";
+import { useSelector } from "react-redux";
+import { getInvoice } from "../../../services/merchantServices";
+import { useFocusEffect } from "@react-navigation/native";
 
 const vw = Dimensions.get("window").width;
+const requests = [
+  {
+    code: "#1",
+    status: "Ditolak",
+  },
+  {
+    code: "#2",
+    status: "Diterima",
+  },
+  {
+    code: "#3",
+    status: "Dalam Proses",
+  },
+  {
+    code: "#4",
+    status: "Dalam Proses",
+  },
+  {
+    code: "#5",
+    status: "Ditolak",
+  },
+  {
+    code: "#6",
+    status: "Ditolak",
+  },
+];
 
 const Bill = ({ navigation }) => {
-  const [filter, setFilter] = useState("");
-  const [data, setData] = useState(invoiceList);
+  // const [data, setData] = useState(invoiceList);
+  const [invoices, setInvoices] = useState([]);
+  const { token } = useSelector((state) => state.user);
+
+  getData = async () => {
+    const response = await getInvoice(token);
+    setInvoices(response.data.data);
+  };
+  useFocusEffect(
+    useCallback(() => {
+      getData();
+    }, [])
+  );
 
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
@@ -45,18 +85,18 @@ const Bill = ({ navigation }) => {
           <View style={{ height: "85%" }}>
             <ScrollView>
               <View style={{ gap: 10 }}>
-                {data.map((item, index) => {
-                  const { name, invoiceNo, date, status } = item;
+                {invoices && invoices.map((item, index) => {
+                  const {status } = item;
 
                   let bgColor;
                   switch (status) {
-                    case "Ditolak":
+                    case "DITOLAK":
                       bgColor = colors.RED;
                       break;
-                    case "Diterima":
+                    case "DITERIMA":
                       bgColor = colors.GREEN;
                       break;
-                    case "Dalam Proses":
+                    case "DALAM_PROSES":
                       bgColor = colors.YELLOW;
                       break;
 
@@ -82,10 +122,10 @@ const Bill = ({ navigation }) => {
                       >
                         <View style={{ alignItems: "center" }}>
                           <Text style={{ fontSize: 24, fontWeight: 600 }}>
-                            {name}
+                            Invoice
                           </Text>
                           <Text style={{ fontSize: 24, fontWeight: 600 }}>
-                            {invoiceNo}
+                            {item.judul}
                           </Text>
                         </View>
 
@@ -99,7 +139,7 @@ const Bill = ({ navigation }) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Text style={{ fontSize: 16, fontWeight: 600 }}>
+                          <Text style={{ fontSize: 16, fontWeight: 600,color: colors.WHITE, }}>
                             {status}
                           </Text>
                         </TouchableOpacity>
@@ -111,10 +151,14 @@ const Bill = ({ navigation }) => {
                         }}
                       >
                         <Text style={{ fontSize: 13, fontWeight: "600" }}>
-                          {date}
+                          {item.tanggalTagihan}
                         </Text>
                         <TouchableOpacity
-                          onPress={() => navigation.navigate("detail-invoice")}
+                          onPress={() =>{
+                          navigation.navigate("detail-invoice",{
+                            idInvoice: item.id,
+                          });
+                          }}
                         >
                           <Text>See More</Text>
                         </TouchableOpacity>

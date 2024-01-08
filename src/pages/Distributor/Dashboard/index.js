@@ -159,7 +159,7 @@ const DashboardDistributor = () => {
                 const { status } = item;
 
                 let bgColor = colors.GREEN;
-                // switch (status) {
+                {/* // switch (status) {
                 //   case "Lancar":
                 //     bgColor = colors.GREEN;
                 //     break;
@@ -169,7 +169,7 @@ const DashboardDistributor = () => {
                 //   case "Gagal":
                 //     bgColor = colors.RED;
                 //     break;
-                // }
+                // } */}
                 return (
                   <View key={index} style={styles.item}>
                     <View

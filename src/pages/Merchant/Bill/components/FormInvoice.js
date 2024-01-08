@@ -1,26 +1,53 @@
 import {
+  Image,
+  Dimensions,
   SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
-  Touchable,
   TouchableOpacity,
   View,
 } from "react-native";
 import React, { useState } from "react";
+import * as ImagePicker from "expo-image-picker";
 import { colors } from "../../../../constant/colors";
-import { CheckBox } from "react-native-elements";
+import { Button, CheckBox } from "react-native-elements";
 import CustomButton from "../../../../components/CustomButton";
+import { FontAwesome } from "@expo/vector-icons";
 import { Dropdown } from "react-native-element-dropdown";
-import DatePicker from "react-native-datepicker";
+import PopUpConfirm from "../../../../components/PopUpConfirm";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { useValidateRequestAssurance } from "../../../../utils/useValidateRequestAssurance";
 // import RNDateTimePicker from "@react-native-community/datetimepicker";
 
-const FormInvoice = ({navigation}) => {
+const FormInvoice = ({ navigation }) => {
   const [agree, setAgree] = useState(false);
+  const [images, setImages] = useState({
+    invoicePict: null,
+  });
+  const [popUp, setPopUp] = useState(false);
+  const pickImage = async (id) => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [6, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImages((ps) => ({
+        ...ps,
+        [id]: result.assets[0].uri,
+      }));
+    }
+  };
 
   const inputsImages = [
     {
+      id: "invoice",
       title: "Invoice Fisik",
+      preview: images.invoicePict,
     },
   ];
 
@@ -31,7 +58,19 @@ const FormInvoice = ({navigation}) => {
     { label: "Distributor 4", value: "4" },
   ];
 
-  const [date, setDate] = useState("09-10-2023");
+  const [date, setDate] = useState(new Date());
+  const [showPicker, setShowPicker] = useState(false);
+  const toggleDatePicker = () => {
+    setShowPicker(!showPicker);
+  };
+  const onChange = (type, selectedDate) => {
+    if (type == "set") {
+      const currentDate = selectedDate;
+      setDate(currentDate);
+    } else {
+      toggleDatePicker();
+    }
+  };
   const [value, setValue] = useState(null);
 
   const renderItem = (item) => {
@@ -39,19 +78,37 @@ const FormInvoice = ({navigation}) => {
       <View style={styles.item}>
         <Text style={styles.textItem}>{item.label}</Text>
         {item.value === value && (
-          <Text
-            style={styles.icon}
-            color="black"
-            name="Safety"
-            size={20}
-          />
+          <Text style={styles.icon} color="black" name="Safety" size={20} />
         )}
       </View>
     );
   };
+
+  const handleSubmit = async () => {
+    const payload = {
+      invoicePict: images.invoicePict,
+    };
+
+    if (!useValidateRequestAssurance(payload)) {
+      alert("data must not empty");
+      return;
+    }
+    setPopUp(false);
+    await sendOtpInsurance("Bearer");
+    console.log("send otp");
+    navigation.navigate("otp-request-insurance", {
+      payload,
+    });
+  };
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
+      {popUp && (
+          <PopUpConfirm
+            handleOK={() => handleSubmit()}
+            handleReject={() => setPopUp(false)}
+          />
+        )}
         <View style={styles.infoContainer}>
           <Text>
             Silahkan lengkapi berkas administrasi berikut untuk mengajukan
@@ -72,6 +129,11 @@ const FormInvoice = ({navigation}) => {
                   >
                     {item.title}
                   </Text>
+                  <Image
+                      source={{ uri: item.preview }}
+                      style={{ flex: 1 }}
+                      resizeMode="contain"
+                    />
                 </View>
                 <View
                   style={{
@@ -80,6 +142,34 @@ const FormInvoice = ({navigation}) => {
                     padding: 15,
                   }}
                 >
+                                    {item.preview ? (
+                      <View style={{ gap: 5, alignItems: "flex-start" }}>
+                        <Image
+                          source={{ uri: item.preview }}
+                          style={{ width: 200, height: 100 }}
+                        />
+                        <TouchableOpacity
+                          style={{
+                            backgroundColor: colors.ORANGE,
+                            flexDirection: "row",
+                            paddingHorizontal: 4,
+                            paddingVertical: 2,
+                            borderRadius: 10,
+                          }}
+                          onPress={() => pickImage(item.id)}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 10,
+                              fontWeight: "500",
+                              color: colors.WHITE,
+                            }}
+                          >
+                            Ubah
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                 ) : (
                   <View
                     style={{
                       flexDirection: "row",
@@ -99,6 +189,7 @@ const FormInvoice = ({navigation}) => {
                         paddingVertical: 25,
                         alignItems: "center",
                       }}
+                      onPress={() => pickImage(item.id)}
                     >
                       <View
                         style={{
@@ -118,6 +209,7 @@ const FormInvoice = ({navigation}) => {
                       </View>
                     </TouchableOpacity>
                   </View>
+                  )}
                 </View>
               </View>
             );
@@ -144,7 +236,7 @@ const FormInvoice = ({navigation}) => {
             alignItems: "end",
             width: "329px",
             height: "31",
-            marginTop:15,
+            marginTop: 15,
           }}
         >
           <Dropdown
@@ -161,7 +253,7 @@ const FormInvoice = ({navigation}) => {
             searchPlaceholder="Search..."
             value={value}
             onChange={(item) => {
-              setValue(item.value);
+              setValue(item.value); 
             }}
             // renderLeftIcon={() => (
             //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
@@ -175,7 +267,7 @@ const FormInvoice = ({navigation}) => {
             alignItems: "center",
             width: "329px",
             height: "31",
-            marginTop:15,
+            marginTop: 15,
           }}
         >
           <TextInput
@@ -186,96 +278,50 @@ const FormInvoice = ({navigation}) => {
           />
         </View>
 
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            width: "329px",
-            marginTop: 15,
-          }}
-        >
-          <DatePicker
-            style={styles.datePickerStyle}
-            date={date}
-            mode="date"
-            placeholder="select date"
-            format="DD/MM/YYYY"
-            minDate="01-01-1900"
-            maxDate="01-01-2000"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            customStyles={{
-              dateIcon: {
-                position: "absolute",
-                right: -5,
-                top: 4,
-                marginLeft: 0,
-              },
-              dateInput: {
-                borderColor: "gray",
-                alignItems: "flex-start",
-                borderWidth: 0,
-                borderBottomWidth: 1,
-              },
-              placeholderText: {
-                fontSize: 17,
-                color: "gray",
-              },
-              dateText: {
-                fontSize: 17,
-              },
-            }}
-            onDateChange={(date) => {
-              setDate(date);
-            }}
-          />
-          {/* <RNDateTimePicker maximumDate={new Date(2030, 10, 20)} /> */}
+        <View style={styles.inputDateContainer}>
+          {!showPicker && (
+            <TouchableOpacity
+              onPress={toggleDatePicker}
+              style={styles.inputDate}
+              disabled={true}
+            >
+              <TextInput placeholder="Tanggal Tagihan" editable={false} />
+              <FontAwesome
+                name="calendar"
+                size={20}
+                color="black"
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+          )}
+          {showPicker && (
+            <DateTimePicker value={date} mode="date" onChange={onChange} />
+          )}
         </View>
 
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            width: "329px",
-            height: "31",
-            marginTop: 15,
-          }}
-        >
-          <DatePicker
-            style={styles.datePickerStyle}
-            date={date}
-            mode="date"
-            placeholder="select date"
-            format="DD/MM/YYYY"
-            minDate="01-01-1900"
-            maxDate="01-01-2000"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            customStyles={{
-              dateIcon: {
-                position: "absolute",
-                right: -5,
-                top: 4,
-                marginLeft: 0,
-              },
-              dateInput: {
-                borderColor: "gray",
-                alignItems: "flex-start",
-                borderWidth: 0,
-                borderBottomWidth: 1,
-              },
-              placeholderText: {
-                fontSize: 17,
-                color: "gray",
-              },
-              dateText: {
-                fontSize: 17,
-              },
-            }}
-            onDateChange={(date) => {
-              setDate(date);
-            }}
-          />
+        <View style={styles.inputDateContainer}>
+          {!showPicker && (
+            <TouchableOpacity
+              onPress={toggleDatePicker}
+              style={styles.inputDate}
+            >
+              <TextInput placeholder="Tanggal Jatuh Tempo" editable={false} />
+              <FontAwesome
+                name="calendar"
+                size={20}
+                color="black"
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+          )}
+          {showPicker && (
+            <DateTimePicker
+              // style={styles.datePickerStyle}
+              value={date}
+              mode={"date"}
+              onChange={onChange}
+            />
+          )}
         </View>
 
         <View
@@ -286,7 +332,7 @@ const FormInvoice = ({navigation}) => {
         >
           <CustomButton text={"Kirim Tagihan"} />
           <TouchableOpacity
-              onPress={() => navigation.navigate("otp-invoice-merchant")}
+            onPress={() => navigation.navigate("otp-invoice-merchant")}
           >
             <Text>kirim ssukses</Text>
           </TouchableOpacity>
@@ -301,6 +347,7 @@ export default FormInvoice;
 const styles = StyleSheet.create({
   container: {
     padding: 30,
+    height: Dimensions.get("window").height,
   },
   infoContainer: {
     backgroundColor: colors.FLORAL_WHITE,
@@ -319,6 +366,28 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: "100%",
+    backgroundColor: "#FFF",
+    borderRadius: 31,
+    padding: 8,
+    fontSize: 14,
+    textAlign: "left",
+    shadowColor: "rgba(0, 0, 0, 0.1)",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  inputDateContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "60%",
+    marginTop: 15,
+  },
+  inputDate: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent:"space-around",
+    alignItems: "center",
     backgroundColor: "#FFF",
     borderRadius: 31,
     padding: 8,
