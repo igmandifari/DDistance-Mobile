@@ -9,7 +9,6 @@ import {
   getDetailInsurance,
   getKtp,
 } from "../../../../services/merchantServices";
-import KtpComponent from "../../../../components/jsx/ktpImage";
 import { Button } from "react-native-elements";
 
 const files = [
@@ -55,10 +54,11 @@ const DetailRequest = ({ route }) => {
 
   const getKtpImage = async () => {
     const response = await getKtp(token, idInsurance);
-    setImages((p) => ({
-      ...p,
-      ktp: response.data,
-    }));
+    console.log(response);
+    // setImages((p) => ({
+    //   ...p,
+    //   ktp: response.data,
+    // }));
   };
 
   useEffect(() => {
