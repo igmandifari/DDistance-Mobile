@@ -13,6 +13,11 @@ import {
 import React, { useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";
 import { distributorList,historyList } from "./components/data";
+import { useSelector } from "react-redux";
+import { getInvoiceDistributor } from "../../../services/distributorService";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
+
 
 const vw = Dimensions.get("window").width;
 
@@ -23,13 +28,24 @@ const vw = Dimensions.get("window").width;
 // };
 
 const BillDistributor = ({ navigation }) => {
+  // const [data, setData] = useState(invoiceList);
   const [filter, setFilter] = useState("Pending");
-  const [data, setData] = useState(distributorList);
-
+  const [invoices, setInvoices] = useState([]);
+  const { token } = useSelector((state) => state.user);
   const handleFilterChange = (selectedFilter) => {
     setFilter(selectedFilter);
     setData(selectedFilter === "Pending" ? distributorList : historyList);
   };
+
+const  getData = async () => {
+    const response = await getInvoiceDistributor(token);
+    setInvoices(response.data.data);
+  };
+  useFocusEffect(
+    useCallback(() => {
+      getData();
+    }, [])
+  );
 
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
@@ -72,15 +88,14 @@ const BillDistributor = ({ navigation }) => {
           <View style={{ height: "100%" }}>
             <ScrollView>
               <View style={{ gap: 10 }}>
-                {data.map((item, index) => {
+                {invoices &&invoices.map((item, index) => {
                   const {
-                    name,
-                    store,
-                    invoiceNo,
-                    date,
+                    judul,
+                    namaToko,
+                    tanggalTagihan,
                     status,
-                    amount,
-                    rejected,
+                    jumlahTagihan,
+                    otomatisReject,
                   } = item;
 
                   let bgColor;
@@ -117,10 +132,13 @@ const BillDistributor = ({ navigation }) => {
                       >
                         <View style={{}}>
                           <Text style={{ fontSize: 24, fontWeight: 600 }}>
-                            {name} {invoiceNo}
+                            {judul}
+                            {/* <Text>Nomer Invoice</Text> */}
+
                           </Text>
+
                           <Text style={{ fontSize: 13, fontWeight: "600" }}>
-                            {date}
+                            {tanggalTagihan}
                           </Text>
                         </View>
                         <View style={{}}>
@@ -129,9 +147,13 @@ const BillDistributor = ({ navigation }) => {
                               navigation.navigate("detail-invoice")
                             }
                           >
-                            <Text style={{ textAlign: "right" }}>{store}</Text>
+                            <Text style={{ textAlign: "right" }}>{namaToko} 
+                            </Text>
+
                             <Text style={{ fontSize: 20, fontWeight: 600 }}>
-                              {amount}
+                              <Text>Rp. </Text>
+                              {jumlahTagihan}
+                              <Text>,-</Text>
                             </Text>
                           </TouchableOpacity>
                         </View>
@@ -144,7 +166,7 @@ const BillDistributor = ({ navigation }) => {
                       >
                         <View>
                           <Text>Otomatis DItolak:</Text>
-                          <Text style={{color:"red"}}>{rejected}</Text>
+                          <Text style={{color:"red"}}>{otomatisReject}</Text>
                         </View>
 
                         <TouchableOpacity
@@ -153,15 +175,15 @@ const BillDistributor = ({ navigation }) => {
                           }
                           style={{
                             borderRadius: 10,
-                            backgroundColor: bgColor,
+                            backgroundColor: "#FFC700",
                             paddingVertical: 10,
                             width: 160,
                             alignItems: "center",
                             justifyContent: "center",
-                          }}
+                          }}                          
                         >
-                          <Text style={{ fontSize: 16, fontWeight: 600,color:"white" }}>
-                            {status}
+                          <Text style={{ fontSize: 16, fontWeight: 600,color:"white"}}>
+                            {status} {/* <Text>Status</Text> */}
                           </Text>
                         </TouchableOpacity>
                       </View>

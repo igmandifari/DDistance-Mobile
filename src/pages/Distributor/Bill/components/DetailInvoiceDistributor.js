@@ -5,45 +5,80 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 import { colors } from "../../../../constant/colors";
 import BlankKtp from "../../../../assets/img/blank-ktp";
 import BlankSIUP from "../../../../assets/img/blank-siup";
 import BlankAgunan from "../../../../assets/img/blank-agunan";
+import { getDetailInvoice } from "../../../../services/distributorService";
+import { useSelector } from "react-redux";
 import CustomButton from "../../../../components/CustomButton";
 import PopUpConfirm from "../../../../components/PopUpConfirm";
+
+const DetailInvoiceDistributor = ({route}) => {
+  const { token } = useSelector((state) => state.user);
+  const { idInvoice } = route.params;
+  const [data, setData] = useState({
+    id: null,
+    judul:null,
+    namaToko: null,
+    namaDistributor: null,
+    tanggalTagihan: null,
+    jumlahTagihan: null,
+    tanggalJatuhTempo:null,
+    rejection:null,
+  });
+  const [popUp, setPopUp] = useState(false);
+
+  const getDetail = async () => {
+    const response = await getDetailInvoice(token, idInvoice);
+    const { id, judul, namaToko, namaDistributor,tanggalTagihan,jumlahTagihan,tanggalJatuhTempo,rejection } = response.data.data;
+    setData({
+    id,
+    judul,
+    namaToko,
+    namaDistributor,
+    tanggalTagihan,
+    jumlahTagihan,
+    tanggalJatuhTempo,
+    rejection,
+    });
+  };
+
+  useEffect(() => {
+    getDetail();
+  }, []);
 
 const details = [
   {
     key: "No Invoice :",
-    value: "00000000",
-  },
-  {
+    value: data.judul,
+  },  {
     key: "Tanggal Invoice :",
-    value: "08/09/2023",
+    value: data.tanggalTagihan,
   },
   {
     key: "Nama Toko :",
-    value: "Toko A",
+    value: data.namaToko,
   },
   {
     key: "Nama Distributor :",
-    value: "Distributor A",
+    value: data.namaDistributor,
   },
   {
     key: "Total Tagihan :",
-    value: "Rp. 10.000.000",
+    value: data.jumlahTagihan,
   },
   {
     key: "Tanggal Jatuh Tempo :",
-    value: "08/12/2023",
+    value: data.tanggalJatuhTempo,
   },
 ];
 
 
-const DetailInvoiceDistributor = ({navigation}) => {
+/* const DetailInvoiceDistributor = ({navigation}) => {
   const [popUp, setPopUp] = useState(false);
-  const handleSubmit = () => {
+  const handleSubmit = () => { */
     // const payload = {
 
     // };
@@ -52,14 +87,13 @@ const DetailInvoiceDistributor = ({navigation}) => {
     //   alert("data must not empty");
     //   return;
     // }
-    setPopUp(true);
+/*     setPopUp(true);
     navigation.navigate("otp-invoice-merchant");
-  };
+  }; */
   return (
     <SafeAreaView style={{ marginTop: 20 }}>
       <View style={styles.container}>
-      {popUp && (
-          <PopUpConfirm
+      {popUp && (<PopUpConfirm
             handleOK={() => handleSubmit()}
             handleReject={() => setPopUp(false)}
           />
