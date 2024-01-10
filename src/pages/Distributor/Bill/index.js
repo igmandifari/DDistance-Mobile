@@ -46,6 +46,8 @@ const  getData = async () => {
       getData();
     }, [])
   );
+  // console.log(invoices[0].id);
+
 
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
@@ -171,7 +173,7 @@ const  getData = async () => {
 
                         <TouchableOpacity
                          onPress={() =>
-                              navigation.navigate("detail-invoice-distributor")
+                              navigation.navigate("detail-invoice-distributor", {idInvoice:item.id})
                           }
                           style={{
                             borderRadius: 10,
@@ -183,7 +185,7 @@ const  getData = async () => {
                           }}                          
                         >
                           <Text style={{ fontSize: 16, fontWeight: 600,color:"white"}}>
-                            {status} {/* <Text>Status</Text> */}
+                            {status}{/* <Text>Status</Text> */}
                           </Text>
                         </TouchableOpacity>
                       </View>
