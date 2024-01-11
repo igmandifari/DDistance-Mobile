@@ -12,7 +12,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";
 import { distributorList } from "./data";
-import { getDistributors } from "../../../services/merchantServices";
+import { getDistributorsDashboard } from "../../../services/merchantServices";
 import { useSelector } from "react-redux";
 
 const DashboardMerchant = ({ navigation }) => {
@@ -48,8 +48,7 @@ const DashboardMerchant = ({ navigation }) => {
 
   useEffect(() => {
     const getData = async (token) => {
-      const { data } = await getDistributors(token);
-      console.log(data.data);
+      const { data } = await getDistributorsDashboard(token);
       setDistributors(data.data);
     };
 
@@ -133,17 +132,17 @@ const DashboardMerchant = ({ navigation }) => {
           <ScrollView>
             <View id="merchants" style={styles.merchantContainer}>
               {distributors.map((distributor, index) => {
-                const { name, totalTagihan, status } = distributor;
+                const { name, address, status, tagihan, id } = distributor;
 
                 let bgColor;
                 switch (status) {
-                  case "Lancar":
+                  case "LANCAR":
                     bgColor = colors.GREEN;
                     break;
-                  case "Tidak Lancar":
+                  case "TIDAK LANCAR":
                     bgColor = colors.YELLOW_STATUS;
                     break;
-                  case "Gagal":
+                  case "GAGAL":
                     bgColor = colors.RED;
                     break;
                 }
@@ -151,7 +150,10 @@ const DashboardMerchant = ({ navigation }) => {
                 return (
                   <TouchableOpacity
                     onPress={() =>
-                      navigation.navigate("detail-distributor-merchant")
+                      navigation.navigate("detail-distributor-merchant", {
+                        idDistributor: id,
+                        detail: distributor,
+                      })
                     }
                   >
                     <View key={index} style={styles.item}>
@@ -170,14 +172,14 @@ const DashboardMerchant = ({ navigation }) => {
                           gap: 5,
                         }}
                       >
-                        <Text style={styles.city}>Jakarta</Text>
+                        <Text style={styles.city}>{address}</Text>
                         <Text
                           style={{
                             fontSize: 15,
                             fontWeight: "700",
                           }}
                         >
-                          Distributor A
+                          {name}
                         </Text>
                         <View
                           style={{
@@ -200,7 +202,7 @@ const DashboardMerchant = ({ navigation }) => {
                               color: "rgba(0,0,0,0.25)",
                             }}
                           >
-                            Rp. 10,000,000
+                            Rp. {tagihan}
                           </Text>
                         </View>
                         <View
@@ -220,7 +222,7 @@ const DashboardMerchant = ({ navigation }) => {
                             style={{
                               width: 120,
                               bgColor: "red",
-                              borderRadius: 10,
+                              borderRadius: 15,
                               backgroundColor: bgColor,
                               flexDirection: "row",
                               justifyContent: "center",

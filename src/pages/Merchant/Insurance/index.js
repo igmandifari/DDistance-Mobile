@@ -76,10 +76,9 @@ const RequestPage = ({ navigation }) => {
           <Text style={{ fontWeight: "700", fontSize: 32 }}>
             Pengajuan ke {"\n"}Danamon
           </Text>
-          <Button title={"test"} onPress={() => console.log(insurances)} />
         </View>
         {/* <View style={styles.detailContainer}> */}
-        <View style={{ height: "85%", padding: 20 }}>
+        <View style={{ padding: 20, flex: 1 }}>
           <ScrollView>
             <View style={{ gap: 20 }}>
               {insurances &&
@@ -170,34 +169,39 @@ const RequestPage = ({ navigation }) => {
                   );
                 })}
             </View>
-          </ScrollView>
-          {/* </View> */}
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              alignItems: "center",
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => navigation.navigate("form-request-assurance")}
+            <View
               style={{
-                backgroundColor: colors.ORANGE,
-                height: 49,
-                width: 49,
-                justifyContent: "center",
+                marginTop: 10,
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "flex-end",
                 alignItems: "center",
-                borderRadius: 10,
               }}
             >
-              <Text
-                style={{ color: colors.WHITE, fontSize: 36, fontWeight: "800" }}
+              <TouchableOpacity
+                onPress={() => navigation.navigate("form-request-assurance")}
+                style={{
+                  backgroundColor: colors.ORANGE,
+                  height: 49,
+                  width: 49,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 10,
+                }}
               >
-                +
-              </Text>
-            </TouchableOpacity>
-          </View>
+                <Text
+                  style={{
+                    color: colors.WHITE,
+                    fontSize: 36,
+                    fontWeight: "800",
+                  }}
+                >
+                  +
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+          {/* </View> */}
         </View>
       </View>
     </SafeAreaView>

@@ -7,9 +7,12 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { colors } from "../../../constant/colors";
 import CustomButton from "../../../components/CustomButton";
+import PopUpConfirmLogout from "../../../components/PopUpConfirmLogout";
+import { useDispatch } from "react-redux";
+import { logout } from "../../../store/userSlice";
 
 const vw = Dimensions.get("window").width;
 
@@ -40,9 +43,22 @@ const details = [
   },
 ];
 
-const Profile = ({navigation}) => {
+const Profile = ({ navigation }) => {
+  const [popUp, setPopUp] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigation.navigate("landing-page");
+  };
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
+      {popUp && (
+        <PopUpConfirmLogout
+          handleReject={() => setPopUp(false)}
+          handleOK={() => handleLogout()}
+        />
+      )}
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <View style={styles.headerLeft}>
@@ -74,16 +90,20 @@ const Profile = ({navigation}) => {
               justifyContent: "space-evenly",
             }}
           >
-            <TouchableOpacity style={styles.button}
-            onPress={() => navigation.navigate("edit-profile")}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("edit-profile")}
+            >
               <Text
                 style={{ color: colors.WHITE, fontWeight: "800", fontSize: 12 }}
               >
                 Edit Profil
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}
-            onPress={() => navigation.navigate("keamanan-akun")}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("keamanan-akun")}
+            >
               <Text
                 style={{ color: colors.WHITE, fontWeight: "800", fontSize: 12 }}
               >
@@ -113,7 +133,11 @@ const Profile = ({navigation}) => {
               justifyContent: "flex-end",
             }}
           >
-            <CustomButton bgColor={colors.RED} text={"Keluar"} />
+            <CustomButton
+              handleClick={() => setPopUp(true)}
+              bgColor={colors.RED}
+              text={"Keluar"}
+            />
           </View>
         </View>
       </View>

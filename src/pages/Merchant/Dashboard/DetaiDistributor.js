@@ -9,13 +9,18 @@ import {
 } from "react-native";
 import { colors } from "../../../constant/colors";
 import { detailListInvoice } from "./data";
-import { getDetailDistributor } from "../../../services/merchantServices";
+import { getDetailDistributorInvoice } from "../../../services/merchantServices";
 import { useSelector } from "react-redux";
+import { Button } from "react-native-elements";
 
-const DetailDistributor = ({ navigation }) => {
+const DetailDistributor = ({ navigation, route }) => {
+  const {
+    idDistributor,
+    detail: { address, phoneNumber, email, namaDistributor },
+  } = route.params;
   const { token } = useSelector((state) => state.user);
   const [filter, setFilter] = useState("");
-  const [data, setData] = useState(detailListInvoice);
+  const [data, setData] = useState([]);
   const [isProfileVisible, setIsProfileVisible] = useState(true);
 
   const filterTypes = [
@@ -36,7 +41,7 @@ const DetailDistributor = ({ navigation }) => {
 
   useEffect(() => {
     if (!filter) {
-      setData(detailListInvoice);
+      setData([]);
       return;
     }
     const filtered = detailListInvoice.filter((item) => item.status === filter);
@@ -48,8 +53,8 @@ const DetailDistributor = ({ navigation }) => {
   };
 
   const getDetail = async () => {
-    const response = await getDetailDistributor(token);
-    console.log(response.data);
+    const response = await getDetailDistributorInvoice(token, idDistributor);
+    setData(response.data.data);
   };
 
   useEffect(() => {
@@ -69,11 +74,11 @@ const DetailDistributor = ({ navigation }) => {
                   borderBottomWidth: StyleSheet.hairlineWidth,
                 }}
               >
-                Distributor A
+                Distributor A {namaDistributor}
               </Text>
-              <Text>Alamat: Ciawi</Text>
-              <Text>No Telp: 082123124123</Text>
-              <Text>Email: johndoe@gmail.com</Text>
+              <Text>Alamat: {address}</Text>
+              <Text>No Telp: {phoneNumber}</Text>
+              <Text>Email: {email}</Text>
               <View style={{ alignItems: "center" }}>
                 <TouchableOpacity onPress={handleToggleProfile}>
                   <Text
@@ -117,14 +122,15 @@ const DetailDistributor = ({ navigation }) => {
           <ScrollView>
             <View id="merchants" style={styles.merchantContainer}>
               {data.map((distributor, index) => {
-                const { InvoiceNo, month, status, total } = distributor;
+                const { judul, InvoiceNo, month, status, total } = distributor;
+                console.log(distributor);
 
                 let bgColor;
                 switch (status) {
                   case "Sudah Bayar":
                     bgColor = colors.GREEN;
                     break;
-                  case "Belum Bayar":
+                  case "DALAM_PROSES":
                     bgColor = colors.YELLOW_STATUS;
                     break;
                   case "Gagal":
@@ -136,7 +142,7 @@ const DetailDistributor = ({ navigation }) => {
                   <View key={index} style={styles.item}>
                     <View style={{ height: "100%", flex: 1, gap: 5 }}>
                       <Text style={{ fontSize: 15, fontWeight: "700" }}>
-                        Invoice {InvoiceNo}
+                        Invoice {judul}
                       </Text>
                       <View
                         style={{
@@ -145,10 +151,10 @@ const DetailDistributor = ({ navigation }) => {
                         }}
                       >
                         <Text style={{ fontSize: 14, fontWeight: "700" }}>
-                          {month}
+                          {month} 2/3Bulan
                         </Text>
                         <Text style={{ fontSize: 14, fontWeight: "600" }}>
-                          {total}
+                          Rp.
                         </Text>
                       </View>
                       <View
@@ -160,7 +166,7 @@ const DetailDistributor = ({ navigation }) => {
                         <Text style={{ fontSize: 14 }}>Status :</Text>
                         <View
                           style={{
-                            width: 120,
+                            width: 140,
                             borderRadius: 10,
                             backgroundColor: bgColor,
                             flexDirection: "row",
