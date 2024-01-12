@@ -12,7 +12,7 @@ import { colors } from "../../../constant/colors";
 import { Button } from "react-native-elements/dist/buttons/Button";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getMerchants } from "../../../services/distributorService";
+import { getMerchantsDashboard } from "../../../services/distributorService";
 
 const filterTypes = [
   {
@@ -26,66 +26,20 @@ const filterTypes = [
   },
 ];
 
-const merchantList = [
-  {
-    name: "Distributor A",
-    limit: "Rp. 70,000,000/100,000,000",
-    status: "Lancar",
-  },
-  {
-    name: "Distributor B",
-    limit: "Rp. 70,000,000/100,000,000",
-    status: "Tidak Lancar",
-  },
-  {
-    name: "Distributor C",
-    limit: "Rp. 70,000,000/100,000,000",
-    status: "Gagal",
-  },
-  {
-    name: "Distributor A",
-    limit: "Rp. 70,000,000/100,000,000",
-    status: "Lancar",
-  },
-  {
-    name: "Distributor B",
-    limit: "Rp. 70,000,000/100,000,000",
-    status: "Tidak Lancar",
-  },
-  {
-    name: "Distributor C",
-    limit: "Rp. 70,000,000/100,000,000",
-    status: "Gagal",
-  },
-  {
-    name: "Distributor A",
-    limit: "Rp. 70,000,000/100,000,000",
-    status: "Lancar",
-  },
-  {
-    name: "Distributor B",
-    limit: "Rp. 70,000,000/100,000,000",
-    status: "Tidak Lancar",
-  },
-  {
-    name: "Distributor C",
-    limit: "Rp. 70,000,000/100,000,000",
-    status: "Gagal",
-  },
-];
-
-const DashboardDistributor = () => {
+const DashboardDistributor = ({ navigation }) => {
   const { token } = useSelector((state) => state.user);
-  const [merchants, setMerchants] = useState(merchantList);
+  const [filter, setFilter] = useState("");
+  const [merchants, setMerchants] = useState([]);
   const getData = async () => {
-    const response = await getMerchants(token);
-    setMerchants(response.data.data);
+    const response = await getMerchantsDashboard(token);
+    if (response.data) {
+      setMerchants(response.data.data);
+    }
   };
 
   useEffect(() => {
     getData();
   }, []);
-
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -123,7 +77,6 @@ const DashboardDistributor = () => {
             >
               Rp 10,855,297,353.00
             </Text>
-            <Button title={"test"} onPress={() => console.log(token)} />
             <Image source={require("../../../assets/img/View.png")} />
           </View>
         </View>
@@ -144,22 +97,26 @@ const DashboardDistributor = () => {
               <TouchableOpacity
                 onPress={() => setFilter(filter.name)}
                 key={index}
-                style={styles.filter}
+                style={[
+                  styles.filter,
+                  filter.name === filter && { backgroundColor: colors.YELLOW },
+                ]}
               >
                 <Text>{filter.name}</Text>
               </TouchableOpacity>
             ))}
           </View>
         </View>
-        <Button title={"test"} onPress={() => console.log(merchants)} />
         <ScrollView>
           <View id="merchants" style={styles.merchantContainer}>
-            {merchants &&
-              merchants.map((item, index) => {
-                const { status } = item;
+            {merchants
+              .filter((item) => !filter || item.status === filter)
+              .map((item, index) => {
+                console.log(item);
+                const { status, name, limit } = item;
 
                 let bgColor = colors.GREEN;
-                // switch (status) {
+                {/* // switch (status) {
                 //   case "Lancar":
                 //     bgColor = colors.GREEN;
                 //     break;
@@ -169,43 +126,47 @@ const DashboardDistributor = () => {
                 //   case "Gagal":
                 //     bgColor = colors.RED;
                 //     break;
-                // }
+                // } */}
                 return (
-                  <View key={index} style={styles.item}>
-                    <View
-                      style={{
-                        width: 65,
-                        height: 65,
-                        backgroundColor: colors.GRAY,
-                        borderRadius: 100,
-                      }}
-                    ></View>
-                    <View
-                      style={{
-                        height: "100%",
-                        flex: 1,
-                        gap: 5,
-                        padding: 5,
-                      }}
-                    >
-                      <Text style={styles.cityText}>{item.address}</Text>
-                      <Text
-                        style={{
-                          fontSize: 15,
-                          fontWeight: "700",
-                        }}
-                      >
-                        {item.name}
-                      </Text>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("detail-toko", {
+                        details: item,
+                      })
+                    }
+                  >
+                    <View key={index} style={styles.item}>
                       <View
                         style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center",
+                          width: 65,
+                          height: 65,
+                          backgroundColor: colors.GRAY,
+                          borderRadius: 100,
+                        }}
+                      ></View>
+                      <View
+                        style={{
+                          height: "100%",
+                          flex: 1,
+                          gap: 5,
+                          padding: 5,
                         }}
                       >
-                        <TouchableOpacity
-                          onPress={() => navigation.navigate("detail-toko")}
+                        <Text style={styles.cityText}>{item.address}</Text>
+                        <Text
+                          style={{
+                            fontSize: 15,
+                            fontWeight: "700",
+                          }}
+                        >
+                          {name}
+                        </Text>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
                         >
                           <Text
                             style={{
@@ -215,10 +176,74 @@ const DashboardDistributor = () => {
                           >
                             Sisa Limit:
                           </Text>
-                        </TouchableOpacity>
+                          <Text
+                            style={{
+                              fontSize: 13,
+                              fontWeight: "400",
+                              color: "rgba(0,0,0,0.25)",
+                            }}
+                          >
+                            {!limit && "unknown"}
+                          </Text>
+                        </View>
+                        <View
+                          style={{
+                            backgroundColor: colors.WHITE,
+                            height: 20,
+                            borderRadius: 10,
+                            elevation: 5,
+                            overflow: "hidden",
+                          }}
+                        >
+                          <View
+                            style={{
+                              height: "100%",
+                              backgroundColor: colors.ORANGE,
+                              width: "50%",
+                              borderRadius: 10,
+                            }}
+                          ></View>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 10,
+                            }}
+                          >
+                            Status Pembayaran
+                          </Text>
+                          <View
+                            style={{
+                              width: 120,
+                              bgColor: "red",
+                              borderRadius: 10,
+                              backgroundColor: bgColor,
+                              flexDirection: "row",
+                              justifyContent: "center",
+                              paddingVertical: 5,
+                              alignItems: "center",
+                            }}
+                          >
+                            <Text
+                              style={{
+                                fontSize: 16,
+                                fontWeight: "600",
+                                color: "white",
+                              }}
+                            >
+                              {!status && "unknown"}
+                            </Text>
+                          </View>
+                        </View>
                       </View>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 );
               })}
           </View>
@@ -325,8 +350,9 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   merchantContainer: {
+    height: "100%",
     gap: 20,
-    padding: 3,
+    padding: 5,
   },
   item: {
     backgroundColor: colors.FLORAL,
@@ -335,7 +361,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 5,
     alignItems: "center",
-    gap: 20,
+    gap: 5,
     position: "relative",
   },
   cityText: {

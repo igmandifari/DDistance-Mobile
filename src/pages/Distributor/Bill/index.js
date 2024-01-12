@@ -32,9 +32,10 @@ const BillDistributor = ({ navigation }) => {
   const [filter, setFilter] = useState("Pending");
   const [invoices, setInvoices] = useState([]);
   const { token } = useSelector((state) => state.user);
+  
   const handleFilterChange = (selectedFilter) => {
     setFilter(selectedFilter);
-    setData(selectedFilter === "Pending" ? distributorList : historyList);
+    setInvoices(selectedFilter === "Pending" ? distributorList : historyList);
   };
 
 const  getData = async () => {
@@ -47,6 +48,7 @@ const  getData = async () => {
     }, [])
   );
   // console.log(invoices[0].id);
+  
 
 
   return (
@@ -290,5 +292,27 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     fontSize:15,
     fontWeight:700,
+  },
+  menuBarItem: {
+    borderBottomWidth: 2, // Tambahkan baris ini untuk memberikan garis bawah default
+    borderColor: 'transparent', // Warna garis bawah default (bisa disesuaikan)
+  },
+  activeFilter: {
+    borderBottomColor: 'black', // Warna garis bawah saat tombol aktif
+    borderBottomWidth: 2,
+  },
+  menuBar: {
+    flexDirection: "row",
+    fontSize: 15,
+    fontWeight: 700,
+  },
+  menuBarItem: {
+    borderBottomWidth: 2,
+    borderColor: 'transparent',
+    paddingBottom: 5,  // Tambahkan paddingBottom untuk memberikan ruang untuk garis bawah
+  },
+  activeFilter: {
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
   },
 });

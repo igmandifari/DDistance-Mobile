@@ -34,6 +34,7 @@ import OtpPaymentInvoice from "./src/pages/Merchant/Payment/components/OtpPaymen
 import NotificationDistributor from "./src/pages/Distributor/Notification/notification";
 import NotificationMerchant from "./src/pages/Merchant/Notification/notification";
 import CreditHistory from "./src/pages/Distributor/CreditHistory/creditHistory";
+import OtpChange from "./src/pages/Merchant/Profile/components/OtpChange";
 
 const routerList = [
   {
@@ -170,6 +171,11 @@ const routerList = [
   {
     name: "pin-payment",
     component: PinPayment,
+    headerShown: false,
+  },
+  {
+    name: "otp-change-merchant",
+    component: OtpChange,
     headerShown: false,
   },
   {

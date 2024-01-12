@@ -60,6 +60,7 @@ function Register({ navigation }) {
           phoneNumber,
           pan: accountNumber,
           name,
+          pin: "111111",
         };
 
         try {

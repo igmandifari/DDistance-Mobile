@@ -1,39 +1,77 @@
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React,{ useEffect, useState }  from "react";
 import { colors } from "../../../../constant/colors";
 import BlankKtp from "../../../../assets/img/blank-ktp";
 import BlankSIUP from "../../../../assets/img/blank-siup";
 import BlankAgunan from "../../../../assets/img/blank-agunan";
-
-const details = [
-  {
-    key: "No Invoice :",
-    value: "123456789",
-  },
-  {
-    key: "Nama Toko :",
-    value: "Toko A",
-  },
-  {
-    key: "Nama Distributor :",
-    value: "Distributor A",
-  },
-  {
-    key: "Tanggal Faktur :",
-    value: "08/09/2023",
-  },
-  {
-    key: "Total Tagihan :",
-    value: "Rp. 10.000.000",
-  },
-  {
-    key: "Tanggal Jatuh Tempo :",
-    value: "08/12/2023",
-  },
-];
+import { getDetailInvoice } from "../../../../services/merchantServices";
+import { useSelector } from "react-redux";
+import { Button } from "react-native-elements";
 
 
-const DetailInvoice = () => {
+const DetailInvoice = ({route}) => {
+  const { token } = useSelector((state) => state.user);
+  const { idInvoice } = route.params;
+  const [data, setData] = useState({
+    id: null,
+    judul:null,
+    namaToko: null,
+    namaDistributor: null,
+    tanggalTagihan: null,
+    jumlahTagihan: null,
+    tanggalJatuhTempo:null,
+    rejection:null,
+  });
+
+  const getDetail = async () => {
+    const response = await getDetailInvoice(token, idInvoice);
+    const { id, judul, namaToko, namaDistributor,tanggalTagihan,jumlahTagihan,tanggalJatuhTempo,rejection } = response.data.data;
+    setData({
+    id,
+    judul,
+    namaToko,
+    namaDistributor,
+    tanggalTagihan,
+    jumlahTagihan,
+    tanggalJatuhTempo,
+    rejection,
+    });
+  };
+
+  useEffect(() => {
+    getDetail();
+  }, []);
+
+  const details = [
+    {
+      key: "No Invoice :",
+      value: data.judul,
+    },
+    {
+      key: "Nama Toko :",
+      value: data.namaToko,
+    },
+    {
+      key: "Nama Distributor :",
+      value: data.namaDistributor,
+    },
+    {
+      key: "Tanggal Tagihan :",
+      value: data.tanggalTagihan,
+    },
+    {
+      key: "Total Tagihan :",
+      value: data.jumlahTagihan,
+    },
+    {
+      key: "Tanggal Jatuh Tempo :",
+      value: data.tanggalJatuhTempo,
+    },
+    {
+      key: "Alasan Ditolak :",
+      value: data.rejection,
+    },
+  ];
   return (
     <SafeAreaView style={{ marginTop: 20 }}>
       <View style={styles.container}>
@@ -64,7 +102,6 @@ const DetailInvoice = () => {
             </View>
           );
         })}
-        <Text>Alasan Ditolak:</Text>
         <View style={{ flex: 1 }}>
           <View
             style={{
@@ -76,7 +113,7 @@ const DetailInvoice = () => {
               height:"20%",
             }}
           >
-            <Text>Dokumen belum lengkap</Text>
+            <Text>{data.rejection}</Text>
           </View>
         </View>
       </View>

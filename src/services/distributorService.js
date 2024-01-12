@@ -1,7 +1,9 @@
 import axiosInstance from "../api/axiosInstance";
+import { BASE_URL } from "@env";
 
-/* export const getMerchants = (token) => {
-  return axiosInstance.get("http://10.0.2.2:8080/api/merchants", {
+
+export const getMerchantsDashboard = (token) => {
+  return axiosInstance.get(`${BASE_URL}/api/merchant/dashboard`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -9,11 +11,12 @@ import axiosInstance from "../api/axiosInstance";
 };
 
 export const getInvoice = (token) => {
-  return axiosInstance.get("http://10.0.2.2:8080/api/merchants", {
+  return axiosInstance.get(`${BASE_URL}/api/merchants`, {
     headers: {
       Authorization: "Bearer",
     },
   });
+  
 };
 
 
@@ -23,7 +26,7 @@ export const getMerchantsInvoice = (token) => {
       Authorization: "Bearer",
     },
   });
-}; */
+}; 
 //1
 export const getInvoiceDistributor = (token)=>{
   return axiosInstance.get("http://10.0.2.2:8080/api/invoice", {
