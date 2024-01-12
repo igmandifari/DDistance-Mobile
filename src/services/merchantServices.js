@@ -1,3 +1,4 @@
+import { tokenToString } from "typescript";
 import axiosInstance from "../api/axiosInstance";
 import { BASE_URL } from "@env";
 
@@ -157,6 +158,29 @@ export const postInvoice = (token, payload, otp) => {
         Accept: "*/*",
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+};
+
+export const getDetailTagihan = (token, id) => {
+  return axiosInstance.get(
+    "http://10.0.2.2:8080/api/invoice/ff8081818cfeaf98018cfeafae7f0007",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+export const cekTagihan = (token, bodyRequest) => {
+  return axiosInstance.post(
+    "http://localhost:8080/api/invoice/cekTagihan",
+    bodyRequest,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
     }
   );

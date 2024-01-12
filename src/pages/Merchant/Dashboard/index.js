@@ -21,7 +21,6 @@ import { Button } from "react-native-elements";
 
 const DashboardMerchant = ({ navigation }) => {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.user);
   const [userDetail, setUserDetail] = useState({
     name: null,
     balance: null,
@@ -154,6 +153,7 @@ const DashboardMerchant = ({ navigation }) => {
                 .filter((item) => !filter || filter === item.status)
                 .map((distributor, index) => {
                   const { name, address, status, tagihan, id } = distributor;
+                  console.log(distributor);
 
                   let bgColor;
                   switch (status) {
@@ -252,11 +252,11 @@ const DashboardMerchant = ({ navigation }) => {
                               }}
                             >
                               <TouchableOpacity
-                                onPress={() =>
-                                  navigation.navigate(
-                                    "detail-distributor-merchant"
-                                  )
-                                }
+                              // onPress={() =>
+                              //   navigation.navigate(
+                              //     "detail-distributor-merchant"
+                              //   )
+                              // }
                               >
                                 <Text
                                   style={{

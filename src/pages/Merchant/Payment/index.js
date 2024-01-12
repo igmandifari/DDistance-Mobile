@@ -12,43 +12,33 @@ import { Dropdown } from "react-native-element-dropdown";
 import { BottomSheet } from "react-native-sheet";
 import SuccessIcon from "../../../assets/img/popUpSuccess.svg";
 import BillIcon from "../../../assets/img/bill.svg";
-import { Button } from "react-native-elements";
+import {
+  cekTagihan,
+  getDetailTagihan,
+} from "../../../services/merchantServices";
+import { useSelector } from "react-redux";
 const data = [
-  { label: "Bulan 1", value: "1" },
-  { label: "Bulan 2", value: "2" },
-  { label: "Bulan 3", value: "3" },
-  { label: "Bulan 6", value: "6" },
-  { label: "Bulan 12", value: "12" },
+  { label: "3 Bulan", value: 3 },
+  { label: "6 Bulan", value: 6 },
+  { label: "12 Bulan", value: 12 },
+  { label: "Lunas", value: 1 },
 ];
 
-const details = [
-  {
-    key: "No. Faktur:",
-    value: "1234567890-",
-  },
-  {
-    key: "Tanggal Faktur:",
-    value: "08/09/2023",
-  },
-  {
-    key: "Nama Toko",
-    value: "Toko A",
-  },
-  {
-    key: "Nama Distributor:",
-    value: "Distributor A",
-  },
-  {
-    key: "Tanggal Jatuh Tempo",
-    value: "08/12/2023",
-  },
-];
 const TenorSetting = ({ navigation, route }) => {
+  const { token } = useSelector((state) => state.user);
   const { isSuccess } = route.params;
   const sheetSuccess = useRef(null);
   const sheetPay = useRef(null);
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
+  const [detail, setDetail] = useState({
+    id: "",
+    merchantName: "",
+    date: "",
+    distributorName: "",
+    expiredDate: "",
+    totalTagihan: "",
+  });
 
   const handleSubmitTenor = () => {
     if (!value) {
@@ -62,6 +52,65 @@ const TenorSetting = ({ navigation, route }) => {
   if (isSuccess) {
     sheetSuccess.current.show();
   }
+
+  const getData = async () => {
+    const response = await getDetailTagihan(token);
+    const {
+      namaToko,
+      namaDistributor,
+      tanggalJatuhTempo,
+      jumlahTagihan,
+      id,
+      tanggalTagihan,
+    } = response.data.data;
+
+    setDetail({
+      id,
+      merchantName: namaToko,
+      distributorName: namaDistributor,
+      expiredDate: tanggalJatuhTempo,
+      totalTagihan: jumlahTagihan,
+      date: tanggalTagihan,
+    });
+  };
+
+  useEffect(() => {
+    // console.log(token);
+    // console.log("test use effect");
+    getData();
+  }, []);
+
+  const details = [
+    {
+      key: "No. Faktur:",
+      value: detail.id,
+    },
+    {
+      key: "Tanggal Faktur:",
+      value: detail.date,
+    },
+    {
+      key: "Nama Toko",
+      value: detail.merchantName,
+    },
+    {
+      key: "Nama Distributor:",
+      value: detail.distributorName,
+    },
+    {
+      key: "Tanggal Jatuh Tempo",
+      value: detail.expiredDate,
+    },
+  ];
+
+  const handleCekTagihan = async () => {
+    const bodyRequest = {
+      id: "ff8081818cfeaf98018cfeafae7f0007",
+      tenor: value,
+    };
+    const response = await cekTagihan(token, bodyRequest);
+    console.log(response);
+  };
   return (
     <SafeAreaView style={{ marginTop: 25, height: "100%" }}>
       <View style={styles.container}>
@@ -168,7 +217,10 @@ const TenorSetting = ({ navigation, route }) => {
             Rp. 1.683.333 per Bulan
           </Text>
         </View>
-        <CustomButton text={"Cek Tagihan + Bunga / Bulan"} />
+        <CustomButton
+          text={"Cek Tagihan + Bunga / Bulan"}
+          handleClick={() => handleCekTagihan()}
+        />
         <CustomButton
           text={"Lanjut"}
           bgColor={colors.GREEN}
