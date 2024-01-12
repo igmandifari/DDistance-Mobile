@@ -116,7 +116,7 @@ const DashboardDistributor = ({ navigation }) => {
                 const { status, name, limit } = item;
 
                 let bgColor = colors.GREEN;
-                // switch (status) {
+                {/* // switch (status) {
                 //   case "Lancar":
                 //     bgColor = colors.GREEN;
                 //     break;
@@ -126,7 +126,7 @@ const DashboardDistributor = ({ navigation }) => {
                 //   case "Gagal":
                 //     bgColor = colors.RED;
                 //     break;
-                // }
+                // } */}
                 return (
                   <TouchableOpacity
                     onPress={() =>
