@@ -1,4 +1,5 @@
 import axiosInstance from "../api/axiosInstance";
+import { BASE_URL } from "@env";
 
 export const getDistributorsDashboard = (token) => {
   return axiosInstance.get(`${BASE_URL}/api/distributor/dashboard`, {
