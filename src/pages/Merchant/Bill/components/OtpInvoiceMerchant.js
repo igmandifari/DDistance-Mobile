@@ -13,12 +13,15 @@ import PopUpSuccess from "../../../../components/PopUpSuccess";
 import CustomButton from "../../../../components/CustomButton";
 import { useSelector } from "react-redux";
 import { Button } from "react-native-elements";
+import PopUpFailed from "../../../../components/PopUpFailed";
 
 const OtpInvoiceMerchant = ({ navigation, route }) => {
   const { token } = useSelector((state) => state.user);
   const [popUp, setPopUp] = useState(false);
   const [timer, setTimer] = useState(60);
   const { formData } = route.params;
+  const [popUpSuccess, setPopUpSuccess] = useState(false);
+  const [popUpFailed, setPopUpFailed] = useState(false);
 
 
   useEffect(() => {
@@ -44,14 +47,29 @@ const OtpInvoiceMerchant = ({ navigation, route }) => {
       alert("OTP Not Valid");
       return;
     }
-    console.log("otp",otp);
-    console.log("test",formData);
-    console.log("token:", token); 
+    // setPopUp(true);
+    // console.log("otp",otp);
+    // console.log("test",formData);
+    // console.log("token:", token); 
     try {
       const response = await postInvoice(token, formData, otp);
-      console.log('data',response.data);
+        if (response.data.statusCode == 201) {
+        setPopUpSuccess(true);
+        setTimeout(() => {
+          setPopUpSuccess(false);
+          navigation.navigate("Bill");
+        }, 2000);
+      } else {
+        setPopUpFailed(true);
+        setTimeout(() => {
+          setPopUpFailed(false);
+        }, 2000);
+      }
     } catch (error) {
-      console.log(error);
+      setPopUpFailed(true);
+      setTimeout(() => {
+        setPopUpFailed(false);
+      }, 2000);
     }
   };
 
@@ -67,6 +85,8 @@ const OtpInvoiceMerchant = ({ navigation, route }) => {
   };
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
+      {popUpSuccess && <PopUpSuccess />}
+      {popUpFailed && <PopUpFailed />}
       <View style={styles.container}>
       {popUp && <PopUpSuccess />}
         <View>
