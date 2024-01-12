@@ -15,6 +15,7 @@ export const getInvoice = (token) => {
       Authorization: "Bearer",
     },
   });
+  
 };
 
 export const getMerchantsInvoice = (token) => {
@@ -23,7 +24,7 @@ export const getMerchantsInvoice = (token) => {
       Authorization: "Bearer",
     },
   });
-};
+}; 
 //1
 export const getInvoiceDistributor = (token) => {
   return axiosInstance.get("http://10.0.2.2:8080/api/invoice", {

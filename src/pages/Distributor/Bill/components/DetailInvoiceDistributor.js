@@ -7,17 +7,16 @@ import {
 } from "react-native";
 import React,{useState, useEffect} from "react";
 import { colors } from "../../../../constant/colors";
-import BlankKtp from "../../../../assets/img/blank-ktp";
-import BlankSIUP from "../../../../assets/img/blank-siup";
-import BlankAgunan from "../../../../assets/img/blank-agunan";
 import { getDetailInvoice } from "../../../../services/distributorService";
 import { useSelector } from "react-redux";
 import CustomButton from "../../../../components/CustomButton";
 import PopUpConfirm from "../../../../components/PopUpConfirm";
+import { TextInput } from "react-native-gesture-handler";
 
-const DetailInvoiceDistributor = ({route}) => {
+const DetailInvoiceDistributor = ({route,navigation}) => {
   const { token } = useSelector((state) => state.user);
-  const { idInvoice } = route.params;
+  const { idInvoice } = route?.params;
+  console.log("ini id ====>",idInvoice);
   const [data, setData] = useState({
     id: null,
     judul:null,
@@ -29,20 +28,25 @@ const DetailInvoiceDistributor = ({route}) => {
     rejection:null,
   });
   const [popUp, setPopUp] = useState(false);
-
+  
   const getDetail = async () => {
-    const response = await getDetailInvoice(token, idInvoice);
-    const { id, judul, namaToko, namaDistributor,tanggalTagihan,jumlahTagihan,tanggalJatuhTempo,rejection } = response.data.data;
-    setData({
-    id,
-    judul,
-    namaToko,
-    namaDistributor,
-    tanggalTagihan,
-    jumlahTagihan,
-    tanggalJatuhTempo,
-    rejection,
-    });
+    try{
+      const response = await getDetailInvoice(token, idInvoice);
+      console.log("=========>",response.data)
+      const { id, judul, namaToko, namaDistributor,tanggalTagihan,jumlahTagihan,tanggalJatuhTempo,rejection} = response.data.data;
+      setData({
+      id,
+      judul,
+      namaToko,
+      namaDistributor,
+      tanggalTagihan,
+      jumlahTagihan,
+      tanggalJatuhTempo,
+      rejection,
+      });
+    }catch (error) {
+      console.error("Error fetching invoice data:", error);
+    }
   };
 
   useEffect(() => {
@@ -52,8 +56,9 @@ const DetailInvoiceDistributor = ({route}) => {
 const details = [
   {
     key: "No Invoice :",
-    value: data.judul,
-  },  {
+    value: "Invoice " + data.judul,
+  },
+  {
     key: "Tanggal Invoice :",
     value: data.tanggalTagihan,
   },
@@ -72,6 +77,10 @@ const details = [
   {
     key: "Tanggal Jatuh Tempo :",
     value: data.tanggalJatuhTempo,
+  },
+  {
+    key: "Rejection",
+    value: data.rejection,
   },
 ];
 
@@ -119,9 +128,9 @@ const details = [
               }}
             >
               <Text style={{ fontSize: 13, fontWeight: "400" }}>
-                {item.key}
+                {item.key} 
               </Text>
-              <Text>{item.value}</Text>
+              <Text>{item.value} </Text>
             </View>
           );
         })}
