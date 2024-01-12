@@ -16,6 +16,7 @@ import {
 } from "../../../../services/merchantServices";
 import ErrorText from "../../../../components/ErrorText";
 import { useSelector } from "react-redux";
+import { Button } from "react-native-elements";
 
 function ChangePassword({ navigation, route }) {
   const [form, setForm] = useState({
@@ -110,6 +111,11 @@ function ChangePassword({ navigation, route }) {
         onPress={() => navigation.navigate("change-password-success")}
       >
         <Text>success</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("otp-change-merchant")}
+      >
+        <Text>otp</Text>
       </TouchableOpacity>
     </View>
   );

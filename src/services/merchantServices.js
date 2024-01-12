@@ -52,7 +52,6 @@ export const getDetailInvoice = (token, id) => {
   });
 };
 
-      // oldPassword: oldPassword,
 export const putChangePassword = (token, id, newPassword,oldPassword,confirmPassword) => {
   return axiosInstance.put(
     `http://10.0.2.2:8080/api/merchant/changePin`,
@@ -76,6 +75,40 @@ export const sendOtpChangePassword = (token) => {
     {
       headers: {
         Authorization: `Bearer ${token}`,
+      }, 
+    }
+  );
+};
+
+export const getAllDistributor = (token) => {
+  return axiosInstance.get("http://10.0.2.2:8080/api/distributor", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+  export const sendOtpInvoiceMerhant = (token) => {
+    return axiosInstance.get(
+      "http://10.0.2.2:8080/api/invoice/email/send/token",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }, 
+      }
+    );
+  };
+
+export const postInvoice = (token,payload, otp) => {
+  console.log('ini payload',payload);
+  return axiosInstance.post(
+    `http://10.0.2.2:8080/api/invoice?otp=${otp}`,
+    payload,
+    {
+      headers: {
+        Accept: "*/*",
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
       },
     }
   );

@@ -52,6 +52,7 @@ const Bill = ({ navigation }) => {
 
   getData = async () => {
     const response = await getInvoice(token);
+    console.log(response);
     setInvoices(response.data.data);
   };
   useFocusEffect(

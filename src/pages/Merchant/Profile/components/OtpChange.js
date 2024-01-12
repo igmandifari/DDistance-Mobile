@@ -73,7 +73,7 @@ const OtpChange = ({ navigation, route }) => {
             Masukkan Kode OTP yang telah {"\n"} dikirim ke alamat email Anda untuk
             {"\n"} verifikasi ubah password:
           </Text>
-          <View style={{ position: "relative" }}>
+          <View style={styles.otp}>
             <OtpInputs
               ref={otpRef}
               handleChange={(code) => console.log("OTP changed:", code)}
@@ -111,4 +111,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.FLORAL_WHITE,
     padding: 25,
   },
+  otp:{
+    alignItems:"center",
+}
 });
