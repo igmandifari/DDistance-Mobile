@@ -13,8 +13,11 @@ import CustomButton from "../../components/CustomButton";
 import { login } from "../../services/AuthService";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsAuthentication } from "../../store/userSlice";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
 
 function Login({ navigation }) {
+  const { isAuthenticated = false, role } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [form, setForm] = useState({
     email: "",
@@ -52,10 +55,8 @@ function Login({ navigation }) {
       const role = data.data.role;
 
       if (token) {
-        alert("Success login");
         if (role === "ROLE_MERCHANT") {
-          // console.log("token ==>", token);
-          dispatch(setIsAuthentication({ token: token }));
+          dispatch(setIsAuthentication({ token: token, role: role }));
           navigation.navigate("dashboard-merchant");
         } else if (role === "ROLE_DISTRIBUTOR") {
           dispatch(

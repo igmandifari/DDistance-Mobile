@@ -1,4 +1,5 @@
 import axiosInstance from "../api/axiosInstance";
+import { BASE_URL } from "@env";
 
 export const getDistributorsDashboard = (token) => {
   return axiosInstance.get(`${BASE_URL}/api/distributor/dashboard`, {
@@ -77,13 +78,13 @@ export const createInsurance = (token, payload, otp) => {
   });
 };
 
-export const getInvoice = (token)=>{
+export const getInvoice = (token) => {
   return axiosInstance.get("http://10.0.2.2:8080/api/invoice", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-}
+};
 
 export const getDetailInvoice = (token, id) => {
   return axiosInstance.get(`http://10.0.2.2:8080/api/invoice/${id}`, {
@@ -93,14 +94,21 @@ export const getDetailInvoice = (token, id) => {
   });
 };
 
-export const putChangePassword = (token, id, newPassword,oldPassword,confirmPassword) => {
+export const putChangePassword = (
+  token,
+  id,
+  newPassword,
+  oldPassword,
+  confirmPassword
+) => {
   return axiosInstance.put(
     `http://10.0.2.2:8080/api/merchant/changePin`,
-    { password: newPassword,
+    {
+      password: newPassword,
       oldPassword: oldPassword,
       confirmPassword: confirmPassword,
-      id:id,
-     },
+      id: id,
+    },
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -109,14 +117,13 @@ export const putChangePassword = (token, id, newPassword,oldPassword,confirmPass
   );
 };
 
-
 export const sendOtpChangePassword = (token) => {
   return axiosInstance.get(
     "http://10.0.2.2:8080/api/merchant/email/send/token",
     {
       headers: {
         Authorization: `Bearer ${token}`,
-      }, 
+      },
     }
   );
 };
@@ -129,19 +136,19 @@ export const getAllDistributor = (token) => {
   });
 };
 
-  export const sendOtpInvoiceMerhant = (token) => {
-    return axiosInstance.get(
-      "http://10.0.2.2:8080/api/invoice/email/send/token",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }, 
-      }
-    );
-  };
+export const sendOtpInvoiceMerhant = (token) => {
+  return axiosInstance.get(
+    "http://10.0.2.2:8080/api/invoice/email/send/token",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
 
-export const postInvoice = (token,payload, otp) => {
-  console.log('ini payload',payload);
+export const postInvoice = (token, payload, otp) => {
+  console.log("ini payload", payload);
   return axiosInstance.post(
     `http://10.0.2.2:8080/api/invoice?otp=${otp}`,
     payload,
