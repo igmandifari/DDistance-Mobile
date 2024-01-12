@@ -22,7 +22,7 @@ const details = [
     key: "Nama Distributor :",
     value: "Distributor A",
   },
-  {
+  { 
     key: "Total Tagihan :",
     value: "Rp. 10.000.000",
   },
