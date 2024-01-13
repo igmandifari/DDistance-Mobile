@@ -1,4 +1,3 @@
-import { tokenToString } from "typescript";
 import axiosInstance from "../api/axiosInstance";
 import { BASE_URL } from "@env";
 
