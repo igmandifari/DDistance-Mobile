@@ -35,3 +35,15 @@ export const sendOtpInsurance = (token) => {
     }
   );
 };
+
+export const sendOtpForgetPIN = (token) => {
+  console.log("send otp");
+  return axiosInstance.get(
+    "http://10.0.2.2:8080/api/forget-pin/email/send/token",
+    {
+      headers: {
+        Authorization: "Bearer",
+      },
+    }
+  );
+};

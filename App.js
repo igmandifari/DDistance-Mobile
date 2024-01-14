@@ -34,6 +34,12 @@ import OtpPaymentInvoice from "./src/pages/Merchant/Payment/components/OtpPaymen
 import NotificationDistributor from "./src/pages/Distributor/Notification/notification";
 import NotificationMerchant from "./src/pages/Merchant/Notification/notification";
 import CreditHistory from "./src/pages/Distributor/CreditHistory/creditHistory";
+import ForgetPassword from "./src/pages/ForgetPassword/ForgetPassword.js";
+import ForgetPIN from "./src/pages/Merchant/ForgetPIN/ForgetPIN.js";
+import OtpRequestForgetPassword from "./src/pages/ForgetPassword/components/OtpRequestForgetPassword.js";
+import SuccessNewPassword from "./src/pages/ForgetPassword/components/SuccessNewPassword.js";
+import OtpRequestForgetPIN from "./src/pages/Merchant/ForgetPIN/components/OtpRequestForgetPIN.js";
+import SuccessNewPIN from "./src/pages/Merchant/ForgetPIN/components/SuccessNewPIN.js";
 
 const routerList = [
   {
@@ -187,6 +193,37 @@ const routerList = [
   {
     name: "creditHistory",
     component: CreditHistory,
+    headerShown: false,
+  },
+  {
+    name: "forgetPassword",
+    component: ForgetPassword,
+    headerShown: false,
+  },
+  {
+    name: "otpForgetPassword",
+    component: OtpRequestForgetPassword,
+    headerShown: false,
+  },
+  {
+    name: "successNewPassword",
+    component: SuccessNewPassword,
+    headerShown: false,
+  },
+  {
+    name: "forgetPIN",
+    component: ForgetPIN,
+    headerShown: false,
+  },
+
+  {
+    name: "otpForgetPIN",
+    component: OtpRequestForgetPIN,
+    headerShown: false,
+  },
+  {
+    name: "successNewPIN",
+    component: SuccessNewPIN,
     headerShown: false,
   },
 ];

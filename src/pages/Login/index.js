@@ -106,7 +106,7 @@ function Login({ navigation }) {
       </View>
       <TouchableOpacity
         style={styles.forgetPassword}
-        onPress={handleForgotPassword}
+        onPress={() => navigation.navigate("forgetPassword")}
       >
         <Text style={styles.textLink}>Lupa Kata Sandi?</Text>
       </TouchableOpacity>
