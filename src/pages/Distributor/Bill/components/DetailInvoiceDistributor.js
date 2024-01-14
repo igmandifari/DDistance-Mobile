@@ -18,7 +18,6 @@ import {
 } from "../../../../services/distributorService";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import OtpInvoiceDistributor from "./OtpInvoiceDistributor";
 
 const DetailInvoiceDistributor = ({ route, navigation }) => {
   const { token } = useSelector((state) => state.user);
@@ -49,9 +48,10 @@ const DetailInvoiceDistributor = ({ route, navigation }) => {
         tanggalTagihan,
         jumlahTagihan,
         tanggalJatuhTempo,
-        rejection,
-        status,
+        rejection: alasanPenolakan,
+        status: installment,
       } = response.data.data;
+      
       setData({
         id,
         judul,
@@ -60,9 +60,10 @@ const DetailInvoiceDistributor = ({ route, navigation }) => {
         tanggalTagihan,
         jumlahTagihan,
         tanggalJatuhTempo,
-        rejection,
-        status,
+        rejection: alasanPenolakan,
+        status: installment,
       });
+      
     } catch (error) {
       console.error("Error fetching invoice data:", error);
     }
@@ -103,24 +104,40 @@ const DetailInvoiceDistributor = ({ route, navigation }) => {
     },
   ];
 
+  const handleSetuju = () => {
+    console.log("Setuju");
+    if (isValid) {
+      handleSubmit({ status: "DITERIMA" });
+    }
+  };
+  
+  const handleTolak = () => {
+    console.log("Tolak");
+    if (isValid) {
+      handleSubmit({ status: "DITOLAK" });
+    }
+  };
+
   const { handleSubmit, values, handleChange, isValid } = useFormik({
     initialValues: {
-      status: "",
-      rejection: "",
+      installment: data.status,
+      alasanPenolakan: data.rejection,
     },
-    validationSchema: Yup.object({
-      rejection: Yup.string().required("Alasan ditolak harus diisi"),
-      status: Yup.string().required("Belum memilih Approval Status"),
-    }),
+    // validationSchema: Yup.object({
+    //   rejection: Yup.string().required("Alasan ditolak harus diisi"),
+    //   status: Yup.string().required("Belum memilih Approval Status"),
+    // }),
     onSubmit: async (values) => {
       try {
         const formData = new FormData();
-        formData.append("status", values.status);
-        formData.append("rejection", values.rejection);
+        formData.append("status", values.installment);
+        formData.append("rejection", values.alasanPenolakan);
 
-        const otpResponse = await OtpInvoiceDistributor(token);
+        const otpResponse = await sendOtpInvoiceDistributor(token);
         const otpToken = otpResponse.data.token;
 
+        console.log(otpResponse);
+        console.log(values);
         navigation.navigate("otp-invoice-ditributor", { otpToken });
       } catch (error) {
         console.error("Error sending OTP:", error);
@@ -133,8 +150,8 @@ const DetailInvoiceDistributor = ({ route, navigation }) => {
       <View style={styles.container}>
         {popUp && (
           <PopUpConfirm
-            handleOK={() => handleSubmit({ status: "DITERIMA" })}
-            handleReject={() => handleSubmit(false, { status: "DITOLAK" })}
+            handleOK={() => handleSubmit()}
+            handleReject={() => handleSubmit(false)}
           />
         )}
         <Text style={styles.title}>Pengajuan 0000000</Text>
@@ -173,9 +190,7 @@ const DetailInvoiceDistributor = ({ route, navigation }) => {
           }}
         >
           <TouchableOpacity
-            onPress={() =>
-              handleSubmit({  rejection: "DITERIMA" })
-            }
+            onPress={handleSetuju}
             style={{
               borderRadius: 10,
               backgroundColor: "#00E817",
@@ -190,9 +205,7 @@ const DetailInvoiceDistributor = ({ route, navigation }) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() =>
-              handleSubmit({ rejection: "DITOLAK" })
-            }
+            onPress={handleTolak}
             style={{
               borderRadius: 10,
               backgroundColor: "#FC0000",
