@@ -8,6 +8,7 @@ import {
   import React, { useState, useEffect } from "react";
   import { colors } from "../../../../constant/colors";
   import OtpInputs from "react-native-otp-inputs";
+import { putInvoiceDistributor } from "../../../../services/distributorService";
   
   const OtpInvoiceDistributor = ({ navigation }) => {
     const [timer, setTimer] = useState(60);
@@ -23,15 +24,44 @@ import {
     }, [timer]);
   
     const [otp, setOtp] = useState("");
+    const { otpToken } = route?.params;
     otpRef = React.createRef();
   
     clearOTP = () => {
       otpRef.current.clear();
     };
   
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
       console.log("otp", otp);
-      navigation.navigate("dashboard-distributor");
+      try {
+  
+        let installment;
+        if (data.status === "DITERIMA") {
+          installment = "DITERIMA";
+        } else if (data.status === "DITOLAK") {
+          installment = "DITOLAK"; 
+        } else {
+          installment = "DALAM_PROSES";
+        }
+
+        const otpPayload = {
+          id: data.id,
+          otp: otpToken,
+          alasanPenolakan: values.rejection,
+          installment,
+        };
+  
+        const response = await putInvoiceDistributor(token, otpPayload);
+  
+        // Handle response, e.g., show success message
+        console.log("Invoice updated successfully", response.data);
+  
+        // Navigate to the desired page, e.g., dashboard
+        navigation.navigate("dashboard-distributor");
+      } catch (error) {
+        console.error("Error updating invoice:", error);
+        // Handle error, e.g., show error message
+      }
     };
     return (
       <SafeAreaView style={{ marginTop: 25 }}>

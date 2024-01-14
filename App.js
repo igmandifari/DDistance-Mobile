@@ -35,6 +35,7 @@ import NotificationDistributor from "./src/pages/Distributor/Notification/notifi
 import NotificationMerchant from "./src/pages/Merchant/Notification/notification";
 import CreditHistory from "./src/pages/Distributor/CreditHistory/creditHistory";
 import OtpChange from "./src/pages/Merchant/Profile/components/OtpChange";
+import OtpInvoiceDistributor from "./src/pages/Distributor/Bill/components/OtpInvoiceDistributor";
 
 const routerList = [
   {
@@ -193,6 +194,11 @@ const routerList = [
   {
     name: "creditHistory",
     component: CreditHistory,
+    headerShown: false,
+  },
+  {
+    name: "otp-invoice-ditributor",
+    component: OtpInvoiceDistributor,
     headerShown: false,
   },
 ];

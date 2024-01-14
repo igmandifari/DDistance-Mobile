@@ -4,47 +4,66 @@ import {
   Text,
   View,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { colors } from "../../../../constant/colors";
 import { getDetailInvoice } from "../../../../services/distributorService";
 import { useSelector } from "react-redux";
 import CustomButton from "../../../../components/CustomButton";
 import PopUpConfirm from "../../../../components/PopUpConfirm";
-import { TextInput } from "react-native-gesture-handler";
+import {
+  putInvoiceDistributor,
+  sendOtpInvoiceDistributor,
+} from "../../../../services/distributorService";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import OtpInvoiceDistributor from "./OtpInvoiceDistributor";
 
-const DetailInvoiceDistributor = ({route,navigation}) => {
+const DetailInvoiceDistributor = ({ route, navigation }) => {
   const { token } = useSelector((state) => state.user);
   const { idInvoice } = route?.params;
-  console.log("ini id ====>",idInvoice);
+  // console.log("ini id ====>",idInvoice);
   const [data, setData] = useState({
     id: null,
-    judul:null,
+    judul: null,
     namaToko: null,
     namaDistributor: null,
     tanggalTagihan: null,
     jumlahTagihan: null,
-    tanggalJatuhTempo:null,
-    rejection:null,
+    tanggalJatuhTempo: null,
+    rejection: null,
+    status: null,
   });
   const [popUp, setPopUp] = useState(false);
-  
+
   const getDetail = async () => {
-    try{
+    try {
       const response = await getDetailInvoice(token, idInvoice);
-      console.log("=========>",response.data)
-      const { id, judul, namaToko, namaDistributor,tanggalTagihan,jumlahTagihan,tanggalJatuhTempo,rejection} = response.data.data;
+      console.log("=========>", response.data);
+      const {
+        id,
+        judul,
+        namaToko,
+        namaDistributor,
+        tanggalTagihan,
+        jumlahTagihan,
+        tanggalJatuhTempo,
+        rejection,
+        status,
+      } = response.data.data;
       setData({
-      id,
-      judul,
-      namaToko,
-      namaDistributor,
-      tanggalTagihan,
-      jumlahTagihan,
-      tanggalJatuhTempo,
-      rejection,
+        id,
+        judul,
+        namaToko,
+        namaDistributor,
+        tanggalTagihan,
+        jumlahTagihan,
+        tanggalJatuhTempo,
+        rejection,
+        status,
       });
-    }catch (error) {
+    } catch (error) {
       console.error("Error fetching invoice data:", error);
     }
   };
@@ -53,58 +72,69 @@ const DetailInvoiceDistributor = ({route,navigation}) => {
     getDetail();
   }, []);
 
-const details = [
-  {
-    key: "No Invoice :",
-    value: "Invoice " + data.judul,
-  },
-  {
-    key: "Tanggal Invoice :",
-    value: data.tanggalTagihan,
-  },
-  {
-    key: "Nama Toko :",
-    value: data.namaToko,
-  },
-  {
-    key: "Nama Distributor :",
-    value: data.namaDistributor,
-  },
-  {
-    key: "Total Tagihan :",
-    value: data.jumlahTagihan,
-  },
-  {
-    key: "Tanggal Jatuh Tempo :",
-    value: data.tanggalJatuhTempo,
-  },
-  {
-    key: "Rejection",
-    value: data.rejection,
-  },
-];
+  const details = [
+    {
+      key: "No Invoice :",
+      value: "Invoice " + data.judul,
+    },
+    {
+      key: "Tanggal Invoice :",
+      value: data.tanggalTagihan,
+    },
+    {
+      key: "Nama Toko :",
+      value: data.namaToko,
+    },
+    {
+      key: "Nama Distributor :",
+      value: data.namaDistributor,
+    },
+    {
+      key: "Total Tagihan :",
+      value: data.jumlahTagihan,
+    },
+    {
+      key: "Tanggal Jatuh Tempo :",
+      value: data.tanggalJatuhTempo,
+    },
+    {
+      key: "Rejection",
+      value: data.rejection,
+    },
+  ];
 
+  const { handleSubmit, values, handleChange, isValid } = useFormik({
+    initialValues: {
+      status: "",
+      rejection: "",
+    },
+    validationSchema: Yup.object({
+      rejection: Yup.string().required("Alasan ditolak harus diisi"),
+      status: Yup.string().required("Belum memilih Approval Status"),
+    }),
+    onSubmit: async (values) => {
+      try {
+        const formData = new FormData();
+        formData.append("status", values.status);
+        formData.append("rejection", values.rejection);
 
-/* const DetailInvoiceDistributor = ({navigation}) => {
-  const [popUp, setPopUp] = useState(false);
-  const handleSubmit = () => { */
-    // const payload = {
+        const otpResponse = await OtpInvoiceDistributor(token);
+        const otpToken = otpResponse.data.token;
 
-    // };
-  
-    // if (!useValidate(payload)) {
-    //   alert("data must not empty");
-    //   return;
-    // }
-/*     setPopUp(true);
-    navigation.navigate("otp-invoice-merchant");
-  }; */
+        navigation.navigate("otp-invoice-ditributor", { otpToken });
+      } catch (error) {
+        console.error("Error sending OTP:", error);
+      }
+    },
+  });
+
   return (
     <SafeAreaView style={{ marginTop: 20 }}>
       <View style={styles.container}>
-      {popUp && (<PopUpConfirm
-            handleOK={() => handleSubmit()}
-            handleReject={() => setPopUp(false)}
+        {popUp && (
+          <PopUpConfirm
+            handleOK={() => handleSubmit({ status: "DITERIMA" })}
+            handleReject={() => handleSubmit(false, { status: "DITOLAK" })}
           />
         )}
         <Text style={styles.title}>Pengajuan 0000000</Text>
@@ -126,9 +156,10 @@ const details = [
                 borderColor: "green",
                 marginTop: 10,
               }}
+              onPress={() => navigation.navigate("")}
             >
               <Text style={{ fontSize: 13, fontWeight: "400" }}>
-                {item.key} 
+                {item.key}
               </Text>
               <Text>{item.value} </Text>
             </View>
@@ -142,7 +173,9 @@ const details = [
           }}
         >
           <TouchableOpacity
-            onPress={() => navigation.navigate("")}
+            onPress={() =>
+              handleSubmit({  rejection: "DITERIMA" })
+            }
             style={{
               borderRadius: 10,
               backgroundColor: "#00E817",
@@ -157,7 +190,9 @@ const details = [
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate("")}
+            onPress={() =>
+              handleSubmit({ rejection: "DITOLAK" })
+            }
             style={{
               borderRadius: 10,
               backgroundColor: "#FC0000",
@@ -179,32 +214,22 @@ const details = [
               backgroundColor: colors.WHITE,
               borderRadius: 10,
               padding: 10,
-              // flex: 1,
               elevation: 10,
               height: "20%",
             }}
           >
-            <Text>Dokumen belum lengkap</Text>
+            <TextInput
+              placeholder="Dokumen Belum Lengkap"
+              onChangeText={handleChange("rejection")}
+              value={values.rejection}
+            />
           </View>
-          <View style={{ marginTop: 20 }}>
-            <Text>Lainnya:</Text>
-            <View
-              style={{
-                backgroundColor: colors.WHITE,
-                borderRadius: 10,
-                elevation: 10,
-                height: "35%",
-                marginTop: 8,
-              }}
-            >
-              <Text></Text>
-            </View>
-          </View>
+          <View style={{ marginTop: 20 }}></View>
           <View style={{ alignItems: "center" }}>
-          <CustomButton
-           handleClick={() => setPopUp(true)}
-           text={"Kirim"}
-          />
+            {isValid.rejection && (
+              <Text style={{ color: "red" }}>{isValid.rejection}</Text>
+            )}
+            <CustomButton handleClick={handleSubmit} text={"Kirim"} />
           </View>
         </View>
       </View>

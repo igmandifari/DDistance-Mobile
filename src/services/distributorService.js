@@ -41,3 +41,20 @@ export const getDetailInvoice = (token, id) => {
     },
   });
 };
+
+export const putInvoiceDistributor = (token, payload,otp) => {
+  return axiosInstance.put(`${BASE_URL}/api/invoice?otp=${otp}`,
+  payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+export const sendOtpInvoiceDistributor = (token) => {
+  return axiosInstance.get(`${BASE_URL}/api/invoice/email/send/token`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
