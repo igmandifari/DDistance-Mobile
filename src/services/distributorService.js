@@ -19,7 +19,7 @@ export const getInvoice = (token) => {
 };
 
 export const getMerchantsInvoice = (token) => {
-  return axiosInstance.get("http://10.0.2.2:8080/api/merchants", {
+  return axiosInstance.get(`${BASE_URL}/api/merchants`, {
     headers: {
       Authorization: "Bearer",
     },
@@ -27,7 +27,7 @@ export const getMerchantsInvoice = (token) => {
 }; 
 //1
 export const getInvoiceDistributor = (token) => {
-  return axiosInstance.get("http://10.0.2.2:8080/api/invoice", {
+  return axiosInstance.get(`${BASE_URL}/api/invoice`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -35,15 +35,15 @@ export const getInvoiceDistributor = (token) => {
 };
 
 export const getDetailInvoice = (token, id) => {
-  return axiosInstance.get(`http://10.0.2.2:8080/api/invoice/${id}`, {
+  return axiosInstance.get(`${BASE_URL}/api/invoice/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 };
 
-export const putInvoiceDistributor = (token, payload,otp) => {
-  return axiosInstance.put(`${BASE_URL}/api/invoice?otp=${otp}`,
+export const putInvoiceDistributor = (token, payload) => {
+  return axiosInstance.put(`${BASE_URL}/api/invoice`,
   payload, {
     headers: {
       Authorization: `Bearer ${token}`,

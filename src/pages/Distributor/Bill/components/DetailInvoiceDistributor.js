@@ -107,14 +107,16 @@ const DetailInvoiceDistributor = ({ route, navigation }) => {
   const handleSetuju = () => {
     console.log("Setuju");
     if (isValid) {
-      handleSubmit({ status: "DITERIMA" });
+      // handleSubmit({ status: "DITERIMA" });
+      setData({...data, status: "DITERIMA"})
     }
   };
   
   const handleTolak = () => {
     console.log("Tolak");
     if (isValid) {
-      handleSubmit({ status: "DITOLAK" });
+      setData({...data, status: "DITOLAK"})
+      // handleSubmit({ status: "DITOLAK" });
     }
   };
 
@@ -129,16 +131,18 @@ const DetailInvoiceDistributor = ({ route, navigation }) => {
     // }),
     onSubmit: async (values) => {
       try {
-        const formData = new FormData();
-        formData.append("status", values.installment);
-        formData.append("rejection", values.alasanPenolakan);
+        const formData = {
+          id: data.id,
+          alasanPenolakan:values.rejection,
+          installemnt: data.status
+        };
 
-        const otpResponse = await sendOtpInvoiceDistributor(token);
-        const otpToken = otpResponse.data.token;
+        // formData.append("status", values.installment);
+        // formData.append("rejection", values.alasanPenolakan);
 
-        console.log(otpResponse);
-        console.log(values);
-        navigation.navigate("otp-invoice-ditributor", { otpToken });
+        await sendOtpInvoiceDistributor(token);
+
+        navigation.navigate("otp-invoice-ditributor", { formData });
       } catch (error) {
         console.error("Error sending OTP:", error);
       }

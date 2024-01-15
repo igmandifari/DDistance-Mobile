@@ -79,7 +79,7 @@ export const createInsurance = (token, payload, otp) => {
 };
 
 export const getInvoice = (token) => {
-  return axiosInstance.get("http://10.0.2.2:8080/api/invoice", {
+  return axiosInstance.get(`${BASE_URL}/api/invoice`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -87,7 +87,7 @@ export const getInvoice = (token) => {
 };
 
 export const getDetailInvoice = (token, id) => {
-  return axiosInstance.get(`http://10.0.2.2:8080/api/invoice/${id}`, {
+  return axiosInstance.get(`${BASE_URL}/api/invoice/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -102,7 +102,7 @@ export const putChangePassword = (
   confirmPassword
 ) => {
   return axiosInstance.put(
-    `http://10.0.2.2:8080/api/merchant/changePin`,
+    `${BASE_URL}/api/merchant/changePin`,
     {
       password: newPassword,
       oldPassword: oldPassword,
@@ -119,7 +119,7 @@ export const putChangePassword = (
 
 export const sendOtpChangePassword = (token) => {
   return axiosInstance.get(
-    "http://10.0.2.2:8080/api/merchant/email/send/token",
+    `${BASE_URL}/api/merchant/email/send/token`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -129,7 +129,7 @@ export const sendOtpChangePassword = (token) => {
 };
 
 export const getAllDistributor = (token) => {
-  return axiosInstance.get("http://10.0.2.2:8080/api/distributor", {
+  return axiosInstance.get(`${BASE_URL}/api/distributor`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -138,7 +138,7 @@ export const getAllDistributor = (token) => {
 
 export const sendOtpInvoiceMerhant = (token) => {
   return axiosInstance.get(
-    "http://10.0.2.2:8080/api/invoice/email/send/token",
+    `${BASE_URL}/api/invoice/email/send/token`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -150,7 +150,7 @@ export const sendOtpInvoiceMerhant = (token) => {
 export const postInvoice = (token, payload, otp) => {
   console.log("ini payload", payload);
   return axiosInstance.post(
-    `http://10.0.2.2:8080/api/invoice?otp=${otp}`,
+    `${BASE_URL}/api/invoice?otp=${otp}`,
     payload,
     {
       headers: {
@@ -164,7 +164,7 @@ export const postInvoice = (token, payload, otp) => {
 
 export const getDetailTagihan = (token, id) => {
   return axiosInstance.get(
-    "http://10.0.2.2:8080/api/invoice/ff8081818cfeaf98018cfeafae7f0007",
+    `${BASE_URL}/api/invoice/ff8081818cfeaf98018cfeafae7f0007`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -175,7 +175,7 @@ export const getDetailTagihan = (token, id) => {
 
 export const cekTagihan = (token, bodyRequest) => {
   return axiosInstance.post(
-    "http://localhost:8080/api/invoice/cekTagihan",
+    `${BASE_URL}/api/invoice/cekTagihan`,
     bodyRequest,
     {
       headers: {
