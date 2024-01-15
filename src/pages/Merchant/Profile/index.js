@@ -7,50 +7,65 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";
 import CustomButton from "../../../components/CustomButton";
 import PopUpConfirmLogout from "../../../components/PopUpConfirmLogout";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../store/userSlice";
+import { getUserMerchant } from "../../../services/AuthService";
 
 const vw = Dimensions.get("window").width;
 
-const details = [
-  {
-    key: "Name Lengkap",
-    value: "Joshua",
-  },
-  {
-    key: "Alamat",
-    value: "Jl. Ciawi",
-  },
-  {
-    key: "No. HP",
-    value: "-859-6678-6370",
-  },
-  {
-    key: "Email",
-    value: "joshua@gmail.com",
-  },
-  {
-    key: "No. Rekening Danamon",
-    value: "12939482",
-  },
-  {
-    key: "Nama Pemilik Rekening",
-    value: "Joshua",
-  },
-];
-
 const Profile = ({ navigation }) => {
   const [popUp, setPopUp] = useState(false);
+  const [userProfile, setUserProfile] = useState([]);
+
   const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
 
   const handleLogout = () => {
     dispatch(logout());
     navigation.navigate("landing-page");
   };
+
+  const getUserProfileData = async () => {
+    const response = await getUserMerchant(token);
+    setUserProfile(response.data.data);
+  };
+
+  useEffect(() => {
+    getUserProfileData();
+  }, []);
+
+  const details = [
+    {
+      key: "Name Lengkap",
+      value: userProfile.name,
+    },
+    {
+      key: "Alamat",
+      value: userProfile.address,
+    },
+    {
+      key: "No. HP",
+      value: userProfile.phoneNumber,
+    },
+    {
+      key: "Email",
+      value: userProfile.email,
+    },
+    {
+      key: "No. Rekening Danamon",
+      value: userProfile.pan,
+    },
+    {
+      key: "Nama Pemilik Rekening",
+      value: userProfile.name,
+    },
+  ];
+
+  console.log(userProfile);
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       {popUp && (
