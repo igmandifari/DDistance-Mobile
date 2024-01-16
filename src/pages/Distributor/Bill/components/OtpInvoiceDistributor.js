@@ -10,6 +10,7 @@ import { colors } from "../../../../constant/colors";
 import OtpInputs from "react-native-otp-inputs";
 import { putInvoiceDistributor } from "../../../../services/distributorService";
 import CustomButton from "../../../../components/CustomButton";
+import { useSelector } from "react-redux";
 
 const OtpInvoiceDistributor = ({ navigation,route }) => {
   const [timer, setTimer] = useState(60);

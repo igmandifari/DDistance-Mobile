@@ -36,7 +36,7 @@ const LandingPage = ({ navigation }) => {
         source={require("../../assets/img/LogoDD2.png")}
         style={styles.logo}
       />
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => navigation.navigate("dashboard-distributor")}
       >
         <Text style={styles.buttonText}>Ke dashboard distributor</Text>
@@ -48,7 +48,7 @@ const LandingPage = ({ navigation }) => {
       </TouchableOpacity>
       <TouchableOpacity onPress={() => console.log(user)}>
         <Text style={styles.buttonText}>cek user</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <View style={styles.bawah}>
         <TouchableOpacity
           style={styles.masuk}

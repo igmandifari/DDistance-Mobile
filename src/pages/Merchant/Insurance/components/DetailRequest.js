@@ -96,7 +96,7 @@ const DetailRequest = ({ route }) => {
             borderBottomWidth: StyleSheet.hairlineWidth,
           }}
         />
-        <Button title={"test"} onPress={() => console.log(images.ktp)} />
+        {/* <Button title={"test"} onPress={() => console.log(images.ktp)} /> */}
         <View>
           {images.ktp && (
             <Image

@@ -36,6 +36,7 @@ import NotificationMerchant from "./src/pages/Merchant/Notification/notification
 import CreditHistory from "./src/pages/Distributor/CreditHistory/creditHistory";
 import OtpChange from "./src/pages/Merchant/Profile/components/OtpChange";
 import OtpInvoiceDistributor from "./src/pages/Distributor/Bill/components/OtpInvoiceDistributor";
+import HistoryTenorSet from "./src/pages/Merchant/Bill/components/HistoryTenorSet";
 
 const routerList = [
   {
@@ -182,8 +183,16 @@ const routerList = [
   {
     name: "otp-payment-invoice",
     component: OtpPaymentInvoice,
+  },
+  
+  { 
     name: "notificationDistributor",
     component: NotificationDistributor,
+    headerShown: false,
+  },
+  { 
+    name: "tenor-setting-history",
+    component: HistoryTenorSet,
     headerShown: false,
   },
   {

@@ -3,6 +3,7 @@ import React from "react";
 import BillIcon from "../../../../assets/img/bill.svg";
 import CustomButton from "../../../../components/CustomButton";
 import { colors } from "../../../../constant/colors";
+import { useSelector } from "react-redux";
 
 const payDetails = [
   {
@@ -35,7 +36,10 @@ const payDetails = [
   },
 ];
 
+
+
 const SheetPay = ({ handlePay, handlePayAll }) => {
+
   const handleClickPay = () => {
     handlePay();
   };

@@ -184,3 +184,30 @@ export const cekTagihan = (token, bodyRequest) => {
     }
   );
 };
+
+export const sendTokenPayment = (token) => {
+  return axiosInstance.get(
+    "http://10.0.2.2:8080/api/payment/send/token",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+export const getDetailInvoiceId = (token, id) => {
+  return axiosInstance.get(`http://10.0.2.2:8080/api/payment/${id}/invoice`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const getPaymentId = (token, id) => {
+  return axiosInstance.get(`http://10.0.2.2:8080/api/payment/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

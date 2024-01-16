@@ -58,3 +58,19 @@ export const sendOtpInvoiceDistributor = (token) => {
     },
   });
 };
+
+export const getInvoiceIdDistributor = (token, id) => {
+  return axiosInstance.get(`http://10.0.2.2:8080/api/invoice/${id}/distributor`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const getInvoiceId = (token, id) => {
+  return axiosInstance.get(`http://10.0.2.2:8080/api/invoice/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

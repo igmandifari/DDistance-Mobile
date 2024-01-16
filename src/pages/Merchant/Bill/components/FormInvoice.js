@@ -192,12 +192,12 @@ const FormInvoice = ({ navigation, route }) => {
               >
                 Invoice
               </Text>
-              <Button
+              {/* <Button
                 title={"test"}
                 onPress={() => {
                   console.log(image);
                 }}
-              />
+              /> */}
               <Image
                 source={{ uri: image }}
                 style={{ flex: 1 }}

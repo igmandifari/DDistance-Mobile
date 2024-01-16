@@ -60,7 +60,7 @@ const PinPayment = ({ navigation }) => {
                 textAlign: "center",
               }}
             >
-              {timer ? `00.${timer}` : ""} Kirim Ulang OTP
+              Lupa Pin ?
             </Text>
           </TouchableOpacity>
         </View>

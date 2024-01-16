@@ -16,8 +16,9 @@ import { Button } from "react-native-elements";
 const DetailDistributor = ({ navigation, route }) => {
   const {
     idDistributor,
-    detail: { address, phoneNumber, email, namaDistributor },
+    detail: { address, phoneNumber, email, name },
   } = route.params;
+  // console.log(idDistributor);
   const { token } = useSelector((state) => state.user);
   const [filter, setFilter] = useState("");
   const [data, setData] = useState([]);
@@ -74,7 +75,7 @@ const DetailDistributor = ({ navigation, route }) => {
                   borderBottomWidth: StyleSheet.hairlineWidth,
                 }}
               >
-                Distributor A {namaDistributor}
+                {name}
               </Text>
               <Text>Alamat: {address}</Text>
               <Text>No Telp: {phoneNumber}</Text>
@@ -114,7 +115,7 @@ const DetailDistributor = ({ navigation, route }) => {
           <View>
             <View>
               <Text>Sisa Limitmu:</Text>
-              <Text>Rp. 70.000.0000/100/000/000</Text>
+            <Text>Rp. 70.000.0000/100.000.000</Text>
 
               <View style={styles.progressBar}></View>
             </View>
@@ -122,18 +123,29 @@ const DetailDistributor = ({ navigation, route }) => {
           <ScrollView>
             <View id="merchants" style={styles.merchantContainer}>
               {data.map((distributor, index) => {
-                const { judul, InvoiceNo, month, status, total } = distributor;
+                const {
+                  id,
+                  judul,
+                  InvoiceNo,
+                  jumlahTagihan,
+                  month,
+                  status,
+                  total,
+                  statusTenor,
+                  jumlahDiBayar,
+                  jumlahPayment,
+                } = distributor;
                 console.log(distributor);
 
                 let bgColor;
                 switch (status) {
-                  case "Sudah Bayar":
+                  case "DITERIMA":
                     bgColor = colors.GREEN;
                     break;
                   case "DALAM_PROSES":
                     bgColor = colors.YELLOW_STATUS;
                     break;
-                  case "Gagal":
+                  case "DITOLAK":
                     bgColor = colors.RED;
                     break;
                 }
@@ -151,10 +163,10 @@ const DetailDistributor = ({ navigation, route }) => {
                         }}
                       >
                         <Text style={{ fontSize: 14, fontWeight: "700" }}>
-                          {month} 2/3Bulan
+                          {jumlahDiBayar}/{jumlahPayment} Bulan
                         </Text>
                         <Text style={{ fontSize: 14, fontWeight: "600" }}>
-                          Rp.
+                          Rp. {jumlahTagihan}
                         </Text>
                       </View>
                       <View
@@ -175,9 +187,19 @@ const DetailDistributor = ({ navigation, route }) => {
                           }}
                         >
                           <TouchableOpacity
-                            onPress={() =>
-                              navigation.navigate("history-bill-merchant")
-                            }
+                            onPress={() => {
+                              if (!statusTenor) {
+                                navigation.navigate("tenor-setting-history", {
+                                  idInvoice: distributor.id,
+                                  distributorData: distributor,
+                                });
+                              }else{
+                                navigation.navigate("history-bill-merchant", {
+                                  idInvoice: distributor.id,
+                                  // distributorData: distributor,
+                                });
+                              }
+                            }}
                           >
                             <Text
                               style={{
@@ -187,6 +209,7 @@ const DetailDistributor = ({ navigation, route }) => {
                               }}
                             >
                               {status}
+                              {/* {statusTenor ? "Atur Tenor" : status} */}
                             </Text>
                           </TouchableOpacity>
                         </View>

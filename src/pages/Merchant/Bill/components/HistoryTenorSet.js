@@ -13,57 +13,54 @@ import { BottomSheet } from "react-native-sheet";
 import SheetPay from "../../Payment/components/SheetPay";
 import { Button } from "react-native-elements";
 import PaymentSuccess from "../../Payment/components/PaymentSuccess";
-import { useSelector } from "react-redux";
 import PaymentFailed from "../../Payment/components/PaymentFailed";
 import { getDetailInvoiceId } from "../../../../services/merchantServices";
+import { useSelector } from "react-redux";
+import { getInvoiceId } from "../../../../services/distributorService";
 
-const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
+const HistoryTenorSet = ({ navigation, route }) => {
   const { token } = useSelector((state) => state.user);
-  const { isSuccess, idInvoice } = route.params;
-  console.log("Invoice ID:", idInvoice);
-  const [filter, setFilter] = useState("");
-  const [data, setData] = useState([]);
   const [isProfileVisible, setIsProfileVisible] = useState(true);
   const sheetPay = useRef(null);
   const paySuccess = useRef(null);
   const payFailed = useRef(null);
+  const { isSuccess,idInvoice,distributorData } = route.params;
+  console.log("Invoice ID:", idInvoice);
+  console.log("Data:", distributorData);
+
+  const [filter, setFilter] = useState("");
+  const [data, setData] = useState({});
+
+
   const getDetail = async () => {
-    const response = await getDetailInvoiceId(token, idInvoice);
-    setData(response.data.data);
-  };
-  console.log("cek data", data);
-
-  const filterTypes = [
-    {
-      name: "Tepat Waktu",
-    },
-    {
-      name: "Terlambat",
-    },
-    {
-      name: "Bayar",
-    },
-  ];
-
-  const handleChangeFilter = (name) => {
-    setFilter(name);
+    const response = await getInvoiceId(token, idInvoice);
+    const {namaDistributor, jumlahTagihan, tanggalJatuhTempo, id} = response.data.data;
+    setData({
+    id,
+    namaDistributor,
+    jumlahTagihan,
+    tanggalJatuhTempo,
+    });
   };
 
   useEffect(() => {
     getDetail();
   }, []);
+  
+  console.log("data",data);
 
   const handleToggleProfile = () => {
     setIsProfileVisible((prev) => !prev);
   };
 
-  const handleClickStatus = (statusPembayaran) => {
-    sheetPay.current.show();
+  const handleClickStatus = () => {
+        navigation.navigate("tenor-setting");
   };
 
   if (isSuccess) {
     console.log("success");
   }
+
 
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
@@ -116,81 +113,29 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
           <View id="profile" style={{}}>
             <View style={styles.profileContainer}>
               <Text style={{ fontSize: 32, fontWeight: "700" }}>
-                Distributor 
+                Distributor {data.namaDistributor}
               </Text>
-              {/* <Button
-                title={"pay success"}
-                onPress={() => {
-                  paySuccess.current.show();
-                }}
-              />
-              <Button
-                title={"pay failed"}
-                onPress={() => payFailed.current.show()}
-              /> */}
             </View>
           </View>
         )}
-        {!isProfileVisible && (
-          <View style={{ alignItems: "center", marginVertical: 10 }}>
-            <TouchableOpacity onPress={handleToggleProfile}>
-              <Text
-                style={{
-                  color: colors.LIGHT_ORANGE,
-                  fontSize: 16,
-                  fontWeight: 700,
-                }}
-              >
-                Show
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
+
         <View id="list-merchant" style={styles.listContainer}>
           <View>
             <View>
               <Text style={{ fontSize: 20, fontWeight: 400 }}>
+                {/* Riwayat Cicilan Invoice {idInvoice} */}
                 Riwayat Cicilan Invoice 
               </Text>
             </View>
           </View>
           <ScrollView>
             <View id="merchants" style={styles.merchantContainer}>
-              {data.map((distributor, index) => {
-                const {
-                  InvoiceNo,
-                  sisaTagihan,
-                  tanggalFaktur,
-                  statusPembayaran,
-                  paymentAmount,
-                  paymentTo,
-                } = distributor;
-
-                let bgColor;
-                let textStatus;
-                let isButtonDisabled = false;
-                switch (statusPembayaran) {
-                  case true:
-                    bgColor = colors.GREEN;
-                    textStatus = "Tepat Waktu";
-                    break;
-                  case false:
-                    bgColor = colors.YELLOW_STATUS;
-                    textStatus = "Terlambat";
-                    break;
-                  case null:
-                    bgColor = colors.BUTTON_ORANGE;
-                    textStatus = "Bayar";
-                    break;
-                  case "Atur Tenor":
-                    bgColor = colors.BUTTON_ORANGE;
-                    break;
-                  default:
-                    isButtonDisabled = true;
-                }
-
-                return (
-                  <View key={index} style={styles.item}>
+              
+            {/* {data !== null &&
+              data.map((distributor, index) => {
+                const { sisaTagihan, tanggalFaktur, paymentTo, paymentAmount } = distributor;
+                console.log('distiebuor', distributor); */}
+                  <View style={styles.item}>
                     <View style={{ height: "100%", flex: 1 }}>
                       <View
                         style={{
@@ -199,8 +144,7 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
                           alignItems: "center",
                         }}
                       >
-                        {statusPembayaran === "Atur Tenor" ? (
-                          <>
+
                             <Text
                               style={{
                                 fontSize: 15,
@@ -210,23 +154,20 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
                             >
                               Total Tagihan
                             </Text>
-                            <Text style={{ fontSize: 20, fontWeight: "600" }}>
+                            {/* <Text style={{ fontSize: 20, fontWeight: "600" }}>
                               {sisaTagihan}
-                            </Text>
-                          </>
-                        ) : (
-                          <>
-                            <Text style={{ fontSize: 15, fontWeight: "700" }}>
+                            </Text> */}
+
+                            {/* <Text style={{ fontSize: 15, fontWeight: "700" }}>
                               Cicilan {paymentTo}/{paymentAmount}
-                            </Text>
+                            </Text> */}
                             <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                              {sisaTagihan}
+                              Rp. {data.jumlahTagihan}
                             </Text>
-                          </>
-                        )}
+    
                       </View>
                       <View style={{ alignItems: "start" }}>
-                        {statusPembayaran === "Atur Tenor" && (
+                        
                           <Text
                             style={{
                               fontSize: 15,
@@ -236,7 +177,7 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
                           >
                             Jatuh Tempo Pilih Tenor:
                           </Text>
-                        )}
+                        
                         {/* <Text style={{ fontSize: 14, color: colors.BUTTON_ORANGE }}>{date}</Text> */}
                       </View>
                       <View
@@ -246,54 +187,29 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
                         }}
                       >
                         <View style={{ alignItems: "center" }}>
-                          {statusPembayaran === null && (
-                            <Text
-                              style={{
-                                fontSize: 15,
-                                fontWeight: "700",
-                                color: colors.ORANGE,
-                              }}
-                            >
-                              Jatuh Tempo :
-                            </Text>
-                          )}
+      
                           <Text
                             style={{
                               fontSize: 14,
                               color: colors.BUTTON_ORANGE,
                             }}
                           >
-                            {tanggalFaktur}
+                            {data.tanggalJatuhTempo}
                           </Text>
                         </View>
                         <View
                           style={{
                             width: 120,
                             borderRadius: 10,
-                            backgroundColor: bgColor,
+                            backgroundColor: colors.BUTTON_ORANGE,
                             flexDirection: "row",
                             justifyContent: "center",
                             paddingVertical: 5,
                           }}
                         >
-                          {statusPembayaran === null ? (
-                            <TouchableOpacity
-                              onPress={() =>
-                                handleClickStatus(statusPembayaran)
-                              }
-                              disabled={isButtonDisabled}
-                            >
-                              <Text
-                                style={{
-                                  fontSize: 16,
-                                  fontWeight: "600",
-                                  color: "white",
-                                }}
-                              >
-                                {textStatus}
-                              </Text>
-                            </TouchableOpacity>
-                          ) : (
+                          <TouchableOpacity
+                            onPress={() => handleClickStatus()}
+                          >
                             <Text
                               style={{
                                 fontSize: 16,
@@ -301,15 +217,15 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
                                 color: "white",
                               }}
                             >
-                              {textStatus}
+                             Atur Tenor
                             </Text>
-                          )}
+                          </TouchableOpacity>
                         </View>
                       </View>
                     </View>
                   </View>
-                );
-              })}
+                {/* ); */}
+              {/* })} */}
             </View>
           </ScrollView>
           <View
@@ -342,10 +258,10 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
         </View>
       </View>
     </SafeAreaView>
-  );
+  ) 
 };
 
-export default HistoryBillInvoiceMerchant;
+export default HistoryTenorSet;
 
 const styles = StyleSheet.create({
   container: {
