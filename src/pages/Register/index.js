@@ -30,6 +30,10 @@ function Register({ navigation }) {
       .min(10, "Too Short!")
       .max(15, "Too Long!")
       .required("Required"),
+      pinTransaksi: Yup.string()
+          .min(1, "Too Short!")
+          .max(6, "Too Long!")
+          .required("Required"),
     email: Yup.string().email("Invalid email").required("Required"),
     accountNumber: Yup.string().required("Account number is required"),
     password: Yup.string()
@@ -50,19 +54,19 @@ function Register({ navigation }) {
       accountNumber: "",
       password: "",
       confirmPassword: "",
+        pinTransaksi:""
     },
     onSubmit: async (values) => {
       if (isValid) {
         const payload = {
           email,
           password,
+            pin: pinTransaksi,
           addres,
           phoneNumber,
           pan: accountNumber,
           name,
-          pin: "111111",
         };
-
         try {
           const data = await register(payload);
           console.log(data.data);
@@ -98,6 +102,7 @@ function Register({ navigation }) {
     accountNumber,
     password,
     confirmPassword,
+      pinTransaksi
   } = values;
 
   return (
@@ -130,6 +135,14 @@ function Register({ navigation }) {
         value={phoneNumber}
       />
       <ErrorText text={errors.phoneNumber} />
+        <TextInput
+            style={styles.input}
+            keyboardType="number-pad"
+            placeholder="Pin Transaksi"
+            onChangeText={handleChange("pinTransaksi")}
+            value={pinTransaksi}
+        />
+        <ErrorText text={errors.pinTransaksi} />
       <TextInput
         style={styles.input}
         keyboardType="email-address"
