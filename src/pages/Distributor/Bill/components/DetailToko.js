@@ -8,16 +8,20 @@ import {
   SafeAreaView,
 } from "react-native";
 import { colors } from "../../../../constant/colors";
-import { detailListInvoice } from "./data";
+// import { detailListInvoice } from "./data";
 import { Button } from "react-native-elements";
+import { useSelector } from "react-redux";
+import { getDetailMerchantInvoice } from "../../../../services/distributorService";
 
 const DetailToko = ({ navigation, route }) => {
   const {
     details: { id, address, phoneNumber, email },
   } = route.params;
   const [filter, setFilter] = useState("");
-  const [data, setData] = useState(detailListInvoice);
+  const [data, setData] = useState([]);
   const [isProfileVisible, setIsProfileVisible] = useState(true);
+  const { token } = useSelector((state) => state.user);
+
 
   const filterTypes = [
     {
@@ -37,7 +41,7 @@ const DetailToko = ({ navigation, route }) => {
 
   useEffect(() => {
     if (!filter) {
-      setData(detailListInvoice);
+      setData([]);
       return;
     }
     const filtered = detailListInvoice.filter((item) => item.status === filter);
@@ -48,13 +52,24 @@ const DetailToko = ({ navigation, route }) => {
     setIsProfileVisible((prev) => !prev);
   };
 
+  const getDetail = async () => {
+    const response = await getDetailMerchantInvoice(token,id);
+    setData(response.data.data);
+    console.log("cek",response.data.data);
+  };
+
+
+  useEffect(() => {
+    getDetail();
+  }, []);
+
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
         {isProfileVisible && (
           <View id="profile" style={{}}>
             <View style={styles.profileContainer}>
-              <Button title={"test"} onPress={() => console.log(details)} />
+              {/* <Button title={"test"} onPress={() => console.log(details)} /> */}
               <Text
                 style={{
                   fontSize: 32,
@@ -111,26 +126,35 @@ const DetailToko = ({ navigation, route }) => {
           <ScrollView>
             <View id="merchants" style={styles.merchantContainer}>
               {data.map((distributor, index) => {
-                const { InvoiceNo, month, status, total } = distributor;
+                const {id,statusPembayaran,jumlahTagihan,tanggalJatuhTempo} = distributor;
 
                 let bgColor;
-                switch (status) {
-                  case "Sudah Bayar":
+                let textStatus;
+                switch (statusPembayaran) {
+                  case true:
                     bgColor = colors.GREEN;
+                    textStatus = "Tepat Waktu";
                     break;
-                  case "Belum Bayar":
+                  case false:
                     bgColor = colors.YELLOW_STATUS;
+                    textStatus = "Terlambat";
                     break;
-                  case "Gagal":
-                    bgColor = colors.RED;
+                  case null:
+                    bgColor = colors.BUTTON_ORANGE;
+                    textStatus = "Bayar";
                     break;
+                  case "Atur Tenor":
+                    bgColor = colors.BUTTON_ORANGE;
+                    break;
+                  default:
+                    isButtonDisabled = true;
                 }
 
                 return (
                   <View key={index} style={styles.item}>
                     <View style={{ height: "100%", flex: 1, gap: 5 }}>
                       <Text style={{ fontSize: 15, fontWeight: "700" }}>
-                        Invoice {InvoiceNo}
+                        Invoice {id}
                       </Text>
                       <View
                         style={{
@@ -139,10 +163,10 @@ const DetailToko = ({ navigation, route }) => {
                         }}
                       >
                         <Text style={{ fontSize: 14, fontWeight: "700" }}>
-                          {month}
+                          {tanggalJatuhTempo}
                         </Text>
                         <Text style={{ fontSize: 14, fontWeight: "600" }}>
-                          {total}
+                          {jumlahTagihan}
                         </Text>
                       </View>
                       <View
@@ -164,7 +188,8 @@ const DetailToko = ({ navigation, route }) => {
                         >
                           <TouchableOpacity
                             onPress={() =>
-                              navigation.navigate("history-bill-distributor")
+                              navigation.navigate("history-bill-distributor",
+                              {idInvoice: distributor.id,})
                             }
                           >
                             <Text
@@ -174,7 +199,7 @@ const DetailToko = ({ navigation, route }) => {
                                 color: "white",
                               }}
                             >
-                              {status}
+                              {textStatus}
                             </Text>
                           </TouchableOpacity>
                         </View>

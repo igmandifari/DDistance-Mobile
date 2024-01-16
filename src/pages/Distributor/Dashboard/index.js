@@ -32,11 +32,11 @@ const DashboardDistributor = ({ navigation }) => {
   const [merchants, setMerchants] = useState([]);
   const getData = async () => {
     const response = await getMerchantsDashboard(token);
+    console.log(response.data.data);
     if (response.data) {
       setMerchants(response.data.data);
     }
   };
-
   useEffect(() => {
     getData();
   }, []);
@@ -113,22 +113,27 @@ const DashboardDistributor = ({ navigation }) => {
               .filter((item) => !filter || item.status === filter)
               .map((item, index) => {
                 console.log(item);
-                const { status, name, limit } = item;
+                const { status, name, limit, id } = item;
 
-                let bgColor = colors.GREEN;
-                {/* // switch (status) {
-                //   case "Lancar":
-                //     bgColor = colors.GREEN;
-                //     break;
-                //   case "Tidak Lancar":
-                //     bgColor = colors.YELLOW_STATUS;
-                //     break;
-                //   case "Gagal":
-                //     bgColor = colors.RED;
-                //     break;
-                // } */}
+                let bgColor;
+                let textStatus;
+                switch (status) {
+                  case "LANCAR":
+                    bgColor = colors.GREEN;
+                    textStatus = "Lancar";
+                    break;
+                  case "TIDAK LANCAR":
+                    bgColor = colors.YELLOW_STATUS;
+                    textStatus = "Lancar";
+                    break;
+                  case "GAGAL":
+                    bgColor = colors.RED;
+                    textStatus = "Lancar";
+                    break;
+                }
                 return (
                   <TouchableOpacity
+                    key={id}
                     onPress={() =>
                       navigation.navigate("detail-toko", {
                         details: item,
@@ -186,24 +191,7 @@ const DashboardDistributor = ({ navigation }) => {
                             {!limit && "unknown"}
                           </Text>
                         </View>
-                        <View
-                          style={{
-                            backgroundColor: colors.WHITE,
-                            height: 20,
-                            borderRadius: 10,
-                            elevation: 5,
-                            overflow: "hidden",
-                          }}
-                        >
-                          <View
-                            style={{
-                              height: "100%",
-                              backgroundColor: colors.ORANGE,
-                              width: "50%",
-                              borderRadius: 10,
-                            }}
-                          ></View>
-                        </View>
+                        
                         <View
                           style={{
                             flexDirection: "row",
@@ -237,7 +225,8 @@ const DashboardDistributor = ({ navigation }) => {
                                 color: "white",
                               }}
                             >
-                              {!status && "unknown"}
+                            {textStatus}
+                              {/* {!status && "unknown"} */}
                             </Text>
                           </View>
                         </View>

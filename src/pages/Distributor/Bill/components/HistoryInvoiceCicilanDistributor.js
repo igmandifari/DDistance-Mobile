@@ -9,9 +9,11 @@ import {
 } from "react-native";
 import { colors } from "../../../../constant/colors";
 import { historyList2 } from "./data";
+import { useSelector } from "react-redux";
 
 const HistoryInvoiceCicilanDistributor = ({ navigation }) => {
   const [filter, setFilter] = useState("");
+  const { token } = useSelector((state) => state.user);
   const [data, setData] = useState(historyList2);
   const [isProfileVisible, setIsProfileVisible] = useState(true);
 

@@ -74,3 +74,11 @@ export const getInvoiceId = (token, id) => {
     },
   });
 };
+
+export const getDetailMerchantInvoice = (token, id) => {
+  return axiosInstance.get(`${BASE_URL}/api/invoice/${id}/merchant`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

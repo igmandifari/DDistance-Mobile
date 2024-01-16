@@ -124,7 +124,7 @@ export default class CreditHistory extends Component {
                             {item.subTitle}
                           </Text>
 
-                          <Text style={{ fontSize: 20, fontWeight: "450" }}>
+                          <Text style={{ fontSize: 20, fontWeight: "400" }}>
                             {item.submission}
                           </Text>
                         </View>
