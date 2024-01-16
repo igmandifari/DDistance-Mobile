@@ -1,43 +1,59 @@
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React,{ useEffect, useRef, useState } from "react";
 import { colors } from "../../../../constant/colors";
 import BlankKtp from "../../../../assets/img/blank-ktp";
 import BlankSIUP from "../../../../assets/img/blank-siup";
 import BlankAgunan from "../../../../assets/img/blank-agunan";
-
-const details = [
-  {
-    key: "No Faktur :",
-    value: "123456789",
-  },
-  {
-    key: "Tanggal Faktur :",
-    value: "08/09/2023",
-  },
-  {
-    key: "Nama Toko :",
-    value: "Toko A",
-  },
-  {
-    key: "Nama Distributor :",
-    value: "Distributor A",
-  },
-  {
-    key: "Total Tagihan :",
-    value: "Rp. 10.000.000",
-  },
-  {
-    key: "Tanggal Mulai Bayar :",
-    value: "08/12/2022",
-  },
-  {
-    key: "Tanggal Jatuh Tempo :",
-    value: "08/12/2023",
-  },
-];
+import { useSelector } from "react-redux";
+import { getInvoiceId } from "../../../../services/distributorService";
 
 
-const DetailInvoiceBillMerchant = () => {
+
+const DetailInvoiceBillMerchant = ({route}) => {
+  const { token } = useSelector((state) => state.user);
+  const { isSuccess, idInvoice } = route.params;
+  console.log("Invoice id", idInvoice);
+  const [data, setData] = useState({});
+  const getDetail = async () => {
+    const response = await getInvoiceId(token, idInvoice);
+    setData(response.data.data);
+  };
+  console.log("cek data", data);
+  useEffect(() => {
+    getDetail();
+  }, []);
+
+  const details = [
+    {
+      key: "No Faktur :",
+      value: data.judul || "unknown",
+    },
+    {
+      key: "Tanggal Faktur :",
+      value: data.tanggalTagihan || "unknown",
+    },
+    {
+      key: "Nama Toko :",
+      value: data.namaToko || "unknown",
+    },
+    {
+      key: "Nama Distributor :",
+      value: data.namaDistributor || "unknown",
+    },
+    {
+      key: "Total Tagihan :",
+      value: data.jumlahTagihan || "unknown",
+    },
+    // {
+    //   key: "Tanggal Mulai Bayar :",
+    //   value: data.tanggalJatuhTempo|| "unknown",
+    // },
+    {
+      key: "Tanggal Jatuh Tempo :",
+      value: data.tanggalJatuhTempo  || "unknown",
+    },
+  ];
+
   return (
     <SafeAreaView style={{ marginTop: 20 }}>
       <View style={styles.container}>

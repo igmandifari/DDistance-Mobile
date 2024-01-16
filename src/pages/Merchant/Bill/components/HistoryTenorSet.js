@@ -24,43 +24,42 @@ const HistoryTenorSet = ({ navigation, route }) => {
   const sheetPay = useRef(null);
   const paySuccess = useRef(null);
   const payFailed = useRef(null);
-  const { isSuccess,idInvoice,distributorData } = route.params;
+  const { isSuccess, idInvoice, distributorData } = route.params;
   console.log("Invoice ID:", idInvoice);
   console.log("Data:", distributorData);
 
   const [filter, setFilter] = useState("");
   const [data, setData] = useState({});
 
-
   const getDetail = async () => {
     const response = await getInvoiceId(token, idInvoice);
-    const {namaDistributor, jumlahTagihan, tanggalJatuhTempo, id} = response.data.data;
+    const { namaDistributor, jumlahTagihan, tanggalJatuhTempo, id } =
+      response.data.data;
     setData({
-    id,
-    namaDistributor,
-    jumlahTagihan,
-    tanggalJatuhTempo,
+      id,
+      namaDistributor,
+      jumlahTagihan,
+      tanggalJatuhTempo,
     });
   };
 
   useEffect(() => {
     getDetail();
   }, []);
-  
-  console.log("data",data);
+
+  console.log("data", data);
 
   const handleToggleProfile = () => {
     setIsProfileVisible((prev) => !prev);
   };
 
   const handleClickStatus = () => {
-        navigation.navigate("tenor-setting");
+    navigation.navigate("tenor-setting");
   };
 
   if (isSuccess) {
     console.log("success");
   }
-
 
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
@@ -124,107 +123,100 @@ const HistoryTenorSet = ({ navigation, route }) => {
             <View>
               <Text style={{ fontSize: 20, fontWeight: 400 }}>
                 {/* Riwayat Cicilan Invoice {idInvoice} */}
-                Riwayat Cicilan Invoice 
+                Riwayat Cicilan Invoice
               </Text>
             </View>
           </View>
           <ScrollView>
             <View id="merchants" style={styles.merchantContainer}>
-              
-            {/* {data !== null &&
+              {/* {data !== null &&
               data.map((distributor, index) => {
                 const { sisaTagihan, tanggalFaktur, paymentTo, paymentAmount } = distributor;
                 console.log('distiebuor', distributor); */}
-                  <View style={styles.item}>
-                    <View style={{ height: "100%", flex: 1 }}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-
-                            <Text
-                              style={{
-                                fontSize: 15,
-                                fontWeight: "700",
-                                flex: 1,
-                              }}
-                            >
-                              Total Tagihan
-                            </Text>
-                            {/* <Text style={{ fontSize: 20, fontWeight: "600" }}>
+              <View style={styles.item}>
+                <View style={{ height: "100%", flex: 1 }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        fontWeight: "700",
+                        flex: 1,
+                      }}
+                    >
+                      Total Tagihan
+                    </Text>
+                    {/* <Text style={{ fontSize: 20, fontWeight: "600" }}>
                               {sisaTagihan}
                             </Text> */}
 
-                            {/* <Text style={{ fontSize: 15, fontWeight: "700" }}>
+                    {/* <Text style={{ fontSize: 15, fontWeight: "700" }}>
                               Cicilan {paymentTo}/{paymentAmount}
                             </Text> */}
-                            <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                              Rp. {data.jumlahTagihan}
-                            </Text>
-    
-                      </View>
-                      <View style={{ alignItems: "start" }}>
-                        
-                          <Text
-                            style={{
-                              fontSize: 15,
-                              fontWeight: "700",
-                              color: colors.ORANGE,
-                            }}
-                          >
-                            Jatuh Tempo Pilih Tenor:
-                          </Text>
-                        
-                        {/* <Text style={{ fontSize: 14, color: colors.BUTTON_ORANGE }}>{date}</Text> */}
-                      </View>
-                      <View
+                    <Text style={{ fontSize: 20, fontWeight: "600" }}>
+                      Rp. {data.jumlahTagihan}
+                    </Text>
+                  </View>
+                  <View style={{ alignItems: "start" }}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        fontWeight: "700",
+                        color: colors.ORANGE,
+                      }}
+                    >
+                      Jatuh Tempo Pilih Tenor:
+                    </Text>
+
+                    {/* <Text style={{ fontSize: 14, color: colors.BUTTON_ORANGE }}>{date}</Text> */}
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <View style={{ alignItems: "center" }}>
+                      <Text
                         style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
+                          fontSize: 14,
+                          color: colors.BUTTON_ORANGE,
                         }}
                       >
-                        <View style={{ alignItems: "center" }}>
-      
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              color: colors.BUTTON_ORANGE,
-                            }}
-                          >
-                            {data.tanggalJatuhTempo}
-                          </Text>
-                        </View>
-                        <View
+                        {data.tanggalJatuhTempo}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        width: 120,
+                        borderRadius: 10,
+                        backgroundColor: colors.BUTTON_ORANGE,
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        paddingVertical: 5,
+                      }}
+                    >
+                      <TouchableOpacity onPress={() => handleClickStatus()}>
+                        <Text
                           style={{
-                            width: 120,
-                            borderRadius: 10,
-                            backgroundColor: colors.BUTTON_ORANGE,
-                            flexDirection: "row",
-                            justifyContent: "center",
-                            paddingVertical: 5,
+                            fontSize: 16,
+                            fontWeight: "600",
+                            color: "white",
                           }}
                         >
-                          <TouchableOpacity
-                            onPress={() => handleClickStatus()}
-                          >
-                            <Text
-                              style={{
-                                fontSize: 16,
-                                fontWeight: "600",
-                                color: "white",
-                              }}
-                            >
-                             Atur Tenor
-                            </Text>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
+                          Atur Tenor
+                        </Text>
+                      </TouchableOpacity>
                     </View>
                   </View>
-                {/* ); */}
+                </View>
+              </View>
+              {/* ); */}
               {/* })} */}
             </View>
           </ScrollView>
@@ -258,7 +250,7 @@ const HistoryTenorSet = ({ navigation, route }) => {
         </View>
       </View>
     </SafeAreaView>
-  ) 
+  );
 };
 
 export default HistoryTenorSet;

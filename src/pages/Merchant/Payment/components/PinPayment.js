@@ -1,17 +1,18 @@
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
 import React, { useState, useEffect } from "react";
-import { colors } from "../../../../constant/colors";
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import OtpInputs from "react-native-otp-inputs";
 import CustomButton from "../../../../components/CustomButton";
+import { useSelector } from "react-redux";
+import { sendOtpPayment } from "../../../../services/merchantServices";
+import { colors } from "react-native-elements";
 
-const PinPayment = ({ navigation }) => {
+const PinPayment = ({ navigation, route }) => {
+  const { token } = useSelector((state) => state.user);
+  const { selectedPaymentId } = route.params;
+  // console.log(selectedPaymentId);  
   const [timer, setTimer] = useState(60);
+  const [otp, setOtp] = useState("");
+  const otpRef = React.createRef();
 
   useEffect(() => {
     if (!timer) return;
@@ -23,20 +24,28 @@ const PinPayment = ({ navigation }) => {
     return () => clearInterval(intervalId);
   }, [timer]);
 
-  const [otp, setOtp] = useState("");
-  otpRef = React.createRef();
-
-  clearOTP = () => {
+  const clearOTP = () => {
     otpRef.current.clear();
   };
 
-  const handleSubmit = () => {
-    if (otp.length != 6) {
+  const handleSubmit = async () => {
+    if (otp.length !== 6) {
       alert("PIN is not valid");
       return;
     }
-    navigation.navigate("otp-payment-invoice");
+  
+    try {
+      await sendOtpPayment(token, otp);
+      navigation.navigate("otp-payment-invoice", {
+        selectedPaymentId: selectedPaymentId,
+      });
+    } catch (error) {
+      console.error("Error sending OTP payment request:", error);
+    }
   };
+  
+  
+
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
@@ -44,11 +53,7 @@ const PinPayment = ({ navigation }) => {
           Masukan PIN Pembayaran
         </Text>
         <View style={styles.otp}>
-          <OtpInputs
-            ref={this.otpRef}
-            handleChange={(code) => setOtp(code)}
-            numberOfInputs={6}
-          />
+          <OtpInputs ref={otpRef} handleChange={(code) => setOtp(code)} numberOfInputs={6} />
         </View>
         <View>
           <TouchableOpacity onPress={() => handleSubmit()}>
@@ -60,21 +65,12 @@ const PinPayment = ({ navigation }) => {
                 textAlign: "center",
               }}
             >
-              Lupa Pin ?
+              Lupa Pin?
             </Text>
           </TouchableOpacity>
         </View>
-        <View
-          style={{
-            flex: 1,
-            marginTop: 300,
-            justifyContent: "flex-end",
-          }}
-        >
-          <CustomButton
-            text={"Kirim Permintaan"}
-            handleClick={() => handleSubmit()}
-          />
+        <View style={{ flex: 1, marginTop: 300, justifyContent: "flex-end" }}>
+          <CustomButton text={"Kirim Permintaan"} handleClick={() => handleSubmit()} />
         </View>
       </View>
     </SafeAreaView>

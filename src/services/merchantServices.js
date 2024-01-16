@@ -186,14 +186,11 @@ export const cekTagihan = (token, bodyRequest) => {
 };
 
 export const sendTokenPayment = (token) => {
-  return axiosInstance.get(
-    "http://10.0.2.2:8080/api/payment/send/token",
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  return axiosInstance.get("http://10.0.2.2:8080/api/payment/send/token", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export const getDetailInvoiceId = (token, id) => {
@@ -210,4 +207,26 @@ export const getPaymentId = (token, id) => {
       Authorization: `Bearer ${token}`,
     },
   });
+};
+
+export const paymentAll = (token, payload) => {
+  return axiosInstance.put(`${BASE_URL}/api/payment`, payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const sendOtpPayment = (token, pin) => {
+  return axiosInstance.post(
+    `${BASE_URL}/api/payment/send/token`,
+    {
+      pin: pin,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 };

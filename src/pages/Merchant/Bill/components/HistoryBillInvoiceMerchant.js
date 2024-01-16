@@ -57,13 +57,15 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
     setIsProfileVisible((prev) => !prev);
   };
 
-  const handleClickStatus = (statusPembayaran) => {
+  const handleClickStatus = (statusPembayaran, paymentId) => {
+    setSelectedPaymentId(paymentId);
     sheetPay.current.show();
   };
 
   if (isSuccess) {
     console.log("success");
   }
+  const [selectedPaymentId, setSelectedPaymentId] = useState(null);
 
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
@@ -80,10 +82,17 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
           ref={sheetPay}
         >
           <SheetPay
-            handlePayAll={() => {
-              console.log("pay all");
-            }}
-            handlePay={() => navigation.navigate("pin-payment")}
+            handlePayAll={() =>
+              navigation.navigate("pin-payment", {
+                selectedPaymentId: selectedPaymentId,
+              })
+            }
+            handlePay={() =>
+              navigation.navigate("pin-payment", {
+                selectedPaymentId: selectedPaymentId,
+              })
+            }
+            selectedPaymentId={selectedPaymentId}
           />
         </BottomSheet>
         <BottomSheet
@@ -116,7 +125,7 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
           <View id="profile" style={{}}>
             <View style={styles.profileContainer}>
               <Text style={{ fontSize: 32, fontWeight: "700" }}>
-                Distributor 
+                Distributor
               </Text>
               {/* <Button
                 title={"pay success"}
@@ -150,7 +159,7 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
           <View>
             <View>
               <Text style={{ fontSize: 20, fontWeight: 400 }}>
-                Riwayat Cicilan Invoice 
+                Riwayat Cicilan Invoice
               </Text>
             </View>
           </View>
@@ -158,6 +167,7 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
             <View id="merchants" style={styles.merchantContainer}>
               {data.map((distributor, index) => {
                 const {
+                  id,
                   InvoiceNo,
                   sisaTagihan,
                   tanggalFaktur,
@@ -279,7 +289,7 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
                           {statusPembayaran === null ? (
                             <TouchableOpacity
                               onPress={() =>
-                                handleClickStatus(statusPembayaran)
+                                handleClickStatus(statusPembayaran, id)
                               }
                               disabled={isButtonDisabled}
                             >
@@ -320,7 +330,9 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
           >
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("detail-invoice-bill-merchant")
+                navigation.navigate("detail-invoice-bill-merchant", {
+                  idInvoice: idInvoice,
+                })
               }
               style={{
                 backgroundColor: colors.ORANGE,
