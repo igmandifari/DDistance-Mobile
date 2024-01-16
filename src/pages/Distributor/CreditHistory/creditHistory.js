@@ -57,7 +57,7 @@ const CreditHistory = () => {
                           fontWeight: 600,
                         }}
                       >
-                        {item.idInvoice}
+                        Invoice - {item.idInvoice}
                       </Text>
                     </View>
                   </View>
@@ -78,7 +78,7 @@ const CreditHistory = () => {
                     </Text>
 
                     <Text style={{ fontSize: 20, fontWeight: "400" }}>
-                      {item.totalPembayaran}
+                      Rp. {item.totalPembayaran}
                     </Text>
                   </View>
                   <Text
@@ -87,7 +87,7 @@ const CreditHistory = () => {
                       fontWeight: "400",
                     }}
                   >
-                    {item.tanggalTerakhirBayar}
+                    Paymeny Date : {item.tanggalTerakhirBayar}
                   </Text>
                   <View
                     style={{
