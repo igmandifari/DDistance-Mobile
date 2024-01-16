@@ -30,8 +30,12 @@ const Profile = ({ navigation }) => {
   };
 
   const getUserProfileData = async () => {
-    const response = await getUserMerchant(token);
-    setUserProfile(response.data.data);
+    try {
+      const response = await getUserMerchant(token);
+      setUserProfile(response.data.data);
+    } catch (error) {
+      console.log("Error Fetch user profile" + error);
+    }
   };
 
   useEffect(() => {
@@ -65,7 +69,7 @@ const Profile = ({ navigation }) => {
     },
   ];
 
-  console.log(userProfile);
+  // console.log(userProfile);
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       {popUp && (

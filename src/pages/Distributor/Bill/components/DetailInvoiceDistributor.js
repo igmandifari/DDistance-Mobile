@@ -22,7 +22,6 @@ import * as Yup from "yup";
 const DetailInvoiceDistributor = ({ route, navigation }) => {
   const { token } = useSelector((state) => state.user);
   const { idInvoice } = route?.params;
-  // console.log("ini id ====>",idInvoice);
   const [data, setData] = useState({
     id: null,
     judul: null,
@@ -51,7 +50,7 @@ const DetailInvoiceDistributor = ({ route, navigation }) => {
         rejection: alasanPenolakan,
         status: installment,
       } = response.data.data;
-      
+
       setData({
         id,
         judul,
@@ -63,7 +62,6 @@ const DetailInvoiceDistributor = ({ route, navigation }) => {
         rejection: alasanPenolakan,
         status: installment,
       });
-      
     } catch (error) {
       console.error("Error fetching invoice data:", error);
     }
@@ -107,16 +105,14 @@ const DetailInvoiceDistributor = ({ route, navigation }) => {
   const handleSetuju = () => {
     console.log("Setuju");
     if (isValid) {
-      // handleSubmit({ status: "DITERIMA" });
-      setData({...data, status: "DITERIMA"})
+      setData({ ...data, status: "DITERIMA" });
     }
   };
-  
+
   const handleTolak = () => {
     console.log("Tolak");
     if (isValid) {
-      setData({...data, status: "DITOLAK"})
-      // handleSubmit({ status: "DITOLAK" });
+      setData({ ...data, status: "DITOLAK" });
     }
   };
 
@@ -125,20 +121,13 @@ const DetailInvoiceDistributor = ({ route, navigation }) => {
       installment: data.status,
       alasanPenolakan: data.rejection,
     },
-    // validationSchema: Yup.object({
-    //   rejection: Yup.string().required("Alasan ditolak harus diisi"),
-    //   status: Yup.string().required("Belum memilih Approval Status"),
-    // }),
     onSubmit: async (values) => {
       try {
         const formData = {
           id: data.id,
-          alasanPenolakan:values.rejection,
-          installemnt: data.status
+          alasanPenolakan: values.rejection,
+          installemnt: data.status,
         };
-
-        // formData.append("status", values.installment);
-        // formData.append("rejection", values.alasanPenolakan);
 
         await sendOtpInvoiceDistributor(token);
 

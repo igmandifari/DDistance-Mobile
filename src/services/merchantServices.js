@@ -9,6 +9,14 @@ export const getDistributorsDashboard = (token) => {
   });
 };
 
+export const updateProfileUser = (token, payload) => {
+  return axiosInstance.put(`${BASE_URL}/api/merchant`, payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 export const getDetailDistributorInvoice = (token, id) => {
   return axiosInstance.get(`${BASE_URL}/api/invoice/${id}/distributor`, {
     headers: {
@@ -118,14 +126,11 @@ export const putChangePassword = (
 };
 
 export const sendOtpChangePassword = (token) => {
-  return axiosInstance.get(
-    `${BASE_URL}/api/merchant/email/send/token`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  return axiosInstance.get(`${BASE_URL}/api/merchant/email/send/token`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export const getAllDistributor = (token) => {
@@ -137,29 +142,22 @@ export const getAllDistributor = (token) => {
 };
 
 export const sendOtpInvoiceMerhant = (token) => {
-  return axiosInstance.get(
-    `${BASE_URL}/api/invoice/email/send/token`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  return axiosInstance.get(`${BASE_URL}/api/invoice/email/send/token`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export const postInvoice = (token, payload, otp) => {
   console.log("ini payload", payload);
-  return axiosInstance.post(
-    `${BASE_URL}/api/invoice?otp=${otp}`,
-    payload,
-    {
-      headers: {
-        Accept: "*/*",
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
-      },
-    }
-  );
+  return axiosInstance.post(`${BASE_URL}/api/invoice?otp=${otp}`, payload, {
+    headers: {
+      Accept: "*/*",
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 export const getDetailTagihan = (token, id) => {
@@ -174,13 +172,9 @@ export const getDetailTagihan = (token, id) => {
 };
 
 export const cekTagihan = (token, bodyRequest) => {
-  return axiosInstance.post(
-    `${BASE_URL}/api/invoice/cekTagihan`,
-    bodyRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  return axiosInstance.post(`${BASE_URL}/api/invoice/cekTagihan`, bodyRequest, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };

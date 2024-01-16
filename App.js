@@ -234,3 +234,6 @@ function App() {
 }
 
 export default App;
+
+
+// /home/user/Android/Sdk
