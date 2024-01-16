@@ -2,7 +2,7 @@ import axiosInstance from "../api/axiosInstance";
 import { BASE_URL } from "@env";
 
 export const getDistributorsDashboard = (token) => {
-  return axiosInstance.get(`${BASE_URL}/api/distributor/dashboard`, {
+  return axiosInstance.get(`http://10.0.2.2:8080/api/distributor/dashboard`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -10,15 +10,18 @@ export const getDistributorsDashboard = (token) => {
 };
 
 export const getDetailDistributorInvoice = (token, id) => {
-  return axiosInstance.get(`${BASE_URL}/api/invoice/${id}/distributor`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return axiosInstance.get(
+    `http://10.0.2.2:8080/api/invoice/${id}/distributor`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 };
 
 export const getInsurances = (token) => {
-  return axiosInstance.get(`${BASE_URL}/api/insurance`, {
+  return axiosInstance.get(`http://10.0.2.2:8080/api/insurance`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -26,7 +29,7 @@ export const getInsurances = (token) => {
 };
 
 export const getDetailInsurance = (token, id) => {
-  return axiosInstance.get(`${BASE_URL}/api/insurance/${id}`, {
+  return axiosInstance.get(`http://10.0.2.2:8080/api/insurance/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -35,7 +38,7 @@ export const getDetailInsurance = (token, id) => {
 
 export const getKtp = async (token, id) => {
   const response = await axiosInstance.get(
-    `${BASE_URL}/api/insurance/${id}/ktp`,
+    `http://10.0.2.2:8080/api/insurance/${id}/ktp`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -60,22 +63,29 @@ const blobToBase64 = (blob) => {
 };
 
 export const sendOtpInsurance = (token) => {
-  return axiosInstance.get(`${BASE_URL}/api/insurance/email/send/token`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return axiosInstance.get(
+    `http://10.0.2.2:8080/api/insurance/email/send/token`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 };
 
 export const createInsurance = (token, payload, otp) => {
   console.log(payload);
-  return axiosInstance.post(`${BASE_URL}/api/insurance?otp=${otp}`, payload, {
-    headers: {
-      Accept: "*/*",
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  return axiosInstance.post(
+    `http://10.0.2.2:8080/api/insurance?otp=${otp}`,
+    payload,
+    {
+      headers: {
+        Accept: "*/*",
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
 };
 
 export const getInvoice = (token) => {
@@ -164,7 +174,7 @@ export const postInvoice = (token, payload, otp) => {
 
 export const getDetailTagihan = (token, id) => {
   return axiosInstance.get(
-    "http://10.0.2.2:8080/api/invoice/ff8081818cfeaf98018cfeafae7f0007",
+    "http://10.0.2.2:8080/api/invoice/ff8081818d0e370f018d0e3c07cc000b",
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -173,14 +183,50 @@ export const getDetailTagihan = (token, id) => {
   );
 };
 
-export const cekTagihan = (token, bodyRequest) => {
-  return axiosInstance.post(
-    "http://localhost:8080/api/invoice/cekTagihan",
-    bodyRequest,
+export const cekTagihan = async (token, bodyRequest) => {
+  try {
+    const response = await axiosInstance.post(
+      "http://10.0.2.2:8080/api/invoice/cekTagihan",
+      bodyRequest,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error saat cek tagihan:", error);
+    throw error;
+  }
+};
+
+export const sendOtpAturTenor = (token) => {
+  return axiosInstance.get(
+    "http://10.0.2.2:8080/api/invoice/email/send/token",
     {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }
   );
+};
+
+export const setTenor = async (token, bodyRequest) => {
+  try {
+    const response = await axiosInstance.post(
+      'http://10.0.2.2:8080/api/invoice/tenor',
+      bodyRequest,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error('Error saat setting tenor:', error);
+    throw error;
+  }
 };

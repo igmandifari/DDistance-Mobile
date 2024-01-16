@@ -27,14 +27,15 @@ import DetailInvoiceBillMerchant from "./src/pages/Merchant/Bill/components/Deta
 import DetailToko from "./src/pages/Distributor/Bill/components/DetailToko";
 import HistoryInvoiceCicilanDistributor from "./src/pages/Distributor/Bill/components/HistoryInvoiceCicilanDistributor";
 import InvoiceDistributor from "./src/pages/Distributor/Bill/components/InvoiceDistributor";
-import TenorSetting from "./src/pages/Merchant/Payment";
-import OtpTenor from "./src/pages/Merchant/Payment/components/OtpTenor";
 import PinPayment from "./src/pages/Merchant/Payment/components/PinPayment.js";
 import OtpPaymentInvoice from "./src/pages/Merchant/Payment/components/OtpPaymentInvoice.js";
 import NotificationDistributor from "./src/pages/Distributor/Notification/notification";
 import NotificationMerchant from "./src/pages/Merchant/Notification/notification";
 import CreditHistory from "./src/pages/Distributor/CreditHistory/creditHistory";
 import OtpChange from "./src/pages/Merchant/Profile/components/OtpChange";
+import TenorSuccessSetting from "./src/pages/Merchant/Payment/components/TenorSuccessSetting.js";
+import TenorSetting from "./src/pages/Merchant/Payment/index.js";
+import OtpTenor from "./src/pages/Merchant/Payment/components/OtpTenor";
 
 const routerList = [
   {
@@ -159,16 +160,6 @@ const routerList = [
   },
   // Payment menu
   {
-    name: "tenor-setting",
-    component: TenorSetting,
-    headerShown: false,
-  },
-  {
-    name: "otp-tenor",
-    component: OtpTenor,
-    headerShown: false,
-  },
-  {
     name: "pin-payment",
     component: PinPayment,
     headerShown: false,
@@ -181,6 +172,9 @@ const routerList = [
   {
     name: "otp-payment-invoice",
     component: OtpPaymentInvoice,
+    headerShown: false,
+  },
+  {
     name: "notificationDistributor",
     component: NotificationDistributor,
     headerShown: false,
@@ -193,6 +187,22 @@ const routerList = [
   {
     name: "creditHistory",
     component: CreditHistory,
+    headerShown: false,
+  },
+  // Atur Tenor 
+  {
+    name: "tenor-setting",
+    component: TenorSetting,
+    headerShown: false,
+  },
+  {
+    name: "otp-tenor",
+    component: OtpTenor,
+    headerShown: false,
+  },
+  {
+    name: "tenor-success-setting",
+    component: TenorSuccessSetting,
     headerShown: false,
   },
 ];
