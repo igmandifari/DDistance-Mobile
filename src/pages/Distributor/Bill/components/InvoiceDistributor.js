@@ -1,43 +1,58 @@
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import React from "react";
 import { colors } from "../../../../constant/colors";
-import BlankKtp from "../../../../assets/img/blank-ktp";
-import BlankSIUP from "../../../../assets/img/blank-siup";
-import BlankAgunan from "../../../../assets/img/blank-agunan";
-
-const details = [
-  {
-    key: "No Faktur :",
-    value: "123456789",
-  },
-  {
-    key: "Tanggal Faktur :",
-    value: "08/09/2023",
-  },
-  {
-    key: "Nama Toko :",
-    value: "Toko A",
-  },
-  {
-    key: "Nama Distributor :",
-    value: "Distributor A",
-  },
-  { 
-    key: "Total Tagihan :",
-    value: "Rp. 10.000.000",
-  },
-  {
-    key: "Tanggal Jatuh Tempo :",
-    value: "08/12/2023",
-  },
-];
+import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { getInvoiceId } from "../../../../services/distributorService";
 
 
-const InvoiceDistributor = () => {
+const InvoiceDistributor = ({route,navigation}) => {
+  const { token } = useSelector((state) => state.user);
+  const [data, setData] = useState({});
+  const { idInvoice } = route.params;
+  console.log("id invoice", idInvoice);
+  const getDetail = async () => {
+    const response = await getInvoiceId(token, idInvoice);
+    const {namaDistributor, jumlahTagihan, tanggalJatuhTempo, id} = response.data.data;
+    setData({
+    id,
+    namaDistributor,
+    jumlahTagihan,
+    tanggalJatuhTempo,
+    });
+  };
+
+  useEffect(() => {
+    getDetail();
+  }, []);
+  const details = [
+    {
+      key: "ID Invoice:",
+      value: data.id || "unknown",
+    },
+    {
+      key: "Tanggal Jatuh Tempo:",
+      value: data.tanggalJatuhTempo || "unknown",
+    },
+    {
+      key: "Nama Toko:",
+      value: data.namaDistributor || "unknown",
+    },
+    {
+      key: "Nama Distributor:",
+      value: data.namaDistributor || "unknown",
+    },
+    {
+      key: "Total Tagihan:",
+      value: `Rp. ${data.jumlahTagihan || 0}`,
+    },
+  ];
+  
+  
+  console.log("data", data);
   return (
     <SafeAreaView style={{ marginTop: 20 }}>
       <View style={styles.container}>
-        <Text style={styles.title}>Invoice 0000000</Text>
+        <Text style={styles.title}>Invoice</Text>
         <View
           style={{
             borderBottomColor: "black",
@@ -63,7 +78,7 @@ const InvoiceDistributor = () => {
               <Text>{item.value}</Text>
             </View>
           );
-        })} 
+        })}
       </View>
     </SafeAreaView>
   );

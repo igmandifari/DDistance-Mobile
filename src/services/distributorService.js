@@ -14,8 +14,7 @@ export const getInvoice = (token) => {
     headers: {
       Authorization: "Bearer",
     },
-  });
-  
+  }); 
 };
 
 export const getMerchantsInvoice = (token) => {
@@ -81,4 +80,11 @@ export const getDetailMerchantInvoice = (token, id) => {
       Authorization: `Bearer ${token}`,
     },
   });
+};
+export const getCreditHistory = (token) => {
+  return axiosInstance.get(`${BASE_URL}/api/invoice/getCreditHistory`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }); 
 };

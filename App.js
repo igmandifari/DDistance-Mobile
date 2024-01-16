@@ -158,6 +158,7 @@ const routerList = [
   {
     name: "invoice-distributor",
     component: InvoiceDistributor,
+    headerShown: false,
   },
   // Payment menu
   {

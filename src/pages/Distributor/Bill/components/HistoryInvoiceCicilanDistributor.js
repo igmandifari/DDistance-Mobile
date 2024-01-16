@@ -8,39 +8,31 @@ import {
   SafeAreaView,
 } from "react-native";
 import { colors } from "../../../../constant/colors";
-import { historyList2 } from "./data";
+// import { historyList2 } from "./data";
 import { useSelector } from "react-redux";
+import { getDetailInvoiceId } from "../../../../services/merchantServices";
 
-const HistoryInvoiceCicilanDistributor = ({ navigation }) => {
+const HistoryInvoiceCicilanDistributor = ({ navigation, route }) => {
   const [filter, setFilter] = useState("");
   const { token } = useSelector((state) => state.user);
-  const [data, setData] = useState(historyList2);
+  const [data, setData] = useState([]);
   const [isProfileVisible, setIsProfileVisible] = useState(true);
+  const { idInvoice } = route.params;
+  console.log("id invoice", idInvoice);
 
-  const filterTypes = [
-    {
-      name: "Tepat Waktu",
-    },
-    {
-      name: "Terlambat",
-    },
-    {
-      name: "Bayar",
-    },
-  ];
+  const getDetail = async () => {
+    const response = await getDetailInvoiceId(token, idInvoice);
+    setData(response.data.data);
+  };
+  console.log("cek data", data);
 
   const handleChangeFilter = (name) => {
     setFilter(name);
   };
 
   useEffect(() => {
-    if (!filter) {
-      setData(historyList2);
-      return;
-    }
-    const filtered = historyList2.filter((item) => item.status === filter);
-    setData(filtered);
-  }, [filter]);
+    getDetail();
+  }, []);
 
   const handleToggleProfile = () => {
     setIsProfileVisible((prev) => !prev);
@@ -58,44 +50,43 @@ const HistoryInvoiceCicilanDistributor = ({ navigation }) => {
             </View>
           </View>
         )}
-        {!isProfileVisible && (
-          <View style={{ alignItems: "center", marginVertical: 10 }}>
-            <TouchableOpacity onPress={handleToggleProfile}>
-              <Text
-                style={{
-                  color: colors.LIGHT_ORANGE,
-                  fontSize: 16,
-                  fontWeight: 700,
-                }}
-              >
-                Show
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
         <View id="list-merchant" style={styles.listContainer}>
           <View>
             <View>
               <Text style={{ fontSize: 20, fontWeight: 400 }}>
-                Riwayat Cicilan Invoice 00000000
+                Riwayat Cicilan Invoice
               </Text>
             </View>
           </View>
           <ScrollView>
             <View id="merchants" style={styles.merchantContainer}>
               {data.map((distributor, index) => {
-                const { InvoiceNo, month, status, total, date } = distributor;
+                const {
+                  InvoiceNo,
+                  sisaTagihan,
+                  tanggalFaktur,
+                  statusPembayaran,
+                  paymentAmount,
+                  paymentTo,
+                } = distributor;
 
                 let bgColor;
-                switch (status) {
-                  case "Tepat Waktu":
+                let textStatus;
+                {
+                  /* let isButtonDisabled = false; */
+                }
+                switch (statusPembayaran) {
+                  case true:
                     bgColor = colors.GREEN;
+                    textStatus = "Tepat Waktu";
                     break;
-                  case "Terlambat":
+                  case false:
                     bgColor = colors.YELLOW_STATUS;
+                    textStatus = "Terlambat";
                     break;
-                  case "Bayar":
+                  case null:
                     bgColor = colors.BUTTON_ORANGE;
+                    textStatus = "Belum Bayar";
                     break;
                   case "Atur Tenor":
                     bgColor = colors.BUTTON_ORANGE;
@@ -112,34 +103,34 @@ const HistoryInvoiceCicilanDistributor = ({ navigation }) => {
                           alignItems: "center",
                         }}
                       >
-                        {status === "Atur Tenor" ? (
+                        {statusPembayaran === "Atur Tenor" ? (
                           <>
                             <Text
                               style={{
                                 fontSize: 15,
                                 fontWeight: "700",
-                                flex:1,
+                                flex: 1,
                               }}
                             >
                               Total Tagihan
                             </Text>
                             <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                              {total}
+                              {sisaTagihan}
                             </Text>
                           </>
                         ) : (
                           <>
                             <Text style={{ fontSize: 15, fontWeight: "700" }}>
-                              Cicilan {month}
+                              Cicilan {paymentTo}/{paymentAmount}
                             </Text>
                             <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                              {total}
+                              {sisaTagihan}
                             </Text>
                           </>
                         )}
                       </View>
                       <View style={{ alignItems: "start" }}>
-                        {status === "Atur Tenor" && (
+                        {statusPembayaran === "Atur Tenor" && (
                           <Text
                             style={{
                               fontSize: 15,
@@ -159,7 +150,7 @@ const HistoryInvoiceCicilanDistributor = ({ navigation }) => {
                         }}
                       >
                         <View style={{ alignItems: "center" }}>
-                          {status === "Bayar" && (
+                          {statusPembayaran === "Bayar" && (
                             <Text
                               style={{
                                 fontSize: 15,
@@ -175,7 +166,7 @@ const HistoryInvoiceCicilanDistributor = ({ navigation }) => {
                               fontSize: 14,
                             }}
                           >
-                            {date}
+                            {tanggalFaktur}
                           </Text>
                         </View>
                         <View
@@ -188,11 +179,7 @@ const HistoryInvoiceCicilanDistributor = ({ navigation }) => {
                             paddingVertical: 5,
                           }}
                         >
-                          <TouchableOpacity
-                            onPress={() =>
-                              navigation.navigate("invoice-distributor")
-                            }
-                          >
+                          <TouchableOpacity>
                             <Text
                               style={{
                                 fontSize: 16,
@@ -200,7 +187,7 @@ const HistoryInvoiceCicilanDistributor = ({ navigation }) => {
                                 color: "white",
                               }}
                             >
-                              {status}
+                              {textStatus}
                             </Text>
                           </TouchableOpacity>
                         </View>
@@ -211,6 +198,7 @@ const HistoryInvoiceCicilanDistributor = ({ navigation }) => {
               })}
             </View>
           </ScrollView>
+
           <View
             style={{
               alignItems: "center",
@@ -219,7 +207,9 @@ const HistoryInvoiceCicilanDistributor = ({ navigation }) => {
           >
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("invoice-distributor")
+                navigation.navigate("invoice-distributor", {
+                  idInvoice: idInvoice,
+                })
               }
               style={{
                 backgroundColor: colors.ORANGE,

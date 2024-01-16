@@ -22,7 +22,6 @@ const DetailToko = ({ navigation, route }) => {
   const [isProfileVisible, setIsProfileVisible] = useState(true);
   const { token } = useSelector((state) => state.user);
 
-
   const filterTypes = [
     {
       name: "Lancar",
@@ -53,11 +52,10 @@ const DetailToko = ({ navigation, route }) => {
   };
 
   const getDetail = async () => {
-    const response = await getDetailMerchantInvoice(token,id);
+    const response = await getDetailMerchantInvoice(token, id);
     setData(response.data.data);
-    console.log("cek",response.data.data);
+    console.log("cek", response.data.data);
   };
-
 
   useEffect(() => {
     getDetail();
@@ -126,7 +124,12 @@ const DetailToko = ({ navigation, route }) => {
           <ScrollView>
             <View id="merchants" style={styles.merchantContainer}>
               {data.map((distributor, index) => {
-                const {id,statusPembayaran,jumlahTagihan,tanggalJatuhTempo} = distributor;
+                const {
+                  id,
+                  statusPembayaran,
+                  jumlahTagihan,
+                  tanggalJatuhTempo,
+                } = distributor;
 
                 let bgColor;
                 let textStatus;
@@ -187,10 +190,11 @@ const DetailToko = ({ navigation, route }) => {
                           }}
                         >
                           <TouchableOpacity
-                            onPress={() =>
-                              navigation.navigate("history-bill-distributor",
-                              {idInvoice: distributor.id,})
-                            }
+                            onPress={() => {
+                              navigation.navigate("history-bill-distributor", {
+                                idInvoice: distributor.id,
+                              });
+                            }}
                           >
                             <Text
                               style={{
