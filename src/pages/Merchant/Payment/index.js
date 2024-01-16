@@ -52,13 +52,10 @@ const TenorSetting = ({ navigation, route }) => {
       return;
     }
     try {
-      // Call the API to send OTP for tenor adjustment
       await sendOtpAturTenor(token);
   
-      // Navigate to the "otp-tenor" page
       navigation.navigate("otp-tenor", {
         formData: {
-          // id: detail.id,
           id: detail.id,         
           tenor: value,
         },

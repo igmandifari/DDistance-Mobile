@@ -174,7 +174,7 @@ export const postInvoice = (token, payload, otp) => {
 
 export const getDetailTagihan = (token, id) => {
   return axiosInstance.get(
-    "http://10.0.2.2:8080/api/invoice/ff8081818d0e370f018d0e3c07cc000b",
+    `http://10.0.2.2:8080/api/invoice/${id}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
