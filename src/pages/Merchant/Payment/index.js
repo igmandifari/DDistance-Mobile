@@ -22,6 +22,7 @@ import {
   getDetailTagihan,
 } from "../../../services/merchantServices";
 import { useSelector } from "react-redux";
+import { getInvoiceId } from "../../../services/distributorService";
 const data = [
   { label: "3 Bulan", value: 3 },
   { label: "6 Bulan", value: 6 },
@@ -31,7 +32,8 @@ const data = [
 
 const TenorSetting = ({ navigation, route }) => {
   const { token } = useSelector((state) => state.user);
-  const { isSuccess } = route.params;
+  const { isSuccess,idInvoice } = route.params;
+  console.log("ID Invoice",idInvoice);
   const sheetSuccess = useRef(null);
   const [hasilCekTagihan, setHasilCekTagihan] = useState(null);
   // const sheetPay = useRef(null);
@@ -71,7 +73,7 @@ const TenorSetting = ({ navigation, route }) => {
   }
 
   const getData = async () => {
-    const response = await getDetailTagihan(token);
+    const response = await getInvoiceId(token,idInvoice);
     const {
       namaToko,
       namaDistributor,
@@ -100,27 +102,27 @@ const TenorSetting = ({ navigation, route }) => {
   const details = [
     {
       key: "No. Faktur:",
-      value: detail.id,
+      value: detail.id || "unknown",
     },
     {
       key: "Tanggal Faktur:",
-      value: detail.dateFaktur,
+      value: detail.dateFaktur || "unknown",
     },
     {
       key: "Nama Toko",
-      value: detail.merchantName,
+      value: detail.merchantName || "unknown",
     },
     {
       key: "Nama Distributor:",
-      value: detail.distributorName,
+      value: detail.distributorName || "unknown",
     },
     {
       key: "Tanggal Jatuh Tempo",
-      value: detail.expiredDate,
+      value: detail.expiredDate || "unknown",
     },
     {
       key: "Total Tagihan",
-      value: detail.totalTagihan,
+      value: detail.totalTagihan || "unknown",
     },
   ];
 

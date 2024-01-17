@@ -54,7 +54,9 @@ const HistoryTenorSet = ({ navigation, route }) => {
   };
 
   const handleClickStatus = () => {
-    navigation.navigate("tenor-setting");
+    navigation.navigate("tenor-setting",{
+      idInvoice: idInvoice,
+    });
   };
 
   if (isSuccess) {
@@ -226,9 +228,11 @@ const HistoryTenorSet = ({ navigation, route }) => {
               alignContent: "flex-end",
             }}
           >
-            <TouchableOpacity
+           <TouchableOpacity
               onPress={() =>
-                navigation.navigate("detail-invoice-bill-merchant")
+                navigation.navigate("detail-invoice-bill-merchant", {
+                  idInvoice: idInvoice,
+                })
               }
               style={{
                 backgroundColor: colors.ORANGE,

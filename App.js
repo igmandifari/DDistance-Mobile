@@ -30,6 +30,7 @@ import InvoiceDistributor from "./src/pages/Distributor/Bill/components/InvoiceD
 import TenorSetting from "./src/pages/Merchant/Payment";
 import OtpTenor from "./src/pages/Merchant/Payment/components/OtpTenor";
 import PinPayment from "./src/pages/Merchant/Payment/components/PinPayment.js";
+import OtpPaymentInvoiceAll from "./src/pages/Merchant/Payment/components/OtpPaymentInvoiceAll.js";
 import OtpPaymentInvoice from "./src/pages/Merchant/Payment/components/OtpPaymentInvoice.js";
 import NotificationDistributor from "./src/pages/Distributor/Notification/notification";
 import NotificationMerchant from "./src/pages/Merchant/Notification/notification";
@@ -42,6 +43,9 @@ import SuccessNewPIN from "./src/pages/Merchant/ForgetPIN/components/SuccessNewP
 import ChangePin from "./src/pages/ChangePin";
 import ChangePinSuccess from "./src/pages/ChangePin/components/ChangePinSuccess";
 import OtpChangePin from "./src/pages/ChangePin/components/OtpChangePin";
+import PinPaymentAll from "./src/pages/Merchant/Payment/components/PinPaymentAll";
+import Profile from "./src/pages/Merchant/Profile";
+import HistoryTenorSet from "./src/pages/Merchant/Bill/components/HistoryTenorSet";
 
 const routerList = [
   {
@@ -171,7 +175,7 @@ const routerList = [
     headerShown: false,
   },
   // Payment menu
-{
+  {
     name: "tenor-setting",
     component: TenorSetting,
     headerShown: false,
@@ -207,7 +211,7 @@ const routerList = [
     component: NotificationDistributor,
     headerShown: false,
   },
-  { 
+  {
     name: "tenor-setting-history",
     component: HistoryTenorSet,
     headerShown: false,
@@ -289,6 +293,5 @@ function App() {
 }
 
 export default App;
-
 
 // /home/user/Android/Sdk
