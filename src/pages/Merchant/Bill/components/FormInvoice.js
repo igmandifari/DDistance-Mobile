@@ -425,7 +425,6 @@ const FormInvoice = ({ navigation, route }) => {
           <TouchableOpacity
             onPress={() => navigation.navigate("otp-invoice-merchant")}
           >
-            <Text>kirim ssaukses</Text>
           </TouchableOpacity>
         </View>
       </View>

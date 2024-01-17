@@ -105,7 +105,7 @@ const OtpRequestInsurance = ({ navigation, route }) => {
             title={"test"}
             onPress={() => console.log(formData, "payload")}
           /> */}
-          <View style={{ position: "relative" }}>
+          <View style={styles.otp}>
             <OtpInputs
               ref={this.otpRef}
               handleChange={(code) => setOtp(code)}
@@ -150,5 +150,8 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: colors.FLORAL_WHITE,
     padding: 25,
+  },
+  otp: {
+    alignItems: "center",
   },
 });

@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
+  BackHandler,
 } from "react-native";
 import React, {useCallback, useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";
@@ -49,6 +50,20 @@ const Bill = ({ navigation }) => {
   // const [data, setData] = useState(invoiceList);
   const [invoices, setInvoices] = useState([]);
   const { token } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        navigation.navigate("dashboard-merchant");
+        return true;
+      }
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, [navigation]);
 
   getData = async () => {
     const response = await getInvoice(token);

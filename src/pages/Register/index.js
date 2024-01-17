@@ -139,6 +139,7 @@ function Register({ navigation }) {
             style={styles.input}
             keyboardType="number-pad"
             placeholder="Pin Transaksi"
+            secureTextEntry
             onChangeText={handleChange("pinTransaksi")}
             value={pinTransaksi}
         />
@@ -191,7 +192,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     justifyContent: "center",
     alignItems: "center",
-    gap: 5,
   },
   input: {
     height: 50,

@@ -56,7 +56,7 @@ const OtpPaymentInvoiceAll = ({ navigation, route }) => {
         setPopUpSuccess(true);
         setTimeout(() => {
           setPopUpSuccess(false);
-          navigation.navigate("detail-distributor-merchant");
+          navigation.navigate("dashboard-merchant");
         }, 2000);
       } else {
         console.log("Invoice updated successfully", response.data);
@@ -66,7 +66,7 @@ const OtpPaymentInvoiceAll = ({ navigation, route }) => {
           setPopUpFailed(false);
         }, 2000);
       }
-      navigation.navigate("detail-distributor-merchant");
+      navigation.navigate("dashboard-merchant");
     } catch (error) {
       console.error("Error updating invoice:", error);
       setPopUpFailed(true);

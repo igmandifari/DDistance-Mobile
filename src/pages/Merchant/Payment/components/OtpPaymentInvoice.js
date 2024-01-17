@@ -24,16 +24,15 @@ const OtpPaymentInvoice = ({ navigation, route }) => {
   const [otp, setOtp] = useState("");
   otpRef = React.createRef();
 
-  useEffect(() => {
-    if (!timer) return;
+useEffect(() => {
+  if (!timer) return;
 
-    const intervalId = setInterval(() => {
-      setTimer(timer - 1);
-    }, 1000);
+  const intervalId = setInterval(() => {
+    setTimer((prevTimer) => prevTimer - 1);
+  }, 1000);
 
-    return () => clearInterval(intervalId);
-  }, [timer]);
-
+  return () => clearInterval(intervalId);
+}, [timer]);
   const clearOTP = () => {
     otpRef.current.clear();
   };
@@ -56,17 +55,15 @@ const OtpPaymentInvoice = ({ navigation, route }) => {
         setPopUpSuccess(true);
         setTimeout(() => {
           setPopUpSuccess(false);
-          navigation.navigate("detail-distributor-merchant");
+          navigation.navigate("dashboard-merchant");
         }, 2000);
       } else {
-        console.log("Invoice updated successfully", response.data);
-
         setPopUpFailed(true);
         setTimeout(() => {
           setPopUpFailed(false);
         }, 2000);
       }
-      navigation.navigate("detail-distributor-merchant");
+      navigation.navigate("dashboard-merchant");
     } catch (error) {
       console.error("Error updating invoice:", error);
       setPopUpFailed(true);

@@ -6,6 +6,7 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  BackHandler,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";
@@ -18,6 +19,19 @@ import { getUserMerchant } from "../../../services/AuthService";
 const vw = Dimensions.get("window").width;
 
 const Profile = ({ navigation }) => {
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        navigation.navigate("dashboard-merchant");
+        return true;
+      }
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, [navigation]);
   const [popUp, setPopUp] = useState(false);
   const [userProfile, setUserProfile] = useState([]);
 

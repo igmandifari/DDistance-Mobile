@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import { BackHandler, StyleSheet, Text, View } from "react-native";
+import React, { useEffect } from "react";
 import SuccessIcon from "../../../../assets/img/popUpSuccess.svg";
 import { colors } from "../../../../constant/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,8 +9,18 @@ const TenorSuccessSetting = ({ route, navigation }) => {
   console.log("Details received in TenorSuccessSetting:", details);
 
   useEffect(() => {
-    console.log("Details Data:", details);
-  }, [details]);
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        navigation.navigate("dashboard-merchant");
+        return true;
+      }
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, [navigation]);
 
   console.log("Rendering TenorSuccessSetting...");
 

@@ -43,6 +43,11 @@ function Login({ navigation }) {
     navigation.navigate("forget-password");
   };
 
+  const handleRegister = () => {
+    navigation.navigate("register");
+  };
+
+
   const handleLogin = async () => {
     const { email, password } = form;
     const payload = {
@@ -105,12 +110,31 @@ function Login({ navigation }) {
           />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        style={styles.forgetPassword}
-        onPress={handleForgotPassword}
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
       >
-        <Text style={styles.textLink}>Lupa Kata Sandi?</Text>
-      </TouchableOpacity>
+        <View style={{ flexDirection: "cols" }}>
+          <TouchableOpacity
+            style={styles.forgetPassword}
+            onPress={handleRegister}
+          >
+            <Text style={styles.textLink}>Register</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{ flexDirection: "cols" }}>
+          <TouchableOpacity
+            style={styles.forgetPassword}
+            onPress={handleForgotPassword}
+          >
+            <Text style={styles.textLink}>Lupa Kata Sandi?</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
       <CustomButton text={"Masuk"} handleClick={handleLogin} />
     </View>
   );
@@ -192,7 +216,12 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   textLink: {
-    textAlign: "right",
+    textAlign: "left",
+    color: "blue",
+    textDecorationLine: "underline",
+  },
+  textLink2: {
+    textAlign: "left",
     color: "blue",
     textDecorationLine: "underline",
   },

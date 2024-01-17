@@ -8,6 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
+  BackHandler,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";
@@ -20,6 +21,20 @@ import { setUser } from "../../../store/userSlice";
 import { Button } from "react-native-elements";
 
 const DashboardMerchant = ({ navigation }) => {
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        navigation.navigate("dashboard-merchant");
+        return true;
+      }
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, [navigation]);
   const dispatch = useDispatch();
   const [userDetail, setUserDetail] = useState({
     name: null,

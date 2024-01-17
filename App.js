@@ -47,6 +47,7 @@ import PinPaymentAll from "./src/pages/Merchant/Payment/components/PinPaymentAll
 import Profile from "./src/pages/Merchant/Profile";
 import HistoryTenorSet from "./src/pages/Merchant/Bill/components/HistoryTenorSet";
 import TenorSuccessSetting from "./src/pages/Merchant/Payment/components/TenorSuccessSetting";
+import ForgetPassword from "./src/pages/ForgetPassword/ForgetPassword";
 
 const routerList = [
   {
@@ -73,6 +74,11 @@ const routerList = [
   {
     name: "register",
     component: Register,
+    headerShown: false,
+  },
+  {
+    name: "forget-password",
+    component: ForgetPassword,
     headerShown: false,
   },
   {
