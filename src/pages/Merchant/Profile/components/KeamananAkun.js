@@ -49,7 +49,7 @@ function KeamananAkun({navigation}) {
         <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("")}
+          onPress={() => navigation.navigate("changePin")}
         >
           <Text
             style={{ color:'black', fontWeight: "600", fontSize: 16 }}
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: "row",
     justifyContent: "start",
-    width: 138,
+    width: 150,
     height: 38,
     paddingVertical: 9,
     borderRadius: 10,

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
-import { colors } from "../../../../constant/colors";
-import CustomButton from "../../../../components/CustomButton";
+import { colors } from "../../constant/colors";
+import CustomButton from "../../components/CustomButton";
 
 const ChangePasswordSuccess = ({ navigation }) => {
   return (
@@ -9,7 +9,7 @@ const ChangePasswordSuccess = ({ navigation }) => {
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
-          source={require("../../../../assets/img/success.png")}
+          source={require("../../assets/img/success.png")}
         />
       </View>
       <Text style={styles.title}>Kata Sandi berhasil diubah</Text>

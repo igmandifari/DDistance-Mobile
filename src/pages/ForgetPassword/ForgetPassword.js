@@ -6,7 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { sendOtpForgetPassword } from "../../services/AuthService";
 
 export default function ForgetPassword({ navigation }) {
-  const [email, setEmail] = useState("");
+const [email, setEmail] = useState("");
 
   const handleSendOtp = async () => {
     try {

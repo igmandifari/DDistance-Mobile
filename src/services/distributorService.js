@@ -58,6 +58,8 @@ export const sendOtpInvoiceDistributor = (token) => {
   });
 };
 
+
+
 export const getInvoiceIdDistributor = (token, id) => {
   return axiosInstance.get(`${BASE_URL}/api/invoice/${id}/distributor`, {
     headers: {
@@ -87,4 +89,27 @@ export const getCreditHistory = (token) => {
       Authorization: `Bearer ${token}`,
     },
   }); 
+};
+
+export const putChangePinDistributor = (
+    token,
+    otp,
+    oldPin,
+    newPin,
+    confirmPin
+) => {
+  return axiosInstance.put(
+      `${BASE_URL}/api/distributor/changePin`,
+      {
+        otp,
+        oldPin,
+        newPin,
+        confirmPin
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+  );
 };
