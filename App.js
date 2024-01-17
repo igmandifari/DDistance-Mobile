@@ -40,6 +40,7 @@ import BillDistributor from "./src/pages/Distributor/Bill";
 import HistoryTenorSet from "./src/pages/Merchant/Bill/components/HistoryTenorSet";
 import OtpPaymentInvoiceAll from "./src/pages/Merchant/Payment/components/OtpPaymentInvoiceAll";
 import PinPaymentAll from "./src/pages/Merchant/Payment/components/PinPaymentAll";
+import Profile from "./src/pages/Merchant/Profile";
 
 const routerList = [
   {
@@ -91,6 +92,11 @@ const routerList = [
   {
     name: "edit-profile",
     component: EditProfile,
+    headerShown: false,
+  },
+  {
+    name: "profile",
+    component: Profile,
     headerShown: false,
   },
   {

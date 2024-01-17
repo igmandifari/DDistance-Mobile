@@ -1,27 +1,30 @@
 import React, { useState } from "react";
 import { colors } from "../../../../constant/colors";
 import {
-  Dimensions,
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
-  Image,
-  Button,
   TextInput,
 } from "react-native";
-import CustomButton from "../../../../components/CustomButton";
+import { updateProfileUser } from "../../../../services/merchantServices";
+import { useSelector } from "react-redux";
 
-// const vw = Dimensions.get("window").width;
-
-function EditProfile() {
+function EditProfile({ navigation }) {
   const [form, setForm] = useState({
     name: "",
     address: "",
-    phone: "",
+    phoneNumber: "",
     email: "",
-    norek: "",
+    pan: "",
   });
+
+  const { token } = useSelector((state) => state.user);
+
+  const handleSubmitUpdate = async () => {
+    await updateProfileUser(token, form);
+    navigation.navigate("profile");
+  };
 
   const handleChange = (key, value) => {
     setForm((prevState) => ({
@@ -56,7 +59,7 @@ function EditProfile() {
           <TextInput
             style={styles.input}
             placeholder="No HP"
-            onChangeText={(text) => handleChange("phone", text)}
+            onChangeText={(text) => handleChange("phoneNumber", text)}
             value={form.phone}
           />
         </View>
@@ -74,23 +77,18 @@ function EditProfile() {
           <TextInput
             style={styles.input}
             placeholder="No Rekening Danamon"
-            onChangeText={(text) => handleChange("norek", text)}
-            value={form.norek}
+            onChangeText={(text) => handleChange("pan", text)}
+            value={form.pan}
           />
         </View>
         <View style={styles.buttonContainer}>
-          {/* <TouchableOpacity>
-            <Text>Simpan</Text>
-          </TouchableOpacity> */}
-          {/* <CustomButton text="Simpan Profil"/> */}
-        <TouchableOpacity style={styles.button}
-            onPress={() => navigation.navigate("")}>
-              <Text
-                style={{ color: colors.WHITE, fontWeight: "800", fontSize: 12 }}
-              >
-                Simpan Profil
-              </Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleSubmitUpdate}>
+            <Text
+              style={{ color: colors.WHITE, fontWeight: "800", fontSize: 12 }}
+            >
+              Simpan Profil
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -104,34 +102,31 @@ const styles = StyleSheet.create({
     backgroundColor: colors.FLORAL_WHITE,
     alignItems: "center",
     height: "100%",
-    marginTop:"6%",
+    marginTop: "6%",
   },
   textContainer: {
-    marginTop:'15%',
-    width:320,
+    marginTop: "15%",
+    width: 320,
     justifyContent: "center",
-    
   },
-  input:{
-    borderBottomWidth : 1,
+  input: {
+    borderBottomWidth: 1,
   },
-  inputContainer:{
-    padding:5,
-    marginBottom:15,
+  inputContainer: {
+    padding: 5,
+    marginBottom: 15,
   },
   button: {
     backgroundColor: colors.ORANGE,
     flexDirection: "row",
     justifyContent: "center",
     width: 138,
-    height:38,
+    height: 38,
     paddingVertical: 9,
     borderRadius: 10,
   },
-  buttonContainer:{
-    marginTop:'20%',
-    // backgroundColor:'blue',
-    alignItems:'center',
-  }
-
+  buttonContainer: {
+    marginTop: "20%",
+    alignItems: "center",
+  },
 });

@@ -14,8 +14,6 @@ import {useSelector} from "react-redux";
 import PopUpSuccess from "../../../../components/PopUpSuccess";
 import PopUpFailed from "../../../../components/PopUpFailed";
 
-import { useSelector } from "react-redux";
-
 const OtpInvoiceDistributor = ({ navigation,route }) => {
   const [timer, setTimer] = useState(60);
   const { token } = useSelector((state) => state.user);
