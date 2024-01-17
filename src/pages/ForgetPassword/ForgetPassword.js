@@ -1,22 +1,27 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-} from "react-native";
-import axios from "axios";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { View, Text, TextInput, StyleSheet, Image } from "react-native";
 import { colors } from "../../constant/colors";
 import CustomButton from "../../components/CustomButton";
-import ErrorText from "../../components/ErrorText";
-import { useDispatch, useSelector } from "react-redux";
-import { setIsAuthentication } from "../../store/userSlice";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { sendOtpForgetPassword } from "../../services/AuthService";
 
 export default function ForgetPassword({ navigation }) {
+const [email, setEmail] = useState("");
+
+  const handleSendOtp = async () => {
+    try {
+      await sendOtpForgetPassword(email);
+      navigation.navigate("otp-forget-password", { payload: { email } });
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        alert("Email tidak terdaftar. Mohon periksa alamat email anda.");
+      } else {
+        console.error("Error sending OTP for forget password:", error);
+        alert("Terjadi kesalahan. Silakan coba lagi.");
+      }
+    }
+  };
+
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
@@ -29,15 +34,15 @@ export default function ForgetPassword({ navigation }) {
         <Text style={styles.title}>Lupa kata sandi Anda?</Text>
         <View style={styles.description}>
           <Text style={styles.textDescription}>
-            Masukkan email akun Anda untuk kami kirimkan reset kata sandi
+            Masukkan email akun Anda untuk kami kirimkan{" "}
           </Text>
-          <Text style={styles.textDescription}>Kirim OTP Reset Password</Text>
+          <Text style={styles.textDescription}>OTP reset kata sandi</Text>
         </View>
         <TextInput
           style={styles.input}
           placeholder="Email"
-          // onChangeText={(text) => handleChange("email", text)}
-          // value={form.email}
+          onChangeText={(text) => setEmail(text)}
+          value={email}
         />
         <View
           style={{
@@ -48,7 +53,7 @@ export default function ForgetPassword({ navigation }) {
         >
           <CustomButton
             text="Kirim OTP Reset Password"
-            handleClick={() => navigation.navigate("otpForgetPassword")}
+            handleClick={() => handleSendOtp()}
           />
         </View>
       </View>
