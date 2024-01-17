@@ -51,7 +51,7 @@ const PinPayment = ({ navigation }) => {
           />
         </View>
         <View>
-          <TouchableOpacity onPress={() => handleSubmit()}>
+          <TouchableOpacity onPress={() => navigation.navigate("forget-PIN")}>
             <Text
               style={{
                 textDecorationLine: "underline",
@@ -60,7 +60,7 @@ const PinPayment = ({ navigation }) => {
                 textAlign: "center",
               }}
             >
-              {timer ? `00.${timer}` : ""} Kirim Ulang OTP
+            Lupa PIN?
             </Text>
           </TouchableOpacity>
         </View>

@@ -230,3 +230,39 @@ export const setTenor = async (token, bodyRequest) => {
     throw error;
   }
 };
+
+export const sendOtpForgetPIN = async (email) => {
+  try {
+    const response = await axiosInstance.post(
+      'http://10.0.2.2:8080/api/auth/sendOtp',
+      {
+        email: email,
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error('Error sending OTP for forget PIN:', error);
+    throw error;
+  }
+};
+
+
+export const sendNewPIN = async (otp, email) => {
+  try {
+    const bodyRequest = {
+      otp: otp,
+      email: email,
+    };
+
+    const response = await axiosInstance.put(
+      'http://10.0.2.2:8080/api/auth/reset-pin-mobile',
+      bodyRequest,
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error('Error setting new PIN:', error);
+    throw error;
+  }
+};

@@ -16,3 +16,40 @@ export const getUserMerchant = (token) => {
 export const login = (payload) => {
   return axiosInstance.post(`http://10.0.2.2:8080/api/auth/login`, payload);
 };
+
+export const sendOtpForgetPassword = async (email) => {
+  try {
+    const response = await axiosInstance.post(
+      'http://10.0.2.2:8080/api/auth/sendOtp',
+      {
+        email: email,
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error('Error sending OTP for forget password:', error);
+    throw error;
+  }
+};
+
+
+export const sendNewPassword = async (otp, email) => {
+  try {
+    const bodyRequest = {
+      otp: otp,
+      email: email,
+    };
+
+    const response = await axiosInstance.put(
+      'http://10.0.2.2:8080/api/auth/reset-password-mobile',
+      bodyRequest,
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error('Error setting new password:', error);
+    throw error;
+  }
+};
+

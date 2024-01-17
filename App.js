@@ -36,6 +36,12 @@ import OtpChange from "./src/pages/Merchant/Profile/components/OtpChange";
 import TenorSuccessSetting from "./src/pages/Merchant/Payment/components/TenorSuccessSetting.js";
 import TenorSetting from "./src/pages/Merchant/Payment/index.js";
 import OtpTenor from "./src/pages/Merchant/Payment/components/OtpTenor";
+import ForgetPassword from "./src/pages/ForgetPassword/ForgetPassword.js";
+import OtpRequestForgetPassword from "./src/pages/ForgetPassword/components/OtpRequestForgetPassword.js";
+import SuccessNewPassword from "./src/pages/ForgetPassword/components/SuccessNewPassword.js";
+import ForgetPIN from "./src/pages/Merchant/ForgetPIN/ForgetPIN.js";
+import OtpRequestForgetPIN from "./src/pages/Merchant/ForgetPIN/components/OtpRequestForgetPIN.js";
+import SuccessNewPIN from "./src/pages/Merchant/ForgetPIN/components/SuccessNewPIN.js";
 
 const routerList = [
   {
@@ -203,6 +209,37 @@ const routerList = [
   {
     name: "tenor-success-setting",
     component: TenorSuccessSetting,
+    headerShown: false,
+  },
+  {
+    name: "forget-password",
+    component: ForgetPassword,
+    headerShown: false,
+  },
+  {
+    name: "otp-forget-password",
+    component: OtpRequestForgetPassword,
+    headerShown: false,
+  },
+  {
+    name: "success-new-password",
+    component: SuccessNewPassword,
+    headerShown: false,
+  },
+  {
+    name: "forget-PIN",
+    component: ForgetPIN,
+    headerShown: false,
+  },
+
+  {
+    name: "otp-forget-PIN",
+    component: OtpRequestForgetPIN,
+    headerShown: false,
+  },
+  {
+    name: "success-new-PIN",
+    component: SuccessNewPIN,
     headerShown: false,
   },
 ];
