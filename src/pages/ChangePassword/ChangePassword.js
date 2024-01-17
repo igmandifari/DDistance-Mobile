@@ -6,17 +6,18 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import CustomButton from "../../../../components/CustomButton";
-import { colors } from "../../../../constant/colors";
+import CustomButton from "../../components/CustomButton";
+import { colors } from "../../constant/colors";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
   putChangePassword,
   sendOtpChangePassword,
-} from "../../../../services/merchantServices";
-import ErrorText from "../../../../components/ErrorText";
+} from "../../services/merchantServices";
+import ErrorText from "../../components/ErrorText";
 import { useSelector } from "react-redux";
 import { Button } from "react-native-elements";
+
 
 function ChangePassword({ navigation, route }) {
   const [form, setForm] = useState({
@@ -51,7 +52,6 @@ function ChangePassword({ navigation, route }) {
     onSubmit: async (values) => {
       if (isValid) {
         try {
-          console.log(token);
           await sendOtpChangePassword(token)
           navigation.navigate("otp-change-merchant", {
             id: id,
@@ -70,8 +70,6 @@ function ChangePassword({ navigation, route }) {
     validationSchema: ChangePasswordSchema,
   });
 
-  const { oldPassword, password, confirmPassword } = values;
-
   return (
     <View style={styles.container}>
       <View style={styles.passwordInputContainer}>
@@ -80,7 +78,7 @@ function ChangePassword({ navigation, route }) {
           placeholder="Kata Sandi Lama"
           secureTextEntry
           onChangeText={handleChange("oldPassword")}
-          value={oldPassword}
+          value={values.oldPassword}
         />
         <ErrorText text={errors.password} />
       </View>
@@ -89,7 +87,7 @@ function ChangePassword({ navigation, route }) {
         placeholder="Kata Sandi"
         secureTextEntry
         onChangeText={handleChange("password")}
-        value={password}
+        value={values.password}
       />
       <ErrorText text={errors.password} />
       <TextInput
@@ -97,7 +95,7 @@ function ChangePassword({ navigation, route }) {
         placeholder="Konfirmasi Kata Sandi"
         secureTextEntry
         onChangeText={handleChange("confirmPassword")}
-        value={confirmPassword}
+        value={values.confirmPassword}
       />
       <ErrorText text={errors.confirmPassword} />
 
@@ -107,16 +105,16 @@ function ChangePassword({ navigation, route }) {
         disabled={!isValid}
         handleClick={handleSubmit}
       />
-      <TouchableOpacity
-        onPress={() => navigation.navigate("change-password-success")}
-      >
-        <Text>success</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("otp-change-merchant")}
-      >
-        <Text>otp</Text>
-      </TouchableOpacity>
+      {/*<TouchableOpacity*/}
+      {/*  onPress={() => navigation.navigate("change-password-success")}*/}
+      {/*>*/}
+      {/*  <Text>success</Text>*/}
+      {/*</TouchableOpacity>*/}
+      {/*<TouchableOpacity*/}
+      {/*  onPress={() => navigation.navigate("otp-change-merchant")}*/}
+      {/*>*/}
+      {/*  <Text>otp</Text>*/}
+      {/*</TouchableOpacity>*/}
     </View>
   );
 }

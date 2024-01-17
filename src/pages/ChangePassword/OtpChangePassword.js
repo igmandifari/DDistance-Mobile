@@ -6,14 +6,16 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { colors } from "../../../../constant/colors";
+import { colors } from "../../constant/colors";
 import OtpInputs from "react-native-otp-inputs";
-import CustomButton from "../../../../components/CustomButton";
-import PopUpSuccess from "../../../../components/PopUpSuccess";
-import { putChangePassword } from "../../../../services/merchantServices";
-import { useSelector } from "react-redux";
+import CustomButton from "../../components/CustomButton";
+import PopUpSuccess from "../../components/PopUpSuccess";
+import { putChangePassword } from "../../services/merchantServices";
+import {useDispatch, useSelector} from "react-redux";
+import {logout} from "../../store/userSlice";
 
-const OtpChange = ({ navigation, route }) => {
+const OtpChangePassword = ({ navigation, route }) => {
+  const dispatch = useDispatch();
   const [popUp, setPopUp] = useState(false);
   const [timer, setTimer] = useState(60);
   const otpRef = useRef(null);
@@ -43,12 +45,13 @@ const OtpChange = ({ navigation, route }) => {
     }
 
     try {
-      await putChangePassword(token, id, newPassword,oldPassword,confirmPassword);
+      await putChangePassword(token, id, newPassword,oldPassword,confirmPassword, enteredOtp);
       console.log("Password changed successfully");
       setPopUp(true);
 
       setTimeout(() => {
-        navigation.navigate("dashboard-merchant");
+        dispatch(logout());
+        navigation.navigate("landing-page");
       }, 3000);
     } catch (error) {
       console.error(error);
@@ -103,7 +106,7 @@ const OtpChange = ({ navigation, route }) => {
   );
 };
 
-export default OtpChange;
+export default OtpChangePassword;
 
 const styles = StyleSheet.create({
   container: {

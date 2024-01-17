@@ -58,3 +58,26 @@ export const sendOtpInvoiceDistributor = (token) => {
     },
   });
 };
+
+export const putChangePinDistributor = (
+    token,
+    otp,
+    oldPin,
+    newPin,
+    confirmPin
+) => {
+  return axiosInstance.put(
+      `${BASE_URL}/api/distributor/changePin`,
+      {
+        otp,
+        oldPin,
+        newPin,
+        confirmPin
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+  );
+};

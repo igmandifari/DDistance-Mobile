@@ -99,21 +99,45 @@ export const putChangePassword = (
   id,
   newPassword,
   oldPassword,
-  confirmPassword
+  confirmPassword,
+  enteredOtp
 ) => {
   return axiosInstance.put(
-    `${BASE_URL}/api/merchant/changePin`,
+    `${BASE_URL}/api/merchant/changePassword`,
     {
-      password: newPassword,
-      oldPassword: oldPassword,
-      confirmPassword: confirmPassword,
-      id: id,
+      otp:enteredOtp,
+      newPassword,
+      oldPassword,
+      confirmPassword
     },
     {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }
+  );
+};
+
+export const putChangePin = (
+    token,
+    otp,
+    oldPin,
+    newPin,
+    confirmPin
+) => {
+  return axiosInstance.put(
+      `${BASE_URL}/api/merchant/changePin`,
+      {
+        otp,
+        oldPin,
+        newPin,
+        confirmPin
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
   );
 };
 
