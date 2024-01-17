@@ -36,6 +36,7 @@ import NotificationMerchant from "./src/pages/Merchant/Notification/notification
 import CreditHistory from "./src/pages/Distributor/CreditHistory/creditHistory";
 import OtpChange from "./src/pages/Merchant/Profile/components/OtpChange";
 import OtpInvoiceDistributor from "./src/pages/Distributor/Bill/components/OtpInvoiceDistributor";
+import BillDistributor from "./src/pages/Distributor/Bill";
 import HistoryTenorSet from "./src/pages/Merchant/Bill/components/HistoryTenorSet";
 import OtpPaymentInvoiceAll from "./src/pages/Merchant/Payment/components/OtpPaymentInvoiceAll";
 import PinPaymentAll from "./src/pages/Merchant/Payment/components/PinPaymentAll";
@@ -223,6 +224,11 @@ const routerList = [
     component: OtpPaymentInvoiceAll,
     headerShown: false,
   },
+  {
+    name: "bill-distributor",
+    component: BillDistributor,
+    headerShown: false,
+  },
 ];
 
 const Stack = createNativeStackNavigator();
@@ -250,3 +256,6 @@ function App() {
 }
 
 export default App;
+
+
+// /home/user/Android/Sdk

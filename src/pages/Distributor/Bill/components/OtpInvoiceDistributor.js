@@ -10,6 +10,10 @@ import { colors } from "../../../../constant/colors";
 import OtpInputs from "react-native-otp-inputs";
 import { putInvoiceDistributor } from "../../../../services/distributorService";
 import CustomButton from "../../../../components/CustomButton";
+import {useSelector} from "react-redux";
+import PopUpSuccess from "../../../../components/PopUpSuccess";
+import PopUpFailed from "../../../../components/PopUpFailed";
+
 import { useSelector } from "react-redux";
 
 const OtpInvoiceDistributor = ({ navigation,route }) => {
@@ -40,43 +44,49 @@ const OtpInvoiceDistributor = ({ navigation,route }) => {
 
   const handleSubmit = async () => {
     const otp = this.otpRef.current.state.otpCode.join("");
-    console.log("otp", otp);
+
+    const dataSumbit = {
+      ...formData, otp
+    };
+
     if (otp.length != 6) {
       alert("OTP Not Valid");
       return;
     }
     try {
-      let installmentStatus;
-      if (installment === "DITERIMA") {
-        installmentStatus = "DITERIMA";
-      } else if (installment === "DITOLAK") {
-        installmentStatus = "DITOLAK";
-      } else {
-        installmentStatus = "DALAM_PROSES";
+      const response = await putInvoiceDistributor(token, dataSumbit);
+      if(response.data.statusCode == 201){
+        setPopUpSuccess(true)
+        setTimeout(() => {
+          setPopUpSuccess(false);
+          navigation.navigate("bill-distributor");
+        }, 2000);
+      }else{
+        // Handle response, e.g., show success message
+        console.log("Invoice updated successfully", response.data);
+
+        setPopUpFailed(true);
+        setTimeout(() => {
+          setPopUpFailed(false);
+        }, 2000);
       }
-
-      const otpPayload = {
-        id: data.id,
-        otp: otpToken,
-        alasanPenolakan: alasanPenolakan,
-        installment: installmentStatus,
-      };
-
-      const response = await putInvoiceDistributor(token, otpPayload);
-
-      // Handle response, e.g., show success message
-      console.log("Invoice updated successfully", response.data);
 
       // Navigate to the desired page, e.g., dashboard
       navigation.navigate("dashboard-distributor");
     } catch (error) {
       console.error("Error updating invoice:", error);
-      // Handle error, e.g., show error message
+      setPopUpFailed(true);
+      setTimeout(() => {
+        setPopUpFailed(false);
+      }, 2000);
     }
   };
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
+      {popUpSuccess && <PopUpSuccess />}
+      {popUpFailed && <PopUpFailed />}
       <View style={styles.container}>
+        {popUp && <PopUpSuccess />}
         <View>
           <Text
             style={{ textAlign: "center", fontSize: 20, fontWeight: "400" }}
