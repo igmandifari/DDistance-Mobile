@@ -55,7 +55,6 @@ const TenorSetting = ({ navigation, route }) => {
     }
     try {
       await sendOtpAturTenor(token);
-  
       navigation.navigate("otp-tenor", {
         formData: {
           id: detail.id,         
@@ -139,7 +138,7 @@ const TenorSetting = ({ navigation, route }) => {
 
     try {
       const response = await cekTagihan(token, bodyRequest);
-      console.log(response); // Cetak respons untuk melihat struktur data
+      console.log("body request", bodyRequest);;
       setHasilCekTagihan(response.data); // menyimpan hasil cek tagihan
     } catch (error) {
       console.error("Error saat cek tagihan:", error);
@@ -239,13 +238,13 @@ const TenorSetting = ({ navigation, route }) => {
           {hasilCekTagihan && (
             <View>
               <Text style={[styles.text2, styles.textCenter]}>
-                {hasilCekTagihan.bunga}% (Gross Per Tahun)
+                {hasilCekTagihan.data.bunga}% (Gross Per Tahun)
               </Text>
               <Text style={[styles.textCenter, styles.text2, { marginTop: 6 }]}>
-                Total Rp. {hasilCekTagihan.grandTotal}
+                Total Rp. {hasilCekTagihan.data.grandTotal}
               </Text>
               <Text style={[styles.textCenter, { fontSize: 20 }]}>
-                Rp. {hasilCekTagihan.bayarPerBulan} per Bulan
+                Rp. {hasilCekTagihan.data.bayarPerBulan} per Bulan
               </Text>
             </View>
           )}

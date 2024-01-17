@@ -36,6 +36,19 @@ export const getInsurances = (token) => {
   });
 };
 
+export const sendOtpAturTenor = (token) => {
+  return axiosInstance.get(
+    "http://10.0.2.2:8080/api/invoice/email/send/token",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+
+
 export const getDetailInsurance = (token, id) => {
   return axiosInstance.get(`${BASE_URL}/api/insurance/${id}`, {
     headers: {
@@ -270,7 +283,7 @@ export const sendOtpPayment = (token, pin) => {
 export const setTenor = async (token, bodyRequest) => {
   try {
     const response = await axiosInstance.post(
-      '${BASE_URL}/api/invoice/tenor',
+      `${BASE_URL}/api/invoice/tenor`,
       bodyRequest,
       {
         headers: {
@@ -289,7 +302,7 @@ export const setTenor = async (token, bodyRequest) => {
 export const sendOtpForgetPIN = async (email) => {
   try {
     const response = await axiosInstance.post(
-      '${BASE_URL}/api/auth/sendOtp',
+      `${BASE_URL}/api/auth/sendOtp`,
       {
         email: email,
       }
@@ -311,7 +324,7 @@ export const sendNewPIN = async (otp, email) => {
     };
 
     const response = await axiosInstance.put(
-      '${BASE_URL}/api/auth/reset-pin-mobile',
+      `${BASE_URL}/api/auth/reset-pin-mobile`,
       bodyRequest,
     );
 

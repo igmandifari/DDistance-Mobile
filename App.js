@@ -46,6 +46,7 @@ import OtpChangePin from "./src/pages/ChangePin/components/OtpChangePin";
 import PinPaymentAll from "./src/pages/Merchant/Payment/components/PinPaymentAll";
 import Profile from "./src/pages/Merchant/Profile";
 import HistoryTenorSet from "./src/pages/Merchant/Bill/components/HistoryTenorSet";
+import TenorSuccessSetting from "./src/pages/Merchant/Payment/components/TenorSuccessSetting";
 
 const routerList = [
   {
@@ -178,6 +179,11 @@ const routerList = [
   {
     name: "tenor-setting",
     component: TenorSetting,
+    headerShown: false,
+  },
+  {
+    name: "tenor-success-setting",
+    component: TenorSuccessSetting,
     headerShown: false,
   },
   {
