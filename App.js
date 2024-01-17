@@ -9,8 +9,8 @@ import MyTabsDashboard from "./src/pages/Distributor/Navigator/NavigatorDashboar
 import MyTabsMerchant from "./src/pages/Merchant/Navigator/Navigator";
 import EditProfile from "./src/pages/Merchant/Profile/components/EditProfile";
 import KeamananAkun from "./src/pages/Merchant/Profile/components/KeamananAkun";
-import ChangePassword from "./src/pages/Merchant/Profile/components/ChangePassword";
-import ChangePasswordSuccess from "./src/pages/Merchant/Profile/components/ChangePasswordSuccess";
+import ChangePassword from "./src/pages/ChangePassword/ChangePassword";
+import ChangePasswordSuccess from "./src/pages/ChangePassword/ChangePasswordSuccess";
 import FormInvoice from "./src/pages/Merchant/Bill/components/FormInvoice";
 import Bill from "./src/pages/Merchant/Bill";
 import DetailInvoice from "./src/pages/Merchant/Bill/components/DetailInvoice";
@@ -34,9 +34,14 @@ import OtpPaymentInvoice from "./src/pages/Merchant/Payment/components/OtpPaymen
 import NotificationDistributor from "./src/pages/Distributor/Notification/notification";
 import NotificationMerchant from "./src/pages/Merchant/Notification/notification";
 import CreditHistory from "./src/pages/Distributor/CreditHistory/creditHistory";
-import OtpChange from "./src/pages/Merchant/Profile/components/OtpChange";
+import OtpChangePassword from "./src/pages/ChangePassword/OtpChangePassword";
 import OtpInvoiceDistributor from "./src/pages/Distributor/Bill/components/OtpInvoiceDistributor";
 import BillDistributor from "./src/pages/Distributor/Bill";
+import SuccessNewPassword from "./src/pages/ForgetPassword/components/SuccessNewPassword.js";
+import SuccessNewPIN from "./src/pages/Merchant/ForgetPIN/components/SuccessNewPIN.js";
+import ChangePin from "./src/pages/ChangePin";
+import ChangePinSuccess from "./src/pages/ChangePin/components/ChangePinSuccess";
+import OtpChangePin from "./src/pages/ChangePin/components/OtpChangePin";
 import HistoryTenorSet from "./src/pages/Merchant/Bill/components/HistoryTenorSet";
 import OtpPaymentInvoiceAll from "./src/pages/Merchant/Payment/components/OtpPaymentInvoiceAll";
 import PinPaymentAll from "./src/pages/Merchant/Payment/components/PinPaymentAll";
@@ -192,7 +197,7 @@ const routerList = [
   },
   {
     name: "otp-change-merchant",
-    component: OtpChange,
+    component: OtpChangePassword,
     headerShown: false,
   },
   {
@@ -234,6 +239,31 @@ const routerList = [
   {
     name: "bill-distributor",
     component: BillDistributor,
+    headerShown: false,
+  },
+  {
+    name: "successNewPassword",
+    component: SuccessNewPassword,
+    headerShown: false,
+  },
+  {
+    name: "successNewPIN",
+    component: SuccessNewPIN,
+    headerShown: false,
+  },
+  {
+    name: "changePin",
+    component: ChangePin,
+    headerShown: false,
+  },
+  {
+    name: "changePinSuccess",
+    component: ChangePinSuccess,
+    headerShown: false,
+  },
+  {
+    name: "otpChangePin",
+    component: OtpChangePin,
     headerShown: false,
   },
 ];

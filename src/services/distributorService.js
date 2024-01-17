@@ -14,7 +14,7 @@ export const getInvoice = (token) => {
     headers: {
       Authorization: "Bearer",
     },
-  }); 
+  });
 };
 
 export const getMerchantsInvoice = (token) => {
@@ -23,7 +23,7 @@ export const getMerchantsInvoice = (token) => {
       Authorization: "Bearer",
     },
   });
-}; 
+};
 //1
 export const getInvoiceDistributor = (token) => {
   return axiosInstance.get(`${BASE_URL}/api/invoice`, {
@@ -42,13 +42,12 @@ export const getDetailInvoice = (token, id) => {
 };
 
 export const putInvoiceDistributor = (token, payload) => {
-  return axiosInstance.put(`${BASE_URL}/api/invoice`,
-  payload, {
+  return axiosInstance.put(`${BASE_URL}/api/invoice`, payload, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-}
+};
 
 export const sendOtpInvoiceDistributor = (token) => {
   return axiosInstance.get(`${BASE_URL}/api/invoice/email/send/token`, {
@@ -59,11 +58,14 @@ export const sendOtpInvoiceDistributor = (token) => {
 };
 
 export const getInvoiceIdDistributor = (token, id) => {
-  return axiosInstance.get(`http://10.0.2.2:8080/api/invoice/${id}/distributor`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return axiosInstance.get(
+    `http://10.0.2.2:8080/api/invoice/${id}/distributor`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 };
 
 export const getInvoiceId = (token, id) => {
@@ -86,5 +88,28 @@ export const getCreditHistory = (token) => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-  }); 
+  });
+};
+
+export const putChangePinDistributor = (
+  token,
+  otp,
+  oldPin,
+  newPin,
+  confirmPin
+) => {
+  return axiosInstance.put(
+    `${BASE_URL}/api/distributor/changePin`,
+    {
+      otp,
+      oldPin,
+      newPin,
+      confirmPin,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 };

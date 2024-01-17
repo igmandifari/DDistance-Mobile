@@ -5,14 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9963ca16-20c0-4600-be45-31be644f1829" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/img/Forgot-password.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/img/success.svg.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/ForgetPassword/ForgetPassword.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/ForgetPassword/components/OtpRequestForgetPassword.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/ForgetPassword/components/SuccessNewPassword.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/Merchant/ForgetPIN/ForgetPIN.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/Merchant/ForgetPIN/components/OtpRequestForgetPIN.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/Merchant/ForgetPIN/components/SuccessNewPIN.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Distributor/Bill/components/DetailInvoiceDistributor.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Distributor/Bill/components/DetailInvoiceDistributor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Distributor/Bill/components/OtpInvoiceDistributor.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Distributor/Bill/components/OtpInvoiceDistributor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Login/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Login/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Payment/components/PinPayment.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Merchant/Payment/components/PinPayment.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Profile/components/ChangePassword.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ChangePassword/ChangePassword.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Profile/components/ChangePasswordSuccess.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ChangePassword/ChangePasswordSuccess.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Profile/components/KeamananAkun.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Merchant/Profile/components/KeamananAkun.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Profile/components/OtpChange.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ChangePassword/OtpChangePassword.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Profile/components/UbahPin.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/AuthService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/AuthService.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/distributorService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/distributorService.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/merchantServices.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/merchantServices.js" afterDir="false" />
     </list>
@@ -23,6 +34,13 @@
   </component>
   <component name="ComposerSettings">
     <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -39,28 +57,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "heru",
-    "go.import.settings.migrated": "true",
-    "last_opened_file_path": "/home/user/haris/final-project/d-distance-backend",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0",
-    "ts.external.directory.path": "C:\\Back up heru\\Projek enigma\\d-distance-mobile\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Merging heru&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Back up heru/Projek enigma/d-distance-mobile/src/pages/ChangePassword&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Back up heru\\Projek enigma\\d-distance-mobile\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Back up heru\Projek enigma\d-distance-mobile\src\pages\ChangePassword" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -71,7 +94,10 @@
       <updated>1702440859813</updated>
       <workItem from="1705073892693" duration="1299000" />
       <workItem from="1705085097233" duration="132000" />
-      <workItem from="1705245574363" duration="18488000" />
+      <workItem from="1705245574363" duration="20071000" />
+      <workItem from="1705322618109" duration="5241000" />
+      <workItem from="1705368805846" duration="3735000" />
+      <workItem from="1705406604337" duration="20769000" />
     </task>
     <servers />
   </component>
