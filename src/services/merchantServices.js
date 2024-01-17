@@ -334,3 +334,12 @@ export const sendNewPIN = async (otp, email) => {
     throw error;
   }
 };
+
+export const getNotification = (token) => {
+  return axiosInstance.get(`${BASE_URL}/api/notification`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
