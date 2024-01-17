@@ -2,7 +2,7 @@ import axiosInstance from "../api/axiosInstance";
 import { BASE_URL } from "@env";
 
 export const getMerchantsDashboard = (token) => {
-  return axiosInstance.get(`http://10.0.2.2:8080/api/merchant/dashboard`, {
+  return axiosInstance.get(`${BASE_URL}/api/merchant/dashboard`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -10,7 +10,7 @@ export const getMerchantsDashboard = (token) => {
 };
 
 export const getInvoice = (token) => {
-  return axiosInstance.get(`http://10.0.2.2:8080/api/merchants`, {
+  return axiosInstance.get(`${BASE_URL}/api/merchants`, {
     headers: {
       Authorization: "Bearer",
     },
@@ -59,7 +59,7 @@ export const sendOtpInvoiceDistributor = (token) => {
 
 export const getInvoiceIdDistributor = (token, id) => {
   return axiosInstance.get(
-    `http://10.0.2.2:8080/api/invoice/${id}/distributor`,
+    `${BASE_URL}/api/invoice/${id}/distributor`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -69,7 +69,7 @@ export const getInvoiceIdDistributor = (token, id) => {
 };
 
 export const getInvoiceId = (token, id) => {
-  return axiosInstance.get(`http://10.0.2.2:8080/api/invoice/${id}`, {
+  return axiosInstance.get(`${BASE_URL}/api/invoice/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -2,7 +2,7 @@ import axiosInstance from "../api/axiosInstance";
 import { BASE_URL } from "@env";
 
 export const getDistributorsDashboard = (token) => {
-  return axiosInstance.get(`http://10.0.2.2:8080/api/distributor/dashboard`, {
+  return axiosInstance.get(`${BASE_URL}/api/distributor/dashboard`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -19,7 +19,7 @@ export const updateProfileUser = (token, payload) => {
 
 export const getDetailDistributorInvoice = (token, id) => {
   return axiosInstance.get(
-    `http://10.0.2.2:8080/api/invoice/${id}/distributor`,
+    `${BASE_URL}/api/invoice/${id}/distributor`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -29,7 +29,7 @@ export const getDetailDistributorInvoice = (token, id) => {
 };
 
 export const getInsurances = (token) => {
-  return axiosInstance.get(`http://10.0.2.2:8080/api/insurance`, {
+  return axiosInstance.get(`${BASE_URL}/api/insurance`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -37,7 +37,7 @@ export const getInsurances = (token) => {
 };
 
 export const getDetailInsurance = (token, id) => {
-  return axiosInstance.get(`http://10.0.2.2:8080/api/insurance/${id}`, {
+  return axiosInstance.get(`${BASE_URL}/api/insurance/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -46,7 +46,7 @@ export const getDetailInsurance = (token, id) => {
 
 export const getKtp = async (token, id) => {
   const response = await axiosInstance.get(
-    `http://10.0.2.2:8080/api/insurance/${id}/ktp`,
+    `${BASE_URL}/api/insurance/${id}/ktp`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -72,7 +72,7 @@ const blobToBase64 = (blob) => {
 
 export const sendOtpInsurance = (token) => {
   return axiosInstance.get(
-    `http://10.0.2.2:8080/api/insurance/email/send/token`,
+    `${BASE_URL}/api/insurance/email/send/token`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -84,7 +84,7 @@ export const sendOtpInsurance = (token) => {
 export const createInsurance = (token, payload, otp) => {
   console.log(payload);
   return axiosInstance.post(
-    `http://10.0.2.2:8080/api/insurance?otp=${otp}`,
+    `${BASE_URL}/api/insurance?otp=${otp}`,
     payload,
     {
       headers: {
@@ -214,7 +214,7 @@ export const cekTagihan = (token, bodyRequest) => {
 };
 
 export const sendTokenPayment = (token) => {
-  return axiosInstance.get("http://10.0.2.2:8080/api/payment/send/token", {
+  return axiosInstance.get("${BASE_URL}/api/payment/send/token", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -222,7 +222,7 @@ export const sendTokenPayment = (token) => {
 };
 
 export const getDetailInvoiceId = (token, id) => {
-  return axiosInstance.get(`http://10.0.2.2:8080/api/payment/${id}/invoice`, {
+  return axiosInstance.get(`${BASE_URL}/api/payment/${id}/invoice`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -230,7 +230,7 @@ export const getDetailInvoiceId = (token, id) => {
 };
 
 export const getPaymentId = (token, id) => {
-  return axiosInstance.get(`http://10.0.2.2:8080/api/payment/${id}`, {
+  return axiosInstance.get(`${BASE_URL}/api/payment/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -270,7 +270,7 @@ export const sendOtpPayment = (token, pin) => {
 export const setTenor = async (token, bodyRequest) => {
   try {
     const response = await axiosInstance.post(
-      'http://10.0.2.2:8080/api/invoice/tenor',
+      '${BASE_URL}/api/invoice/tenor',
       bodyRequest,
       {
         headers: {
@@ -289,7 +289,7 @@ export const setTenor = async (token, bodyRequest) => {
 export const sendOtpForgetPIN = async (email) => {
   try {
     const response = await axiosInstance.post(
-      'http://10.0.2.2:8080/api/auth/sendOtp',
+      '${BASE_URL}/api/auth/sendOtp',
       {
         email: email,
       }
@@ -311,7 +311,7 @@ export const sendNewPIN = async (otp, email) => {
     };
 
     const response = await axiosInstance.put(
-      'http://10.0.2.2:8080/api/auth/reset-pin-mobile',
+      '${BASE_URL}/api/auth/reset-pin-mobile',
       bodyRequest,
     );
 
