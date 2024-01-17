@@ -29,6 +29,7 @@ import {
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { current } from "@reduxjs/toolkit";
+import { format } from "date-fns";
 
 const FormInvoice = ({ navigation, route }) => {
   const { token } = useSelector((state) => state.user);
@@ -74,19 +75,26 @@ const FormInvoice = ({ navigation, route }) => {
   const [date, setDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
   const [dueDate, setDueDate] = useState(new Date());
+  const [selectedPicker, setSelectedPicker] = useState(null);
 
-  const toggleDatePicker = () => {
-    setShowPicker(!showPicker);
+  const toggleDatePicker = (picker) => {
+    setSelectedPicker(picker);
+    setShowPicker(true);
   };
 
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
     setShowPicker(false);
   
-    if (event.nativeEvent.type === "set") {
-      setDate(currentDate);
-    } else {
-      setDueDate(currentDate);
+    if (event.type === "set") {
+      const currentDate = selectedDate || date;
+
+      if (selectedPicker === "tanggalTagihan") {
+        setDate(currentDate);
+        setFieldValue("tanggalTagihan", currentDate); 
+      } else if (selectedPicker === "tanggalJatuhTempo") {
+        setDueDate(currentDate);
+        setFieldValue("tanggalJatuhTempo", currentDate); 
+      }
     }
   };
   
@@ -149,8 +157,8 @@ const FormInvoice = ({ navigation, route }) => {
               type: "image/jpeg",
               name: "invoice.jpeg",
             });
-            formData.append("tanggalTagihan","01-11-2024");
-            formData.append("tanggalJatuhTempo","01-12-2024");
+            formData.append("tanggalTagihan", format(values.tanggalTagihan, "dd-MM-yyyy"));
+            formData.append("tanggalJatuhTempo", format(values.tanggalJatuhTempo, "dd-MM-yyyy"));
 
             await sendOtpInvoiceMerhant(token);
             navigation.navigate("otp-invoice-merchant", {
@@ -355,6 +363,7 @@ const FormInvoice = ({ navigation, route }) => {
               <TextInput
                 placeholder="Tanggal Tagihan"
                 editable={false}
+                value={format(date, "dd-MM-yyyy")}
                 // value={currentDate}
               />
               <FontAwesome
@@ -383,7 +392,7 @@ const FormInvoice = ({ navigation, route }) => {
               <TextInput
                 placeholder="Tanggal Jatuh Tempo"
                 editable={false}
-                value={dueDate}
+                value={format(dueDate, "dd-MM-yyyy")}
               />
               <FontAwesome
                 name="calendar"
