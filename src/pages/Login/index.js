@@ -40,7 +40,7 @@ function Login({ navigation }) {
   };
 
   const handleForgotPassword = () => {
-    navigation.navigate("ForgotPassword");
+    navigation.navigate("forget-password");
   };
 
   const handleLogin = async () => {

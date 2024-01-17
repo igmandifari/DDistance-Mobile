@@ -2,7 +2,7 @@ import axiosInstance from "../api/axiosInstance";
 import { BASE_URL } from "@env";
 
 export const getDistributorsDashboard = (token) => {
-  return axiosInstance.get(`${BASE_URL}/api/distributor/dashboard`, {
+  return axiosInstance.get(`http://10.0.2.2:8080/api/distributor/dashboard`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -18,15 +18,18 @@ export const updateProfileUser = (token, payload) => {
 };
 
 export const getDetailDistributorInvoice = (token, id) => {
-  return axiosInstance.get(`${BASE_URL}/api/invoice/${id}/distributor`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return axiosInstance.get(
+    `http://10.0.2.2:8080/api/invoice/${id}/distributor`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 };
 
 export const getInsurances = (token) => {
-  return axiosInstance.get(`${BASE_URL}/api/insurance`, {
+  return axiosInstance.get(`http://10.0.2.2:8080/api/insurance`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -34,7 +37,7 @@ export const getInsurances = (token) => {
 };
 
 export const getDetailInsurance = (token, id) => {
-  return axiosInstance.get(`${BASE_URL}/api/insurance/${id}`, {
+  return axiosInstance.get(`http://10.0.2.2:8080/api/insurance/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -43,7 +46,7 @@ export const getDetailInsurance = (token, id) => {
 
 export const getKtp = async (token, id) => {
   const response = await axiosInstance.get(
-    `${BASE_URL}/api/insurance/${id}/ktp`,
+    `http://10.0.2.2:8080/api/insurance/${id}/ktp`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -68,22 +71,29 @@ const blobToBase64 = (blob) => {
 };
 
 export const sendOtpInsurance = (token) => {
-  return axiosInstance.get(`${BASE_URL}/api/insurance/email/send/token`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return axiosInstance.get(
+    `http://10.0.2.2:8080/api/insurance/email/send/token`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 };
 
 export const createInsurance = (token, payload, otp) => {
   console.log(payload);
-  return axiosInstance.post(`${BASE_URL}/api/insurance?otp=${otp}`, payload, {
-    headers: {
-      Accept: "*/*",
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  return axiosInstance.post(
+    `http://10.0.2.2:8080/api/insurance?otp=${otp}`,
+    payload,
+    {
+      headers: {
+        Accept: "*/*",
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
 };
 
 export const getInvoice = (token) => {
@@ -231,4 +241,59 @@ export const sendOtpPayment = (token, pin) => {
       },
     }
   );
+};
+
+export const setTenor = async (token, bodyRequest) => {
+  try {
+    const response = await axiosInstance.post(
+      'http://10.0.2.2:8080/api/invoice/tenor',
+      bodyRequest,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error('Error saat setting tenor:', error);
+    throw error;
+  }
+};
+
+export const sendOtpForgetPIN = async (email) => {
+  try {
+    const response = await axiosInstance.post(
+      'http://10.0.2.2:8080/api/auth/sendOtp',
+      {
+        email: email,
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error('Error sending OTP for forget PIN:', error);
+    throw error;
+  }
+};
+
+
+export const sendNewPIN = async (otp, email) => {
+  try {
+    const bodyRequest = {
+      otp: otp,
+      email: email,
+    };
+
+    const response = await axiosInstance.put(
+      'http://10.0.2.2:8080/api/auth/reset-pin-mobile',
+      bodyRequest,
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error('Error setting new PIN:', error);
+    throw error;
+  }
 };

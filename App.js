@@ -170,7 +170,7 @@ const routerList = [
     headerShown: false,
   },
   // Payment menu
-  {
+{
     name: "tenor-setting",
     component: TenorSetting,
     headerShown: false,
@@ -198,9 +198,10 @@ const routerList = [
   {
     name: "otp-payment-invoice",
     component: OtpPaymentInvoice,
+    headerShown: false,
   },
-  
-  { 
+
+  {
     name: "notificationDistributor",
     component: NotificationDistributor,
     headerShown: false,

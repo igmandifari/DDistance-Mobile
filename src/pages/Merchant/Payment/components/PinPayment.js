@@ -56,7 +56,7 @@ const PinPayment = ({ navigation, route }) => {
           <OtpInputs ref={otpRef} handleChange={(code) => setOtp(code)} numberOfInputs={6} />
         </View>
         <View>
-          <TouchableOpacity onPress={() => handleSubmit()}>
+          <TouchableOpacity onPress={() => navigation.navigate("forget-PIN")}>
             <Text
               style={{
                 textDecorationLine: "underline",
@@ -65,7 +65,7 @@ const PinPayment = ({ navigation, route }) => {
                 textAlign: "center",
               }}
             >
-              Lupa Pin?
+            Lupa PIN?
             </Text>
           </TouchableOpacity>
         </View>
