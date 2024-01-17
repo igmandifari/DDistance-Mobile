@@ -97,10 +97,10 @@ const OtpInvoiceMerchant = ({ navigation, route }) => {
             untuk {"\n"}
             verifikasi pengajuan ke Danamon:
           </Text>
-          <Button
+          {/* <Button
             title={"test"}
             onPress={() => console.log(formData, "payload")}
-          />
+          /> */}
           <View style={styles.otp}>
             <OtpInputs
               ref={this.otpRef}

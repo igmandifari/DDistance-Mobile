@@ -12,9 +12,9 @@ import CustomButton from "../../../../components/CustomButton";
 import { useSelector } from "react-redux";
 import PopUpSuccess from "../../../../components/PopUpSuccess";
 import PopUpFailed from "../../../../components/PopUpFailed";
-import { paymentAll } from "../../../../services/merchantServices";
+import { paymentRest } from "../../../../services/merchantServices";
 
-const OtpPaymentInvoice = ({ navigation, route }) => {
+const OtpPaymentInvoiceAll = ({ navigation, route }) => {
   const { token } = useSelector((state) => state.user);
   const { selectedPaymentId, isSuccess } = route.params;
   // console.log("id ni",selectedPaymentId);
@@ -51,7 +51,7 @@ const OtpPaymentInvoice = ({ navigation, route }) => {
     }
 
     try {
-      const response = await paymentAll(token, dataSumbit);
+      const response = await paymentRest(token, dataSumbit);
       if (response.data.statusCode === 201) {
         setPopUpSuccess(true);
         setTimeout(() => {
@@ -121,7 +121,7 @@ const OtpPaymentInvoice = ({ navigation, route }) => {
   );
 };
 
-export default OtpPaymentInvoice;
+export default OtpPaymentInvoiceAll;
 
 const styles = StyleSheet.create({
   container: {

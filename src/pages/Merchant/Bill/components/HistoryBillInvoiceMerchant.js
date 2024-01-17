@@ -83,7 +83,7 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
         >
           <SheetPay
             handlePayAll={() =>
-              navigation.navigate("pin-payment", {
+              navigation.navigate("pin-payment-all", {
                 selectedPaymentId: selectedPaymentId,
               })
             }

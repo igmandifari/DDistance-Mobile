@@ -217,6 +217,14 @@ export const paymentAll = (token, payload) => {
   });
 };
 
+export const paymentRest = (token, payload) => {
+  return axiosInstance.put(`${BASE_URL}/api/payment/paidOff`, payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 export const sendOtpPayment = (token, pin) => {
   return axiosInstance.post(
     `${BASE_URL}/api/payment/send/token`,

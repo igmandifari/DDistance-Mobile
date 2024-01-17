@@ -37,6 +37,8 @@ import CreditHistory from "./src/pages/Distributor/CreditHistory/creditHistory";
 import OtpChange from "./src/pages/Merchant/Profile/components/OtpChange";
 import OtpInvoiceDistributor from "./src/pages/Distributor/Bill/components/OtpInvoiceDistributor";
 import HistoryTenorSet from "./src/pages/Merchant/Bill/components/HistoryTenorSet";
+import OtpPaymentInvoiceAll from "./src/pages/Merchant/Payment/components/OtpPaymentInvoiceAll";
+import PinPaymentAll from "./src/pages/Merchant/Payment/components/PinPaymentAll";
 
 const routerList = [
   {
@@ -177,6 +179,11 @@ const routerList = [
     headerShown: false,
   },
   {
+    name: "pin-payment-all",
+    component: PinPaymentAll,
+    headerShown: false,
+  },
+  {
     name: "otp-change-merchant",
     component: OtpChange,
     headerShown: false,
@@ -209,6 +216,11 @@ const routerList = [
   {
     name: "otp-invoice-ditributor",
     component: OtpInvoiceDistributor,
+    headerShown: false,
+  },
+  {
+    name: "otp-payment-invoice-all",
+    component: OtpPaymentInvoiceAll,
     headerShown: false,
   },
 ];
