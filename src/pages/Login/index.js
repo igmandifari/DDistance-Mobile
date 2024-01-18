@@ -67,6 +67,7 @@ function Login({ navigation }) {
           dispatch(
             setIsAuthentication({
               token: token,
+              role: role,
             })
           );
           navigation.navigate("dashboard-distributor");

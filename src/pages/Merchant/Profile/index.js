@@ -14,30 +14,19 @@ import CustomButton from "../../../components/CustomButton";
 import PopUpConfirmLogout from "../../../components/PopUpConfirmLogout";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../store/userSlice";
-import { getUserMerchant } from "../../../services/AuthService";
+import { getUserMerchant,getUserDistributor } from "../../../services/AuthService";
 
 const vw = Dimensions.get("window").width;
 
 const Profile = ({ navigation }) => {
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      () => {
-        navigation.navigate("dashboard-merchant");
-        return true;
-      }
-    );
 
-    return () => {
-      backHandler.remove();
-    };
-  }, [navigation]);
   const [popUp, setPopUp] = useState(false);
   const [userProfile, setUserProfile] = useState([]);
 
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.user);
-
+  const { token,role } = useSelector((state) => state.user);
+  console.log("cek role",role)
+  console.log("token ",token);
   const handleLogout = () => {
     dispatch(logout());
     navigation.navigate("landing-page");
@@ -45,8 +34,13 @@ const Profile = ({ navigation }) => {
 
   const getUserProfileData = async () => {
     try {
-      const response = await getUserMerchant(token);
-      setUserProfile(response.data.data);
+      if (role === "ROLE_MERCHANT") {
+        const response = await getUserMerchant(token);
+        setUserProfile(response.data.data);
+      } else if (role === "ROLE_DISTRIBUTOR") {
+        const response = await getUserDistributor(token);
+        setUserProfile(response.data.data);
+      }
     } catch (error) {
       console.log("Error Fetch user profile" + error);
     }
@@ -54,7 +48,7 @@ const Profile = ({ navigation }) => {
 
   useEffect(() => {
     getUserProfileData();
-  }, []);
+  }, [role]); 
 
   const details = [
     {

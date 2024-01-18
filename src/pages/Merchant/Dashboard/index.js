@@ -22,19 +22,6 @@ import { Button } from "react-native-elements";
 
 const DashboardMerchant = ({ navigation }) => {
 
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      () => {
-        navigation.navigate("dashboard-merchant");
-        return true;
-      }
-    );
-
-    return () => {
-      backHandler.remove();
-    };
-  }, [navigation]);
   const dispatch = useDispatch();
   const [userDetail, setUserDetail] = useState({
     name: null,
@@ -175,7 +162,7 @@ const DashboardMerchant = ({ navigation }) => {
                     case "LANCAR":
                       bgColor = colors.GREEN;
                       break;
-                    case "TIDAK LANCAR":
+                    case "TIDAK_LANCAR":
                       bgColor = colors.YELLOW_STATUS;
                       break;
                     case "GAGAL":

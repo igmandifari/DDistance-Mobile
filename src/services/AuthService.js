@@ -13,6 +13,14 @@ export const getUserMerchant = (token) => {
   });
 };
 
+export const getUserDistributor = (token) => {
+  return axiosInstance.get(`http://10.0.2.2:8080/api/distributor/my`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 export const login = (payload) => {
   return axiosInstance.post(`http://10.0.2.2:8080/api/auth/login`, payload);
 };
