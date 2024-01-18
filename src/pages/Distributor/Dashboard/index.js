@@ -96,7 +96,7 @@ const DashboardDistributor = ({ navigation }) => {
             <Text
               style={{ fontSize: 16, fontWeight: "700", color: colors.WHITE }}
             >
-              {limit}
+              Rp. 100.000.000
             </Text>
             <Image source={require("../../../assets/img/View.png")} />
           </View>
