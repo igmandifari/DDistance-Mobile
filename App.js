@@ -43,11 +43,13 @@ import SuccessNewPIN from "./src/pages/Merchant/ForgetPIN/components/SuccessNewP
 import ChangePin from "./src/pages/ChangePin";
 import ChangePinSuccess from "./src/pages/ChangePin/components/ChangePinSuccess";
 import OtpChangePin from "./src/pages/ChangePin/components/OtpChangePin";
+
 import PinPaymentAll from "./src/pages/Merchant/Payment/components/PinPaymentAll";
 import Profile from "./src/pages/Merchant/Profile";
 import HistoryTenorSet from "./src/pages/Merchant/Bill/components/HistoryTenorSet";
 import TenorSuccessSetting from "./src/pages/Merchant/Payment/components/TenorSuccessSetting";
 import ForgetPassword from "./src/pages/ForgetPassword/ForgetPassword";
+
 
 const routerList = [
   {

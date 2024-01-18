@@ -18,14 +18,11 @@ export const updateProfileUser = (token, payload) => {
 };
 
 export const getDetailDistributorInvoice = (token, id) => {
-  return axiosInstance.get(
-    `${BASE_URL}/api/invoice/${id}/distributor`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  return axiosInstance.get(`${BASE_URL}/api/invoice/${id}/distributor`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export const getInsurances = (token) => {
@@ -46,8 +43,6 @@ export const sendOtpAturTenor = (token) => {
     }
   );
 };
-
-
 
 export const getDetailInsurance = (token, id) => {
   return axiosInstance.get(`${BASE_URL}/api/insurance/${id}`, {
@@ -71,11 +66,40 @@ export const getKtp = async (token, id) => {
   return response.data;
 };
 
+export const getSiu = async (token, id) => {
+  const response = await axiosInstance.get(
+    `${BASE_URL}/api/insurance/${id}/siu`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: "blob",
+    }
+  );
+  console.log(response.data);
+  return response.data;
+};
+
+export const getAgunan = async (token, id) => {
+  const response = await axiosInstance.get(
+    `${BASE_URL}/api/insurance/${id}/agunan`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: "blob",
+    }
+  );
+  console.log(response.data);
+  return response.data;
+};
+
 // Fungsi untuk mengonversi blob ke base64
-const blobToBase64 = (blob) => {
+export const blobToBase64 = (blob) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onloadend = () => {
+      console.log("Base64 data:", reader.result);
       resolve(reader.result.split(",")[1]);
     };
     reader.onerror = reject;
@@ -84,29 +108,22 @@ const blobToBase64 = (blob) => {
 };
 
 export const sendOtpInsurance = (token) => {
-  return axiosInstance.get(
-    `${BASE_URL}/api/insurance/email/send/token`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  return axiosInstance.get(`${BASE_URL}/api/insurance/email/send/token`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export const createInsurance = (token, payload, otp) => {
   console.log(payload);
-  return axiosInstance.post(
-    `${BASE_URL}/api/insurance?otp=${otp}`,
-    payload,
-    {
-      headers: {
-        Accept: "*/*",
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
-      },
-    }
-  );
+  return axiosInstance.post(`${BASE_URL}/api/insurance?otp=${otp}`, payload, {
+    headers: {
+      Accept: "*/*",
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 export const getInvoice = (token) => {
@@ -136,10 +153,10 @@ export const putChangePassword = (
   return axiosInstance.put(
     `${BASE_URL}/api/merchant/changePassword`,
     {
-      otp:enteredOtp,
+      otp: enteredOtp,
       newPassword,
       oldPassword,
-      confirmPassword
+      confirmPassword,
     },
     {
       headers: {
@@ -149,26 +166,20 @@ export const putChangePassword = (
   );
 };
 
-export const putChangePin = (
-    token,
-    otp,
-    oldPin,
-    newPin,
-    confirmPin
-) => {
+export const putChangePin = (token, otp, oldPin, newPin, confirmPin) => {
   return axiosInstance.put(
-      `${BASE_URL}/api/merchant/changePin`,
-      {
-        otp,
-        oldPin,
-        newPin,
-        confirmPin
+    `${BASE_URL}/api/merchant/changePin`,
+    {
+      otp,
+      oldPin,
+      newPin,
+      confirmPin,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+    }
   );
 };
 
@@ -208,14 +219,11 @@ export const postInvoice = (token, payload, otp) => {
 };
 
 export const getDetailTagihan = (token, id) => {
-  return axiosInstance.get(
-    `${BASE_URL}/api/invoice/${id}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  return axiosInstance.get(`${BASE_URL}/api/invoice/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export const cekTagihan = (token, bodyRequest) => {
@@ -294,27 +302,23 @@ export const setTenor = async (token, bodyRequest) => {
 
     return response.data;
   } catch (error) {
-    console.error('Error saat setting tenor:', error);
+    console.error("Error saat setting tenor:", error);
     throw error;
   }
 };
 
 export const sendOtpForgetPIN = async (email) => {
   try {
-    const response = await axiosInstance.post(
-      `${BASE_URL}/api/auth/sendOtp`,
-      {
-        email: email,
-      }
-    );
+    const response = await axiosInstance.post(`${BASE_URL}/api/auth/sendOtp`, {
+      email: email,
+    });
 
     return response.data;
   } catch (error) {
-    console.error('Error sending OTP for forget PIN:', error);
+    console.error("Error sending OTP for forget PIN:", error);
     throw error;
   }
 };
-
 
 export const sendNewPIN = async (otp, email) => {
   try {
@@ -325,12 +329,12 @@ export const sendNewPIN = async (otp, email) => {
 
     const response = await axiosInstance.put(
       `${BASE_URL}/api/auth/reset-pin-mobile`,
-      bodyRequest,
+      bodyRequest
     );
 
     return response.data;
   } catch (error) {
-    console.error('Error setting new PIN:', error);
+    console.error("Error setting new PIN:", error);
     throw error;
   }
 };
@@ -342,4 +346,3 @@ export const getNotification = (token) => {
     },
   });
 };
-

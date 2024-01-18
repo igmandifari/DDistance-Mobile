@@ -14,7 +14,7 @@ export const getInvoice = (token) => {
     headers: {
       Authorization: "Bearer",
     },
-  }); 
+  });
 };
 
 export const getMerchantsInvoice = (token) => {
@@ -23,7 +23,7 @@ export const getMerchantsInvoice = (token) => {
       Authorization: "Bearer",
     },
   });
-}; 
+};
 //1
 export const getInvoiceDistributor = (token) => {
   return axiosInstance.get(`${BASE_URL}/api/invoice`, {
@@ -42,13 +42,12 @@ export const getDetailInvoice = (token, id) => {
 };
 
 export const putInvoiceDistributor = (token, payload) => {
-  return axiosInstance.put(`${BASE_URL}/api/invoice`,
-  payload, {
+  return axiosInstance.put(`${BASE_URL}/api/invoice`, payload, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-}
+};
 
 export const sendOtpInvoiceDistributor = (token) => {
   return axiosInstance.get(`${BASE_URL}/api/invoice/email/send/token`, {
@@ -68,28 +67,7 @@ export const getInvoiceIdDistributor = (token, id) => {
   });
 };
 
-export const getInvoiceId = (token, id) => {
-  return axiosInstance.get(`${BASE_URL}/api/invoice/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-};
 
-export const getDetailMerchantInvoice = (token, id) => {
-  return axiosInstance.get(`${BASE_URL}/api/invoice/${id}/merchant`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-};
-export const getCreditHistory = (token) => {
-  return axiosInstance.get(`${BASE_URL}/api/invoice/getCreditHistory`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }); 
-};
 
 export const putChangePinDistributor = (
     token,
@@ -113,3 +91,27 @@ export const putChangePinDistributor = (
       }
   );
 };
+
+export const getInvoiceId = (token, id) => {
+  return axiosInstance.get(`${BASE_URL}/api/invoice/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const getDetailMerchantInvoice = (token, id) => {
+  return axiosInstance.get(`${BASE_URL}/api/invoice/${id}/merchant`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+export const getCreditHistory = (token) => {
+  return axiosInstance.get(`${BASE_URL}/api/invoice/getCreditHistory`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
