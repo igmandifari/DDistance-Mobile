@@ -12,6 +12,7 @@ import { detailListInvoice } from "./data";
 import { getDetailDistributorInvoice } from "../../../services/merchantServices";
 import { useSelector } from "react-redux";
 import { Button } from "react-native-elements";
+import { formatIDRCurrency } from "../../../utils/formatIdr";
 
 const DetailDistributor = ({ navigation, route }) => {
   const {
@@ -166,7 +167,7 @@ const DetailDistributor = ({ navigation, route }) => {
                           {jumlahDiBayar}/{jumlahPayment} Bulan
                         </Text>
                         <Text style={{ fontSize: 14, fontWeight: "600" }}>
-                          Rp. {jumlahTagihan}
+                          {formatIDRCurrency(jumlahTagihan)}
                         </Text>
                       </View>
                       <View

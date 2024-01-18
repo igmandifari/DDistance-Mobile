@@ -16,6 +16,7 @@ import PaymentSuccess from "../../Payment/components/PaymentSuccess";
 import { useSelector } from "react-redux";
 import PaymentFailed from "../../Payment/components/PaymentFailed";
 import { getDetailInvoiceId } from "../../../../services/merchantServices";
+import { formatIDRCurrency } from "../../../../utils/formatIdr";
 
 const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
   const { token } = useSelector((state) => state.user);
@@ -231,7 +232,7 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
                                 Cicilan {paymentTo}/{paymentAmount}
                               </Text>
                               <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                                {sisaTagihan}
+                                {formatIDRCurrency(sisaTagihan)}
                               </Text>
                             </>
                           )}

@@ -5,6 +5,7 @@ import CustomButton from "../../../../components/CustomButton";
 import { colors } from "../../../../constant/colors";
 import { useSelector } from "react-redux";
 import { getPaymentId } from "../../../../services/merchantServices";
+import { formatIDRCurrency } from "../../../../utils/formatIdr";
 
 const SheetPay = ({ handlePay, handlePayAll,selectedPaymentId }) => {
   const { token } = useSelector((state) => state.user);
@@ -57,11 +58,11 @@ const SheetPay = ({ handlePay, handlePayAll,selectedPaymentId }) => {
     },
     {
       key: "Sisa Tagihan:",
-      value: data.sisaTagihan || "unknown",
+      value: formatIDRCurrency(data.sisaTagihan) || "unknown",
     },
     {
       key: "Cicilan Tagihan",
-      value: data.tagihan || "unknown",
+      value: formatIDRCurrency(data.tagihan) || "unknown",
     },
     {
       key: "Tanggal Jatuh Tempo",

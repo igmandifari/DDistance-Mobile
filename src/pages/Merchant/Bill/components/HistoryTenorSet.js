@@ -17,6 +17,7 @@ import PaymentFailed from "../../Payment/components/PaymentFailed";
 import { getDetailInvoiceId } from "../../../../services/merchantServices";
 import { useSelector } from "react-redux";
 import { getInvoiceId } from "../../../../services/distributorService";
+import { formatIDRCurrency } from "../../../../utils/formatIdr";
 
 const HistoryTenorSet = ({ navigation, route }) => {
   const { token } = useSelector((state) => state.user);
@@ -54,7 +55,7 @@ const HistoryTenorSet = ({ navigation, route }) => {
   };
 
   const handleClickStatus = () => {
-    navigation.navigate("tenor-setting",{
+    navigation.navigate("tenor-setting", {
       idInvoice: idInvoice,
     });
   };
@@ -161,7 +162,8 @@ const HistoryTenorSet = ({ navigation, route }) => {
                               Cicilan {paymentTo}/{paymentAmount}
                             </Text> */}
                     <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                      Rp. {data.jumlahTagihan}
+                      {formatIDRCurrency(data.jumlahTagihan)}
+                      {/* {data.sisaTagihan} */}
                     </Text>
                   </View>
                   <View style={{ alignItems: "start" }}>
@@ -228,7 +230,7 @@ const HistoryTenorSet = ({ navigation, route }) => {
               alignContent: "flex-end",
             }}
           >
-           <TouchableOpacity
+            <TouchableOpacity
               onPress={() =>
                 navigation.navigate("detail-invoice-bill-merchant", {
                   idInvoice: idInvoice,

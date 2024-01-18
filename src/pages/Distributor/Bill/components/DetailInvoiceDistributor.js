@@ -18,11 +18,14 @@ import {
 } from "../../../../services/distributorService";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { formatIDRCurrency } from "../../../../utils/formatIdr";
+import { blobToBase64, getInvoiceImage } from "../../../../services/merchantServices";
 
 const DetailInvoiceDistributor = ({ route, navigation }) => {
   const { token } = useSelector((state) => state.user);
   const { idInvoice } = route?.params;
   const [data, setData] = useState({
+    image:null,
     id: null,
     judul: null,
     namaToko: null,
@@ -62,6 +65,13 @@ const DetailInvoiceDistributor = ({ route, navigation }) => {
         rejection: alasanPenolakan,
         status: installment,
       });
+
+      const invoiceBlob = await getInvoiceImage(token, id);
+      const invoiceBase64 = await blobToBase64(invoiceBlob);
+
+      setImages({
+        file: `data:image/jpeg;base64,${invoiceBase64}`,
+      });
     } catch (error) {
       console.error("Error fetching invoice data:", error);
     }
@@ -74,7 +84,7 @@ const DetailInvoiceDistributor = ({ route, navigation }) => {
   const details = [
     {
       key: "No Invoice :",
-      value: "Invoice " + data.judul,
+      value: data.judul,
     },
     {
       key: "Tanggal Invoice :",
@@ -90,7 +100,7 @@ const DetailInvoiceDistributor = ({ route, navigation }) => {
     },
     {
       key: "Total Tagihan :",
-      value: data.jumlahTagihan,
+      value: formatIDRCurrency(data.jumlahTagihan),
     },
     {
       key: "Tanggal Jatuh Tempo :",
@@ -147,7 +157,7 @@ const DetailInvoiceDistributor = ({ route, navigation }) => {
             handleReject={() => handleSubmit(false)}
           />
         )}
-        <Text style={styles.title}>Pengajuan 0000000</Text>
+        <Text style={styles.title}>Pengajuan</Text>
         <View
           style={{
             borderBottomColor: "black",

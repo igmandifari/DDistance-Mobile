@@ -19,6 +19,7 @@ import {
 } from "../../../services/merchantServices";
 import { useSelector } from "react-redux";
 import { getInvoiceId } from "../../../services/distributorService";
+import { formatIDRCurrency } from "../../../utils/formatIdr";
 const data = [
   { label: "3 Bulan", value: 3 },
   { label: "6 Bulan", value: 6 },
@@ -116,7 +117,7 @@ const TenorSetting = ({ navigation, route }) => {
     },
     {
       key: "Total Tagihan",
-      value: detail.totalTagihan || "unknown",
+      value: formatIDRCurrency(detail.totalTagihan) || "unknown",
     },
   ];
 

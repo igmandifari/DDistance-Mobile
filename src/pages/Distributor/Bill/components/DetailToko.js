@@ -12,10 +12,11 @@ import { colors } from "../../../../constant/colors";
 import { Button } from "react-native-elements";
 import { useSelector } from "react-redux";
 import { getDetailMerchantInvoice } from "../../../../services/distributorService";
+import { formatIDRCurrency } from "../../../../utils/formatIdr";
 
 const DetailToko = ({ navigation, route }) => {
   const {
-    details: { id, address, phoneNumber, email },
+    details: { id, address, phoneNumber, email,name},
   } = route.params;
   const [filter, setFilter] = useState("");
   const [data, setData] = useState([]);
@@ -75,7 +76,7 @@ const DetailToko = ({ navigation, route }) => {
                   borderBottomWidth: StyleSheet.hairlineWidth,
                 }}
               >
-                Distributor A
+                Toko {name}
               </Text>
               <Text>ID Toko: {id}</Text>
               <Text>Alamat: {address}</Text>
@@ -116,7 +117,7 @@ const DetailToko = ({ navigation, route }) => {
           <View>
             <View>
               <Text>Sisa Limitmu:</Text>
-              <Text>Rp. 70.000.0000/100/000/000</Text>
+              <Text>Rp. 70.000.0000/100.000.000</Text>
 
               <View style={styles.progressBar}></View>
             </View>
@@ -169,7 +170,7 @@ const DetailToko = ({ navigation, route }) => {
                           {tanggalJatuhTempo}
                         </Text>
                         <Text style={{ fontSize: 14, fontWeight: "600" }}>
-                          {jumlahTagihan}
+                          {formatIDRCurrency(jumlahTagihan)}
                         </Text>
                       </View>
                       <View
@@ -192,7 +193,7 @@ const DetailToko = ({ navigation, route }) => {
                           <TouchableOpacity
                             onPress={() => {
                               navigation.navigate("history-bill-distributor", {
-                                idInvoice: distributor.id,
+                                idInvoice: distributor.id,name,
                               });
                             }}
                           >

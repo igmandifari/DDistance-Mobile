@@ -19,6 +19,7 @@ import { getUserMerchant } from "../../../services/AuthService";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../store/userSlice";
 import { Button } from "react-native-elements";
+import { formatIDRCurrency } from "../../../utils/formatIdr";
 
 const DashboardMerchant = ({ navigation }) => {
 
@@ -108,7 +109,7 @@ const DashboardMerchant = ({ navigation }) => {
               <Text
                 style={{ fontSize: 16, fontWeight: "700", color: colors.WHITE }}
               >
-                Rp {balance || "unknown"}
+                {formatIDRCurrency(balance || "unknown")}
               </Text>
               <Image source={require("../../../assets/img/View.png")} />
             </View>
@@ -226,7 +227,7 @@ const DashboardMerchant = ({ navigation }) => {
                                 color: "rgba(0,0,0,0.25)",
                               }}
                             >
-                              Rp. {tagihan}
+                              {formatIDRCurrency(tagihan)}
                             </Text>
                           </View>
                           <View

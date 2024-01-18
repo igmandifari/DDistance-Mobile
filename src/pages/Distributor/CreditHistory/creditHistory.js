@@ -3,6 +3,7 @@ import React, { Component,useEffect, useRef, useState  } from "react";
 import { colors } from "../../../constant/colors";
 import { getCreditHistory } from "../../../services/distributorService";
 import { useSelector } from "react-redux";
+import { formatIDRCurrency } from "../../../utils/formatIdr";
 
 
 const CreditHistory = () => {
@@ -78,7 +79,7 @@ const CreditHistory = () => {
                     </Text>
 
                     <Text style={{ fontSize: 20, fontWeight: "400" }}>
-                      Rp. {item.totalPembayaran}
+                      {formatIDRCurrency(item.totalPembayaran)}
                     </Text>
                   </View>
                   <Text

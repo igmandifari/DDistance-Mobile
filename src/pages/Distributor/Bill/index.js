@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import { getInvoiceDistributor } from "../../../services/distributorService";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
+import { formatIDRCurrency } from "../../../utils/formatIdr";
 
 const vw = Dimensions.get("window").width;
 
@@ -176,8 +177,7 @@ const BillDistributor = ({ navigation }) => {
                               </Text>
 
                               <Text style={{ fontSize: 20, fontWeight: 600 }}>
-                                <Text>Rp. </Text>
-                                {jumlahTagihan}
+                                {formatIDRCurrency(jumlahTagihan)}
                                 <Text>,-</Text>
                               </Text>
                             </TouchableOpacity>

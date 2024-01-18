@@ -8,26 +8,20 @@ import {
   SafeAreaView,
 } from "react-native";
 import { colors } from "../../../../constant/colors";
-// import { historyList2 } from "./data";
 import { useSelector } from "react-redux";
 import { getDetailInvoiceId } from "../../../../services/merchantServices";
+import { formatIDRCurrency } from "../../../../utils/formatIdr";
 
 const HistoryInvoiceCicilanDistributor = ({ navigation, route }) => {
   const [filter, setFilter] = useState("");
   const { token } = useSelector((state) => state.user);
   const [data, setData] = useState([]);
   const [isProfileVisible, setIsProfileVisible] = useState(true);
-  const { idInvoice } = route.params;
-  console.log("id invoice", idInvoice);
+  const { idInvoice, name } = route.params;
 
   const getDetail = async () => {
-    const response = await getDetailInvoiceId(token, idInvoice);
+    const response = await getDetailInvoiceId(token, idInvoice, name);
     setData(response.data.data);
-  };
-  console.log("cek data", data);
-
-  const handleChangeFilter = (name) => {
-    setFilter(name);
   };
 
   useEffect(() => {
@@ -45,7 +39,7 @@ const HistoryInvoiceCicilanDistributor = ({ navigation, route }) => {
           <View id="profile" style={{}}>
             <View style={styles.profileContainer}>
               <Text style={{ fontSize: 32, fontWeight: "700" }}>
-                Distributor A
+                Toko {name}
               </Text>
             </View>
           </View>
@@ -54,103 +48,86 @@ const HistoryInvoiceCicilanDistributor = ({ navigation, route }) => {
           <View>
             <View>
               <Text style={{ fontSize: 20, fontWeight: 400 }}>
-                Riwayat Cicilan Invoice
+                Riwayat Cicilan {idInvoice}
               </Text>
             </View>
           </View>
           <ScrollView>
             <View id="merchants" style={styles.merchantContainer}>
-              {data.map((distributor, index) => {
-                const {
-                  InvoiceNo,
-                  sisaTagihan,
-                  tanggalFaktur,
-                  statusPembayaran,
-                  paymentAmount,
-                  paymentTo,
-                } = distributor;
+              {data.length > 0 ? (
+                data.map((distributor, index) => {
+                  const {
+                    InvoiceNo,
+                    sisaTagihan,
+                    tanggalFaktur,
+                    statusPembayaran,
+                    paymentAmount,
+                    paymentTo,
+                  } = distributor;
 
-                let bgColor;
-                let textStatus;
-                {
-                  /* let isButtonDisabled = false; */
-                }
-                switch (statusPembayaran) {
-                  case true:
-                    bgColor = colors.GREEN;
-                    textStatus = "Tepat Waktu";
-                    break;
-                  case false:
-                    bgColor = colors.YELLOW_STATUS;
-                    textStatus = "Terlambat";
-                    break;
-                  case null:
-                    bgColor = colors.BUTTON_ORANGE;
-                    textStatus = "Belum Bayar";
-                    break;
-                  case "Atur Tenor":
-                    bgColor = colors.BUTTON_ORANGE;
-                    break;
-                }
+                  let bgColor;
+                  let textStatus;
+                  let isButtonDisabled = false;
+                  switch (statusPembayaran) {
+                    case true:
+                      bgColor = colors.GREEN;
+                      textStatus = "Tepat Waktu";
+                      break;
+                    case false:
+                      bgColor = colors.YELLOW_STATUS;
+                      textStatus = "Terlambat";
+                      break;
+                    case null:
+                      bgColor = colors.BUTTON_ORANGE;
+                      textStatus = "Belum Bayar";
+                      break;
+                    case "Atur Tenor":
+                      bgColor = colors.BUTTON_ORANGE;
+                      break;
+                    default:
+                      isButtonDisabled = true;
+                  }
 
-                return (
-                  <View key={index} style={styles.item}>
-                    <View style={{ height: "100%", flex: 1 }}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        {statusPembayaran === "Atur Tenor" ? (
-                          <>
-                            <Text
-                              style={{
-                                fontSize: 15,
-                                fontWeight: "700",
-                                flex: 1,
-                              }}
-                            >
-                              Total Tagihan
-                            </Text>
-                            <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                              {sisaTagihan}
-                            </Text>
-                          </>
-                        ) : (
-                          <>
-                            <Text style={{ fontSize: 15, fontWeight: "700" }}>
-                              Cicilan {paymentTo}/{paymentAmount}
-                            </Text>
-                            <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                              {sisaTagihan}
-                            </Text>
-                          </>
-                        )}
-                      </View>
-                      <View style={{ alignItems: "start" }}>
-                        {statusPembayaran === "Atur Tenor" && (
-                          <Text
-                            style={{
-                              fontSize: 15,
-                              fontWeight: "700",
-                              color: colors.ORANGE,
-                            }}
-                          >
-                            Jatuh Tempo Pilih Tenor:
-                          </Text>
-                        )}
-                        {/* <Text style={{ fontSize: 14, color: colors.BUTTON_ORANGE }}>{date}</Text> */}
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <View style={{ alignItems: "center" }}>
-                          {statusPembayaran === "Bayar" && (
+                  return (
+                    <View key={index} style={styles.item}>
+                      <View style={{ height: "100%", flex: 1 }}>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          {statusPembayaran === "Atur Tenor" ? (
+                            <>
+                              <Text
+                                style={{
+                                  fontSize: 15,
+                                  fontWeight: "700",
+                                  flex: 1,
+                                }}
+                              >
+                                Total Tagihan
+                              </Text>
+                              <Text style={{ fontSize: 20, fontWeight: "600" }}>
+                                {sisaTagihan}
+                              </Text>
+                            </>
+                          ) : (
+                            <>
+                              <Text
+                                style={{ fontSize: 15, fontWeight: "700" }}
+                              >
+                                Cicilan {paymentTo}/{paymentAmount}
+                              </Text>
+                              <Text style={{ fontSize: 20, fontWeight: "600" }}>
+                                {formatIDRCurrency(sisaTagihan)}
+                              </Text>
+                            </>
+                          )}
+                        </View>
+                        <View style={{ alignItems: "start" }}>
+                          {statusPembayaran === "Atur Tenor" && (
                             <Text
                               style={{
                                 fontSize: 15,
@@ -158,44 +135,85 @@ const HistoryInvoiceCicilanDistributor = ({ navigation, route }) => {
                                 color: colors.ORANGE,
                               }}
                             >
-                              Jatuh Tempo :
+                              Jatuh Tempo Pilih Tenor:
                             </Text>
                           )}
-                          <Text
-                            style={{
-                              fontSize: 14,
-                            }}
-                          >
-                            {tanggalFaktur}
-                          </Text>
                         </View>
                         <View
                           style={{
-                            width: 120,
-                            borderRadius: 10,
-                            backgroundColor: bgColor,
                             flexDirection: "row",
-                            justifyContent: "center",
-                            paddingVertical: 5,
+                            justifyContent: "space-between",
                           }}
                         >
-                          <TouchableOpacity>
+                          <View style={{ alignItems: "center" }}>
+                            {statusPembayaran === "Bayar" && (
+                              <Text
+                                style={{
+                                  fontSize: 15,
+                                  fontWeight: "700",
+                                  color: colors.ORANGE,
+                                }}
+                              >
+                                Jatuh Tempo :
+                              </Text>
+                            )}
                             <Text
                               style={{
-                                fontSize: 16,
-                                fontWeight: "600",
-                                color: "white",
+                                fontSize: 14,
                               }}
                             >
-                              {textStatus}
+                              {tanggalFaktur}
                             </Text>
-                          </TouchableOpacity>
+                          </View>
+                          <View
+                            style={{
+                              width: 120,
+                              borderRadius: 10,
+                              backgroundColor: bgColor,
+                              flexDirection: "row",
+                              justifyContent: "center",
+                              paddingVertical: 5,
+                            }}
+                          >
+                            {statusPembayaran === null ? (
+                              <TouchableOpacity
+                                onPress={() =>
+                                  handleClickStatus(statusPembayaran, id)
+                                }
+                                disabled={isButtonDisabled}
+                              >
+                                <Text
+                                  style={{
+                                    fontSize: 16,
+                                    fontWeight: "600",
+                                    color: "white",
+                                  }}
+                                >
+                                  {textStatus}
+                                </Text>
+                              </TouchableOpacity>
+                            ) : (
+                              <Text
+                                style={{
+                                  fontSize: 16,
+                                  fontWeight: "600",
+                                  color: "white",
+                                }}
+                              >
+                                {textStatus}
+                              </Text>
+                            )}
+                          </View>
                         </View>
                       </View>
                     </View>
-                  </View>
-                );
-              })}
+                  );
+                })
+              ) : (
+                <View style={{display:"flex"}}>
+                  <Text style={{textAlign:"center",marginTop:"5%"}}>Belum ada riwayat cicilan</Text>
+                </View>
+              )}
             </View>
           </ScrollView>
 

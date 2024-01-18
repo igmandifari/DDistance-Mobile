@@ -94,6 +94,21 @@ export const getAgunan = async (token, id) => {
   return response.data;
 };
 
+export const getInvoiceImage = async (token, id) => {
+  const response = await axiosInstance.get(
+    `${BASE_URL}/api/invoice/${id}/fileInvoice`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: "blob",
+    }
+  );
+  console.log(response.data);
+  return response.data;
+};
+
+
 // Fungsi untuk mengonversi blob ke base64
 export const blobToBase64 = (blob) => {
   return new Promise((resolve, reject) => {
