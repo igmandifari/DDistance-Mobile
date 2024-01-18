@@ -15,7 +15,6 @@ import {
   sendOtpAturTenor,
 } from "../../../../services/merchantServices";
 import { useSelector } from "react-redux";
-import { Button } from "react-native-elements";
 import PopUpFailed from "../../../../components/PopUpFailed";
 import TenorSuccessSetting from "./TenorSuccessSetting";
 
@@ -27,6 +26,7 @@ const OtpTenor = ({ navigation, route }) => {
   const [otp, setOtp] = useState("");
   const otpRef = useRef(null);
   const [tenorDetails, setTenorDetails] = useState(null);
+  const [otpSending, setOtpSending] = useState(false);
 
   const { formData } = route.params;
   const idFromTenorSetting = formData.id; // Dapatkan ID dari formData
@@ -41,10 +41,6 @@ const OtpTenor = ({ navigation, route }) => {
 
     return () => clearInterval(intervalId);
   }, [timer]);
-
-  const clearOTP = () => {
-    otpRef.current.clear();
-  };
 
   const handleSubmit = async () => {
     const enteredOtp = otpRef.current.state.otpCode.join("");
@@ -69,7 +65,7 @@ const OtpTenor = ({ navigation, route }) => {
         // Simpan detail hasil setTenor ke state
         setTenorDetails(response.data);
 
-        console.log("LINE 72",response.data);
+        console.log("LINE 72", response.data);
 
         // Navigasi ke halaman TenorSuccessSetting
         navigation.navigate("tenor-success-setting", {
@@ -92,12 +88,14 @@ const OtpTenor = ({ navigation, route }) => {
 
   const sendOtp = async () => {
     try {
+      setOtpSending(true);
       const response = await sendOtpAturTenor(token);
       console.log(response);
-      this.otpRef.current.setState({ otpCode: [] });
       setTimer(60);
     } catch (error) {
       console.log(error);
+    } finally {
+      setOtpSending(false);
     }
   };
   return (
@@ -118,10 +116,33 @@ const OtpTenor = ({ navigation, route }) => {
         </View>
 
         <View style={styles.resendContainer}>
-          <TouchableOpacity onPress={() => sendOtp()}>
-            <Text style={styles.resendText}>
-              {timer ? `00.${timer}` : ""} Kirim Ulang OTP
-            </Text>
+          <TouchableOpacity
+            onPress={() => sendOtp()}
+            disabled={otpSending || timer > 0}
+          >
+            {timer > 0 ? (
+              <Text
+                style={{
+                  textDecorationLine: "underline",
+                  color: colors.GRAY,
+                  top: 100,
+                  textAlign: "center",
+                }}
+              >
+                {`00.${timer}`} Kirim Ulang OTP
+              </Text>
+            ) : (
+              <Text
+                style={{
+                  textDecorationLine: "underline",
+                  color: colors.ORANGE,
+                  top: 100,
+                  textAlign: "center",
+                }}
+              >
+                Kirim Ulang OTP
+              </Text>
+            )}
           </TouchableOpacity>
         </View>
 

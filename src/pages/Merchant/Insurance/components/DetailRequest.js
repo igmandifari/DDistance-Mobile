@@ -1,4 +1,11 @@
-import { SafeAreaView, StyleSheet, Text, View, Image } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { colors } from "../../../../constant/colors";
 import BlankKtp from "../../../../assets/img/blank-ktp";
@@ -6,25 +13,13 @@ import BlankSIUP from "../../../../assets/img/blank-siup";
 import BlankAgunan from "../../../../assets/img/blank-agunan";
 import { useSelector } from "react-redux";
 import {
+  blobToBase64,
+  getAgunan,
   getDetailInsurance,
   getKtp,
+  getSiu,
 } from "../../../../services/merchantServices";
 import { Button } from "react-native-elements";
-
-const files = [
-  {
-    key: "KTP",
-    value: BlankKtp,
-  },
-  {
-    key: "Surat Izin Usaha",
-    value: BlankSIUP,
-  },
-  {
-    key: "Agunan",
-    value: BlankAgunan,
-  },
-];
 
 const DetailRequest = ({ route }) => {
   const { token } = useSelector((state) => state.user);
@@ -34,36 +29,54 @@ const DetailRequest = ({ route }) => {
     date: null,
     name: null,
     status: null,
+    rejection: null,
   });
   const [images, setImages] = useState({
     ktp: null,
     agunan: null,
-    siup: null,
+    siu: null,
   });
 
   const getDetail = async () => {
-    const response = await getDetailInsurance(token, idInsurance);
-    const { id, date, nameStore: name, status } = response.data.data;
-    setData({
-      id,
-      date,
-      name,
-      status,
-    });
-  };
+    try {
+      const response = await getDetailInsurance(token, idInsurance);
+      const {
+        id,
+        date,
+        nameStore: name,
+        status,
+        rejection,
+        images,
+      } = response.data.data;
+      setData({
+        id,
+        date,
+        name,
+        status,
+        rejection,
+      });
 
-  const getKtpImage = async () => {
-    const response = await getKtp(token, idInsurance);
-    console.log(response);
-    // setImages((p) => ({
-    //   ...p,
-    //   ktp: response.data,
-    // }));
+      const ktpBlob = await getKtp(token, id);
+      const ktpBase64 = await blobToBase64(ktpBlob);
+
+      const siuBlob = await getSiu(token, id);
+      const siuBase64 = await blobToBase64(siuBlob);
+
+      const agunanBlob = await getAgunan(token, id);
+      const agunanBase64 = await blobToBase64(agunanBlob);
+
+      setImages({
+        ktp: `data:image/jpeg;base64,${ktpBase64}`,
+        siu: `data:image/jpeg;base64,${siuBase64}`,
+        agunan: `data:image/jpeg;base64,${agunanBase64}`,
+      });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   useEffect(() => {
     getDetail();
-    getKtpImage();
   }, []);
 
   const details = [
@@ -85,82 +98,124 @@ const DetailRequest = ({ route }) => {
     },
   ];
   return (
-    <SafeAreaView style={{ marginTop: 20 }}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Pengajuan #1</Text>
-        <View
-          style={{
-            borderBottomColor: "black",
-            borderWidth: 2,
-            elevation: 2,
-            borderBottomWidth: StyleSheet.hairlineWidth,
-          }}
-        />
-        {/* <Button title={"test"} onPress={() => console.log(images.ktp)} /> */}
-        <View>
-          {images.ktp && (
-            <Image
-              source={{
-                uri: images.ktp,
-              }}
-              style={{ width: 400, height: 400 }}
-            />
-          )}
-        </View>
-        {details.map((item, idx) => {
-          return (
-            <View
-              key={idx}
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                borderColor: "green",
-                marginTop: 10,
-              }}
-            >
-              <Text style={{ fontSize: 13, fontWeight: "400" }}>
-                {item.key}
-              </Text>
-              <Text>{item.value}</Text>
-            </View>
-          );
-        })}
-        {files.map((item, idx) => {
-          return (
-            <View
-              key={idx}
-              style={{
-                borderColor: "red",
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: "700",
-                  color: colors.ORANGE,
-                }}
-              >
-                {item.key}
-              </Text>
-              <item.value />
-            </View>
-          );
-        })}
-        <Text>Alasan Ditolan</Text>
-        <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, marginTop: 20 }}>
+      <ScrollView>
+        <View style={styles.container}>
+          <Text style={styles.title}>Pengajuan</Text>
           <View
             style={{
-              backgroundColor: colors.WHITE,
-              borderRadius: 10,
-              padding: 10,
-              flex: 1,
-              elevation: 10,
+              borderBottomColor: "black",
+              borderWidth: 2,
+              elevation: 2,
+              borderBottomWidth: StyleSheet.hairlineWidth,
+            }}
+          />
+
+          {details.map((item, idx) => {
+            return (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  borderColor: "green",
+                  marginTop: 10,
+                }}
+                key={idx}
+              >
+                <Text style={{ fontSize: 13, fontWeight: "400" }}>
+                  {item.key}
+                </Text>
+                <Text>{item.value}</Text>
+              </View>
+            );
+          })}
+
+          <View
+            style={{
+              borderColor: "red",
+              marginTop: 10,
             }}
           >
-            <Text>KTP kurang jelas</Text>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "700",
+                color: colors.ORANGE,
+              }}
+            >
+              KTP
+            </Text>
+            <View>
+              {images.ktp && (
+                <Image
+                  source={{
+                    uri: images.ktp,
+                  }}
+                  style={{ width: "100%", height: 200 }}
+                />
+              )}
+            </View>
+          </View>
+
+          <View style={{ borderColor: "red", marginTop: 10 }}>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "700",
+                color: colors.ORANGE,
+              }}
+            >
+              Surat Izin Usaha
+            </Text>
+            <View>
+              {images.siu && (
+                <Image
+                  source={{
+                    uri: images.siu,
+                  }}
+                  style={{ width: "100%", height: 200 }}
+                />
+              )}
+            </View>
+          </View>
+
+          <View style={{ borderColor: "red", marginTop: 10 }}>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "700",
+                color: colors.ORANGE,
+              }}
+            >
+              Daftar Agunan
+            </Text>
+            <View>
+              {images.agunan && (
+                <Image
+                  source={{
+                    uri: images.agunan,
+                  }}
+                  style={{ width: "100%", height: 200 }}
+                />
+              )}
+            </View>
+          </View>
+
+          <Text style={{ marginTop: 10 }}>Alasan Ditolak</Text>
+          <View style={{ marginTop: 10 }}>
+            <View
+              style={{
+                backgroundColor: colors.WHITE,
+                borderRadius: 10,
+                padding: 10,
+                elevation: 10,
+              }}
+            >
+              <Text>{data.rejection}</Text>
+            </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

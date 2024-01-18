@@ -3,17 +3,13 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
 } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
-import OtpInputs from "react-native-otp-inputs";
 import { colors } from "../../../constant/colors";
 import CustomButton from "../../../components/CustomButton";
-import { setTenor, sendOtpAturTenor } from "../../../services/merchantServices";
+import { sendOtpAturTenor } from "../../../services/merchantServices";
 import { Dropdown } from "react-native-element-dropdown";
-import { Button } from "react-native-elements";
 import { BottomSheet } from "react-native-sheet";
-import SuccessIcon from "../../../assets/img/popUpSuccess.svg";
 import TenorSuccessSetting from "./components/TenorSuccessSetting";
 import BillIcon from "../../../assets/img/bill.svg";
 
@@ -34,7 +30,6 @@ const TenorSetting = ({ navigation, route }) => {
   const { isSuccess } = route.params;
   const sheetSuccess = useRef(null);
   const [hasilCekTagihan, setHasilCekTagihan] = useState(null);
-  // const sheetPay = useRef(null);
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const [detail, setDetail] = useState({
@@ -298,65 +293,3 @@ const styles = StyleSheet.create({
   },
 });
 
-// ===================================================================================================================================================================
-
-// export const SuccessTenorSetting = () => {
-//   return (
-//     <View>
-//       <Text style={{ fontSize: 24, fontWeight: "700" }}>Pengaturan Tenor</Text>
-//       <View
-//         style={{
-//           marginTop: 10,
-//           borderBottomColor: "black",
-//           borderWidth: 2,
-//           elevation: 2,
-//         }}
-//       />
-//       <View style={{ alignItems: "center", padding: 10 }}>
-//         <SuccessIcon />
-//         <Text style={{ fontSize: 20, fontWeight: "700" }}>
-//           Atur Cicilan Berhasil
-//         </Text>
-//       </View>
-//       <View style={{ gap: 18 }}>
-//         {details.map((item, index) => {
-//           return (
-//             <View
-//               key={index}
-//               style={{
-//                 flexDirection: "row",
-//                 justifyContent: "space-between",
-//               }}
-//             >
-//               <Text style={styles.text}>{item.key}</Text>
-//               <Text style={styles.text}>{item.value}</Text>
-//             </View>
-//           );
-//         })}
-//       </View>
-//       <View
-//         style={{
-//           marginTop: 20,
-//           backgroundColor: colors.WHITE,
-//           borderColor: colors.GRAY,
-//           borderWidth: 1,
-//           padding: 15,
-//           borderRadius: 20,
-//         }}
-//       >
-//         <View>
-//           <Text style={[styles.text2, styles.textCenter, { fontSize: 24 }]}>
-//             Tanggal Jatuh Tempo
-//           </Text>
-//           <Text style={[styles.text2, styles.textCenter, { fontSize: 24 }]}>
-//             15/12/2023 {/*jadikan seperti {detail.expiredDate} */}
-//           </Text>
-//           <Text style={[styles.text2, styles.textCenter, { fontSize: 24 }]}>
-//             Rp. 1.683.333 per Bulan{" "}
-//             {/* jadikan seperti {hasilCekTagihan.bayarPerBulan}*/}
-//           </Text>
-//         </View>
-//       </View>
-//     </View>
-//   );
-// };

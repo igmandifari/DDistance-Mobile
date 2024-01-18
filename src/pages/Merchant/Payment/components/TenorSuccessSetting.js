@@ -9,8 +9,18 @@ const TenorSuccessSetting = ({ route, navigation }) => {
   console.log("Details received in TenorSuccessSetting:", details);
 
   useEffect(() => {
-    console.log("Details Data:", details);
-  }, [details]);
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        navigation.navigate("dashboard-merchant");
+        return true;
+      }
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, [navigation]);
 
   console.log("Rendering TenorSuccessSetting...");
 
