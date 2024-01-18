@@ -165,98 +165,79 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
           </View>
           <ScrollView>
             <View id="merchants" style={styles.merchantContainer}>
-              {data.map((distributor, index) => {
-                const {
-                  id,
-                  InvoiceNo,
-                  sisaTagihan,
-                  tanggalFaktur,
-                  statusPembayaran,
-                  paymentAmount,
-                  paymentTo,
-                } = distributor;
+              {data.length > 0 ? (
+                data.map((distributor, index) => {
+                  const {
+                    id,
+                    InvoiceNo,
+                    sisaTagihan,
+                    tanggalFaktur,
+                    statusPembayaran,
+                    paymentAmount,
+                    paymentTo,
+                  } = distributor;
 
-                let bgColor;
-                let textStatus;
-                let isButtonDisabled = false;
-                switch (statusPembayaran) {
-                  case true:
-                    bgColor = colors.GREEN;
-                    textStatus = "Tepat Waktu";
-                    break;
-                  case false:
-                    bgColor = colors.YELLOW_STATUS;
-                    textStatus = "Terlambat";
-                    break;
-                  case null:
-                    bgColor = colors.BUTTON_ORANGE;
-                    textStatus = "Bayar";
-                    break;
-                  case "Atur Tenor":
-                    bgColor = colors.BUTTON_ORANGE;
-                    break;
-                  default:
-                    isButtonDisabled = true;
-                }
+                  let bgColor;
+                  let textStatus;
+                  let isButtonDisabled = false;
+                  switch (statusPembayaran) {
+                    case true:
+                      bgColor = colors.GREEN;
+                      textStatus = "Tepat Waktu";
+                      break;
+                    case false:
+                      bgColor = colors.YELLOW_STATUS;
+                      textStatus = "Terlambat";
+                      break;
+                    case null:
+                      bgColor = colors.BUTTON_ORANGE;
+                      textStatus = "Bayar";
+                      break;
+                    case "Atur Tenor":
+                      bgColor = colors.BUTTON_ORANGE;
+                      break;
+                    default:
+                      isButtonDisabled = true;
+                  }
 
-                return (
-                  <View key={index} style={styles.item}>
-                    <View style={{ height: "100%", flex: 1 }}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        {statusPembayaran === "Atur Tenor" ? (
-                          <>
-                            <Text
-                              style={{
-                                fontSize: 15,
-                                fontWeight: "700",
-                                flex: 1,
-                              }}
-                            >
-                              Total Tagihan
-                            </Text>
-                            <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                              {sisaTagihan}
-                            </Text>
-                          </>
-                        ) : (
-                          <>
-                            <Text style={{ fontSize: 15, fontWeight: "700" }}>
-                              Cicilan {paymentTo}/{paymentAmount}
-                            </Text>
-                            <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                              {sisaTagihan}
-                            </Text>
-                          </>
-                        )}
-                      </View>
-                      <View style={{ alignItems: "start" }}>
-                        {statusPembayaran === "Atur Tenor" && (
-                          <Text
-                            style={{
-                              fontSize: 15,
-                              fontWeight: "700",
-                              color: colors.ORANGE,
-                            }}
-                          >
-                            Jatuh Tempo Pilih Tenor:
-                          </Text>
-                        )}
-                        {/* <Text style={{ fontSize: 14, color: colors.BUTTON_ORANGE }}>{date}</Text> */}
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <View style={{ alignItems: "center" }}>
-                          {statusPembayaran === null && (
+                  return (
+                    <View key={index} style={styles.item}>
+                      <View style={{ height: "100%", flex: 1 }}>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          {statusPembayaran === "Atur Tenor" ? (
+                            <>
+                              <Text
+                                style={{
+                                  fontSize: 15,
+                                  fontWeight: "700",
+                                  flex: 1,
+                                }}
+                              >
+                                Total Tagihan
+                              </Text>
+                              <Text style={{ fontSize: 20, fontWeight: "600" }}>
+                                {sisaTagihan}
+                              </Text>
+                            </>
+                          ) : (
+                            <>
+                              <Text style={{ fontSize: 15, fontWeight: "700" }}>
+                                Cicilan {paymentTo}/{paymentAmount}
+                              </Text>
+                              <Text style={{ fontSize: 20, fontWeight: "600" }}>
+                                {sisaTagihan}
+                              </Text>
+                            </>
+                          )}
+                        </View>
+                        <View style={{ alignItems: "start" }}>
+                          {statusPembayaran === "Atur Tenor" && (
                             <Text
                               style={{
                                 fontSize: 15,
@@ -264,35 +245,65 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
                                 color: colors.ORANGE,
                               }}
                             >
-                              Jatuh Tempo :
+                              Jatuh Tempo Pilih Tenor:
                             </Text>
                           )}
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              color: colors.BUTTON_ORANGE,
-                            }}
-                          >
-                            {tanggalFaktur}
-                          </Text>
                         </View>
                         <View
                           style={{
-                            width: 120,
-                            borderRadius: 10,
-                            backgroundColor: bgColor,
                             flexDirection: "row",
-                            justifyContent: "center",
-                            paddingVertical: 5,
+                            justifyContent: "space-between",
                           }}
                         >
-                          {statusPembayaran === null ? (
-                            <TouchableOpacity
-                              onPress={() =>
-                                handleClickStatus(statusPembayaran, id)
-                              }
-                              disabled={isButtonDisabled}
+                          <View style={{ alignItems: "center" }}>
+                            {statusPembayaran === null && (
+                              <Text
+                                style={{
+                                  fontSize: 15,
+                                  fontWeight: "700",
+                                  color: colors.ORANGE,
+                                }}
+                              >
+                                Jatuh Tempo :
+                              </Text>
+                            )}
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                color: colors.BUTTON_ORANGE,
+                              }}
                             >
+                              {tanggalFaktur}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              width: 120,
+                              borderRadius: 10,
+                              backgroundColor: bgColor,
+                              flexDirection: "row",
+                              justifyContent: "center",
+                              paddingVertical: 5,
+                            }}
+                          >
+                            {statusPembayaran === null ? (
+                              <TouchableOpacity
+                                onPress={() =>
+                                  handleClickStatus(statusPembayaran, id)
+                                }
+                                disabled={isButtonDisabled}
+                              >
+                                <Text
+                                  style={{
+                                    fontSize: 16,
+                                    fontWeight: "600",
+                                    color: "white",
+                                  }}
+                                >
+                                  {textStatus}
+                                </Text>
+                              </TouchableOpacity>
+                            ) : (
                               <Text
                                 style={{
                                   fontSize: 16,
@@ -302,24 +313,16 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
                               >
                                 {textStatus}
                               </Text>
-                            </TouchableOpacity>
-                          ) : (
-                            <Text
-                              style={{
-                                fontSize: 16,
-                                fontWeight: "600",
-                                color: "white",
-                              }}
-                            >
-                              {textStatus}
-                            </Text>
-                          )}
+                            )}
+                          </View>
                         </View>
                       </View>
                     </View>
-                  </View>
-                );
-              })}
+                  );
+                })
+              ) : (
+                <Text>Belum bisa bayar</Text>
+              )}
             </View>
           </ScrollView>
           <View

@@ -10,9 +10,10 @@ import {
 import React, { useState } from "react";
 import { colors } from "../../../constant/colors";
 import { Button } from "react-native-elements/dist/buttons/Button";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getMerchantsDashboard } from "../../../services/distributorService";
+import { getUserDistributor } from "../../../services/AuthService";
 
 const filterTypes = [
   {
@@ -27,6 +28,7 @@ const filterTypes = [
 ];
 
 const DashboardDistributor = ({ navigation }) => {
+  const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user);
   const [filter, setFilter] = useState("");
   const [merchants, setMerchants] = useState([]);
@@ -39,6 +41,25 @@ const DashboardDistributor = ({ navigation }) => {
   };
   useEffect(() => {
     getData();
+  }, []);
+  const [userDetail, setUserDetail] = useState({
+    name: null,
+    balance: null,
+    limit: null,
+  });
+  const { name, balance, limit } = userDetail;
+  useEffect(() => {
+    const fetchDataUser = async () => {
+      try {
+        const { data } = await getUserDistributor(token);
+        setUserDetail(data.data);
+        console.log("Halo",data.data);
+      } catch (error) {
+        alert(error);
+      }
+    };
+
+    fetchDataUser();
   }, []);
   return (
     <View style={styles.container}>
@@ -69,13 +90,13 @@ const DashboardDistributor = ({ navigation }) => {
             }}
           >
             Halo,
-            <Text style={{ fontSize: 20, color: colors.ORANGE }}> Joshua</Text>
+            <Text style={{ fontSize: 20, color: colors.ORANGE }}>{name} </Text>
           </Text>
           <View style={styles.balance}>
             <Text
               style={{ fontSize: 16, fontWeight: "700", color: colors.WHITE }}
             >
-              Rp 10,855,297,353.00
+              {limit}
             </Text>
             <Image source={require("../../../assets/img/View.png")} />
           </View>

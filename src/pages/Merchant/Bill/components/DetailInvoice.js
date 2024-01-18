@@ -75,7 +75,7 @@ const DetailInvoice = ({route}) => {
   return (
     <SafeAreaView style={{ marginTop: 20 }}>
       <View style={styles.container}>
-        <Text style={styles.title}>Pengajuan 0000000</Text>
+        <Text style={styles.title}>Pengajuan {data.id}</Text>
         <View
           style={{
             borderBottomColor: "black",

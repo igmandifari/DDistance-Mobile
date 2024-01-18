@@ -57,7 +57,7 @@ const DetailInvoiceBillMerchant = ({route}) => {
   return (
     <SafeAreaView style={{ marginTop: 20 }}>
       <View style={styles.container}>
-        <Text style={styles.title}>Invoice 0000000</Text>
+        <Text style={styles.title}>Invoice {data.id}</Text>
         <View
           style={{
             borderBottomColor: "black",

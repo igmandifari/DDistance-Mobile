@@ -52,7 +52,7 @@ const InvoiceDistributor = ({route,navigation}) => {
   return (
     <SafeAreaView style={{ marginTop: 20 }}>
       <View style={styles.container}>
-        <Text style={styles.title}>Invoice</Text>
+        <Text style={styles.title}>Invoice {data.id}</Text>
         <View
           style={{
             borderBottomColor: "black",

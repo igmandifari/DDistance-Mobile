@@ -51,19 +51,19 @@ const FormRequest = ({ navigation }) => {
     {
       id: "ktp",
       title: "KTP",
-      subtitle: "(KTP (Max. 10 MB, .jpg, .pdf)  )",
+      subtitle: "(KTP (Max. 1 MB, .jpg)  )",
       preview: images.ktp,
     },
     {
       id: "siup",
       title: "Surat Izin Usaha",
-      subtitle: "(KTP (Max. 10 MB, .jpg, .pdf)  )",
+      subtitle: "(KTP (Max. 1 MB, .jpg)  )",
       preview: images.siup,
     },
     {
       id: "agunan",
       title: "Daftar Agunan",
-      subtitle: "",
+      subtitle: "(KTP (Max. 1 MB, .jpg)  )",
       preview: images.agunan,
     },
   ];
