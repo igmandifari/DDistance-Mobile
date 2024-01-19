@@ -32,7 +32,6 @@ const DashboardMerchant = ({ navigation }) => {
   const { token } = useSelector((state) => state.user);
   const [distributors, setDistributors] = useState([]);
   const [filter, setFilter] = useState("");
-
   const filterTypes = [
     {
       name: "Lancar",
@@ -113,7 +112,7 @@ const DashboardMerchant = ({ navigation }) => {
               <Image source={require("../../../assets/img/View.png")} />
             </View>
             <View>
-              <Text>Sisa Limit: Rp. {limit || "unknown"}</Text>
+              <Text>Sisa Limit: {formatIDRCurrency(limit ?? 0)}</Text>
               <View style={styles.progressBar}></View>
             </View>
           </View>

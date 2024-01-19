@@ -167,20 +167,14 @@ const BillDistributor = ({ navigation }) => {
                             </Text>
                           </View>
                           <View style={{}}>
-                            <TouchableOpacity
-                              onPress={() =>
-                                navigation.navigate("detail-invoice")
-                              }
-                            >
-                              <Text style={{ textAlign: "right" }}>
-                                {namaToko}
-                              </Text>
+                            <Text style={{ textAlign: "right" }}>
+                              {namaToko}
+                            </Text>
 
-                              <Text style={{ fontSize: 20, fontWeight: 600 }}>
-                                {formatIDRCurrency(jumlahTagihan)}
-                                <Text>,-</Text>
-                              </Text>
-                            </TouchableOpacity>
+                            <Text style={{ fontSize: 20, fontWeight: 600 }}>
+                              {formatIDRCurrency(jumlahTagihan)}
+                              <Text>,-</Text>
+                            </Text>
                           </View>
                         </View>
                         <View
@@ -212,12 +206,18 @@ const BillDistributor = ({ navigation }) => {
                             </View>
                           )}
                           <TouchableOpacity
-                            onPress={() =>
-                              navigation.navigate(
-                                "detail-invoice-distributor",
-                                { idInvoice: item.id }
-                              )
-                            }
+                            onPress={() => {
+                              if (status === "DALAM_PROSES") {
+                                navigation.navigate(
+                                  "detail-invoice-distributor",
+                                  { idInvoice: item.id }
+                                );
+                              } else if (status === "DITERIMA" || "DITOLAK") {
+                                navigation.navigate("detail-invoice",{
+                                  idInvoice: item.id
+                                });
+                              }
+                            }}
                             style={{
                               borderRadius: 10,
                               backgroundColor: bgColor,
@@ -235,7 +235,6 @@ const BillDistributor = ({ navigation }) => {
                               }}
                             >
                               {status === "DALAM_PROSES" ? "PENDING" : status}
-                              {/* <Text>Status</Text> */}
                             </Text>
                           </TouchableOpacity>
                         </View>

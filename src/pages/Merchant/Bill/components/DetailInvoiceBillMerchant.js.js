@@ -29,15 +29,21 @@ const DetailInvoiceBillMerchant = ({ route }) => {
         jumlahTagihan,
         tanggalJatuhTempo,
         id,
+        judul,
+        dueDateAfterApproval,
+        tanggalTagihan,
       } = response.data.data;
       setData({
         id,
         namaDistributor,
+        tanggalTagihan,
         jumlahTagihan,
         tanggalJatuhTempo,
         namaToko,
+        judul,
+        dueDateAfterApproval
       });
-
+      
       const invoiceBlob = await getInvoiceImage(token, id);
       const invoiceBase64 = await blobToBase64(invoiceBlob);
       setImages({
@@ -56,7 +62,7 @@ const DetailInvoiceBillMerchant = ({ route }) => {
   const details = [
     {
       key: "No Faktur :",
-      value: data.judul || "unknown",
+      value: data.id || "unknown",
     },
     {
       key: "Tanggal Faktur :",
@@ -80,14 +86,14 @@ const DetailInvoiceBillMerchant = ({ route }) => {
     },
     {
       key: "Tanggal Jatuh Tempo :",
-      value: data.tanggalJatuhTempo || "unknown",
+      value: data.dueDateAfterApproval || "unknown",
     },
   ];
 
   return (
     <SafeAreaView style={{ marginTop: 20 }}>
       <View style={styles.container}>
-        <Text style={styles.title}>Invoice {data.id}</Text>
+        <Text style={styles.title}>Invoice {data.judul}</Text>
         <View
           style={{
             borderBottomColor: "black",
@@ -98,7 +104,7 @@ const DetailInvoiceBillMerchant = ({ route }) => {
         />
         <Image
           source={{ uri: images.fileInvoice }}
-          style={{ width: "100%", height: 400 }}
+          style={{ width: "100%", height: 300 }}
         />
         {details.map((item, idx) => {
           return (

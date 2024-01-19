@@ -51,7 +51,7 @@ const DashboardDistributor = ({ navigation }) => {
     balance: null,
     limit: null,
   });
-  const { name, balance, limit } = userDetail;
+  const { name, belance, limit } = userDetail;
   useEffect(() => {
     const fetchDataUser = async () => {
       try {
@@ -100,7 +100,7 @@ const DashboardDistributor = ({ navigation }) => {
             <Text
               style={{ fontSize: 16, fontWeight: "700", color: colors.WHITE }}
             >
-              {formatIDRCurrency(balance || null)}
+              {formatIDRCurrency(belance || null)}
             </Text>
             <Image source={require("../../../assets/img/View.png")} />
           </View>

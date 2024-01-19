@@ -23,7 +23,7 @@ const HistoryInvoiceCicilanDistributor = ({ navigation, route }) => {
     const response = await getDetailInvoiceId(token, idInvoice, name);
     setData(response.data.data);
   };
-
+  ;
   useEffect(() => {
     getDetail();
   }, []);
@@ -48,7 +48,7 @@ const HistoryInvoiceCicilanDistributor = ({ navigation, route }) => {
           <View>
             <View>
               <Text style={{ fontSize: 20, fontWeight: 400 }}>
-                Riwayat Cicilan {idInvoice}
+                Riwayat Cicilan Invoice {idInvoice}
               </Text>
             </View>
           </View>

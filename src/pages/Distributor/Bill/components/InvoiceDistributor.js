@@ -23,6 +23,7 @@ const InvoiceDistributor = ({ route, navigation }) => {
         jumlahTagihan,
         tanggalJatuhTempo,
         id,
+        judul,
       } = response.data.data;
       setData({
         id,
@@ -30,6 +31,7 @@ const InvoiceDistributor = ({ route, navigation }) => {
         jumlahTagihan,
         tanggalJatuhTempo,
         namaToko,
+        judul,
       });
 
       const invoiceBlob = await getInvoiceImage(token, id);
@@ -72,7 +74,7 @@ const InvoiceDistributor = ({ route, navigation }) => {
   return (
     <SafeAreaView style={{ marginTop: 20 }}>
       <View style={styles.container}>
-        <Text style={styles.title}>Invoice {data.id}</Text>
+        <Text style={styles.title}>Invoice {data.judul}</Text>
         <View
           style={{
             borderBottomColor: "black",
@@ -83,7 +85,7 @@ const InvoiceDistributor = ({ route, navigation }) => {
         />
         <Image
           source={{ uri: images.fileInvoice }}
-          style={{ width: "100%", height: 400 }}
+          style={{ width: "100%", height: 300 }}
         />
         {details.map((item, idx) => {
           return (

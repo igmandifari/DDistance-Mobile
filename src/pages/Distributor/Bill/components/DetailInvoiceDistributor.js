@@ -41,7 +41,7 @@ const DetailInvoiceDistributor = ({ route, navigation }) => {
   const getDetail = async () => {
     try {
       const response = await getDetailInvoice(token, idInvoice);
-      console.log("=========>", response.data);
+      // console.log("=========>", response.data);
       const {
         id,
         judul,
@@ -69,9 +69,9 @@ const DetailInvoiceDistributor = ({ route, navigation }) => {
       const invoiceBlob = await getInvoiceImage(token, id);
       const invoiceBase64 = await blobToBase64(invoiceBlob);
 
-      setImages({
-        file: `data:image/jpeg;base64,${invoiceBase64}`,
-      });
+      // setImages({
+      //   file: `data:image/jpeg;base64,${invoiceBase64}`,
+      // });
     } catch (error) {
       console.error("Error fetching invoice data:", error);
     }

@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import React,{ useEffect, useState }  from "react";
+import React, { useEffect, useState } from "react";
 import { colors } from "../../../../constant/colors";
 import BlankKtp from "../../../../assets/img/blank-ktp";
 import BlankSIUP from "../../../../assets/img/blank-siup";
@@ -8,34 +8,15 @@ import { getDetailInvoice } from "../../../../services/merchantServices";
 import { useSelector } from "react-redux";
 import { Button } from "react-native-elements";
 
-
-const DetailInvoice = ({route}) => {
+const DetailInvoice = ({ route }) => {
   const { token } = useSelector((state) => state.user);
   const { idInvoice } = route.params;
-  const [data, setData] = useState({
-    id: null,
-    judul:null,
-    namaToko: null,
-    namaDistributor: null,
-    tanggalTagihan: null,
-    jumlahTagihan: null,
-    tanggalJatuhTempo:null,
-    rejection:null,
-  });
+  const [data, setData] = useState({});
 
   const getDetail = async () => {
     const response = await getDetailInvoice(token, idInvoice);
-    const { id, judul, namaToko, namaDistributor,tanggalTagihan,jumlahTagihan,tanggalJatuhTempo,rejection } = response.data.data;
-    setData({
-    id,
-    judul,
-    namaToko,
-    namaDistributor,
-    tanggalTagihan,
-    jumlahTagihan,
-    tanggalJatuhTempo,
-    rejection,
-    });
+    setData(response.data.data);
+    console.log("cek", response.data.data);
   };
 
   useEffect(() => {
@@ -45,7 +26,7 @@ const DetailInvoice = ({route}) => {
   const details = [
     {
       key: "No Invoice :",
-      value: data.judul,
+      value: data.id,
     },
     {
       key: "Nama Toko :",
@@ -67,15 +48,11 @@ const DetailInvoice = ({route}) => {
       key: "Tanggal Jatuh Tempo :",
       value: data.tanggalJatuhTempo,
     },
-    {
-      key: "Alasan Ditolak :",
-      value: data.rejection,
-    },
   ];
   return (
     <SafeAreaView style={{ marginTop: 20 }}>
       <View style={styles.container}>
-        <Text style={styles.title}>Invoice {data.id}</Text>
+        <Text style={styles.title}>Invoice {data.judul}</Text>
         <View
           style={{
             borderBottomColor: "black",
@@ -84,6 +61,29 @@ const DetailInvoice = ({route}) => {
             borderBottomWidth: StyleSheet.hairlineWidth,
           }}
         />
+
+        <View style={{ alignItems: "center" }}>
+          <Text
+            style={{
+              backgroundColor:
+                data.status === "DITERIMA"
+                  ? colors.GREEN
+                  : data.status === "DITOLAK"
+                  ? colors.RED
+                  : null,
+              color: colors.WHITE,
+              width: 100,
+              height: 50,
+              borderRadius: 10,
+              textAlign: "center",
+              textAlignVertical: "center",
+              fontSize:17,
+            }}
+          >
+            {data.status}
+          </Text>
+        </View>
+
         {details.map((item, idx) => {
           return (
             <View
@@ -102,20 +102,6 @@ const DetailInvoice = ({route}) => {
             </View>
           );
         })}
-        <View style={{ flex: 1 }}>
-          <View
-            style={{
-              backgroundColor: colors.WHITE,
-              borderRadius: 10,
-              padding: 10,
-              // flex: 1,
-              elevation: 10,
-              height:"20%",
-            }}
-          >
-            <Text>{data.rejection}</Text>
-          </View>
-        </View>
       </View>
     </SafeAreaView>
   );

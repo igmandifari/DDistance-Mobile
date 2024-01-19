@@ -16,8 +16,9 @@ import { formatIDRCurrency } from "../../../../utils/formatIdr";
 
 const DetailToko = ({ navigation, route }) => {
   const {
-    details: { id, address, phoneNumber, email,name},
+    details: { id, address, phoneNumber, email,name,limit,sisaLimit},
   } = route.params;
+  console.log(route.params);
   const [filter, setFilter] = useState("");
   const [data, setData] = useState([]);
   const [isProfileVisible, setIsProfileVisible] = useState(true);
@@ -117,7 +118,7 @@ const DetailToko = ({ navigation, route }) => {
           <View>
             <View>
               <Text>Sisa Limitmu:</Text>
-              <Text>Rp. 70.000.0000/100.000.000</Text>
+              <Text>{sisaLimit ?? 0} / {limit}</Text>
 
               <View style={styles.progressBar}></View>
             </View>
@@ -193,7 +194,7 @@ const DetailToko = ({ navigation, route }) => {
                           <TouchableOpacity
                             onPress={() => {
                               navigation.navigate("history-bill-distributor", {
-                                idInvoice: distributor.id,name,
+                                idInvoice: distributor.id,name
                               });
                             }}
                           >
