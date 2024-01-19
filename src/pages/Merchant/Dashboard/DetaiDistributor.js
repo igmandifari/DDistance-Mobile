@@ -116,7 +116,7 @@ const DetailDistributor = ({ navigation, route }) => {
           <View>
             <View>
               <Text>Sisa Limitmu:</Text>
-            <Text>Rp. 70.000.0000/100.000.000</Text>
+            {/* <Text>Rp. 70.000.0000/100.000.000</Text> */}
 
               <View style={styles.progressBar}></View>
             </View>
@@ -130,7 +130,7 @@ const DetailDistributor = ({ navigation, route }) => {
                   InvoiceNo,
                   jumlahTagihan,
                   month,
-                  status,
+                  statusPembayaran,
                   total,
                   statusTenor,
                   jumlahDiBayar,
@@ -139,15 +139,15 @@ const DetailDistributor = ({ navigation, route }) => {
                 console.log(distributor);
 
                 let bgColor;
-                switch (status) {
-                  case "DITERIMA":
+                let textStatus
+                switch (statusPembayaran) {
+                  case true:
                     bgColor = colors.GREEN;
+                    textStatus = "Sudah Bayar"
                     break;
-                  case "DALAM_PROSES":
+                  case false:
                     bgColor = colors.YELLOW_STATUS;
-                    break;
-                  case "DITOLAK":
-                    bgColor = colors.RED;
+                    textStatus = "Belum Bayar"
                     break;
                 }
 
@@ -209,7 +209,8 @@ const DetailDistributor = ({ navigation, route }) => {
                                 color: "white",
                               }}
                             >
-                              {status}
+                              {textStatus}
+                          
                               {/* {statusTenor ? "Atur Tenor" : status} */}
                             </Text>
                           </TouchableOpacity>

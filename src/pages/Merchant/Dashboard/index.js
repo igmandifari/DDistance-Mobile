@@ -8,7 +8,6 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
-  BackHandler,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";

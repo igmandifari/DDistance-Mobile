@@ -19,51 +19,13 @@ import { getInvoice } from "../../../services/merchantServices";
 import { useFocusEffect } from "@react-navigation/native";
 
 const vw = Dimensions.get("window").width;
-const requests = [
-  {
-    code: "#1",
-    status: "Ditolak",
-  },
-  {
-    code: "#2",
-    status: "Diterima",
-  },
-  {
-    code: "#3",
-    status: "Dalam Proses",
-  },
-  {
-    code: "#4",
-    status: "Dalam Proses",
-  },
-  {
-    code: "#5",
-    status: "Ditolak",
-  },
-  {
-    code: "#6",
-    status: "Ditolak",
-  },
-];
+
 
 const Bill = ({ navigation }) => {
   // const [data, setData] = useState(invoiceList);
   const [invoices, setInvoices] = useState([]);
   const { token } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      () => {
-        navigation.navigate("dashboard-merchant");
-        return true;
-      }
-    );
-
-    return () => {
-      backHandler.remove();
-    };
-  }, [navigation]);
 
   getData = async () => {
     const response = await getInvoice(token);
@@ -105,15 +67,19 @@ const Bill = ({ navigation }) => {
                   const {status } = item;
 
                   let bgColor;
+                  let textStatus;
                   switch (status) {
                     case "DITOLAK":
                       bgColor = colors.RED;
+                      textStatus = "Ditolak"
                       break;
                     case "DITERIMA":
                       bgColor = colors.GREEN;
+                      textStatus = "Diterima"
                       break;
                     case "DALAM_PROSES":
                       bgColor = colors.YELLOW;
+                      textStatus = "Dalam Proses"
                       break;
 
                     default:
@@ -156,7 +122,7 @@ const Bill = ({ navigation }) => {
                           }}
                         >
                           <Text style={{ fontSize: 16, fontWeight: 600,color: colors.WHITE, }}>
-                            {status}
+                            {textStatus}
                           </Text>
                         </TouchableOpacity>
                       </View>

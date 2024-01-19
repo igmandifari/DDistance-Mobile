@@ -126,7 +126,7 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
           <View id="profile" style={{}}>
             <View style={styles.profileContainer}>
               <Text style={{ fontSize: 32, fontWeight: "700" }}>
-                Distributor
+                Distributor {data.namaDistributor}
               </Text>
               {/* <Button
                 title={"pay success"}

@@ -14,16 +14,20 @@ import { useSelector,useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getMerchantsDashboard } from "../../../services/distributorService";
 import { getUserDistributor } from "../../../services/AuthService";
+import { formatIDRCurrency } from "../../../utils/formatIdr";
 
 const filterTypes = [
   {
     name: "Lancar",
+    value: "LANCAR",
   },
   {
     name: "Tidak Lancar",
+    value: "TIDAK_LANCAR",
   },
   {
     name: "Gagal",
+    value: "GAGAL",
   },
 ];
 
@@ -96,7 +100,7 @@ const DashboardDistributor = ({ navigation }) => {
             <Text
               style={{ fontSize: 16, fontWeight: "700", color: colors.WHITE }}
             >
-              Rp. 100.000.000
+              {formatIDRCurrency(balance || null)}
             </Text>
             <Image source={require("../../../assets/img/View.png")} />
           </View>
@@ -116,11 +120,11 @@ const DashboardDistributor = ({ navigation }) => {
           <View style={styles.filterContainer}>
             {filterTypes.map((filter, index) => (
               <TouchableOpacity
-                onPress={() => setFilter(filter.name)}
+                onPress={() => setFilter(filter.value)}
                 key={index}
                 style={[
                   styles.filter,
-                  filter.name === filter && { backgroundColor: colors.YELLOW },
+                  filter.value === filter && { backgroundColor: colors.YELLOW },
                 ]}
               >
                 <Text>{filter.name}</Text>
@@ -143,13 +147,13 @@ const DashboardDistributor = ({ navigation }) => {
                     bgColor = colors.GREEN;
                     textStatus = "Lancar";
                     break;
-                  case "TIDAK LANCAR":
+                  case "TIDAK_LANCAR":
                     bgColor = colors.YELLOW_STATUS;
-                    textStatus = "Lancar";
+                    textStatus = "Tidak Lancar";
                     break;
                   case "GAGAL":
                     bgColor = colors.RED;
-                    textStatus = "Lancar";
+                    textStatus = "Gagal";
                     break;
                 }
                 return (

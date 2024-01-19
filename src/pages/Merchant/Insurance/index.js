@@ -51,6 +51,7 @@ const RequestPage = ({ navigation }) => {
   getData = async () => {
     const response = await getInsurances(token);
     setInsurances(response.data.data);
+    console.log("cek",response.data.data);
   };
   useFocusEffect(
     useCallback(() => {
@@ -86,15 +87,19 @@ const RequestPage = ({ navigation }) => {
                   const { status } = item;
 
                   let bgColor;
+                  let textStatus;
                   switch (status) {
-                    case "Ditolak":
+                    case "DITOLAK":
                       bgColor = colors.RED;
+                      textStatus = "Ditolak";
                       break;
-                    case "Diterima":
+                    case "DITERIMA":
                       bgColor = colors.GREEN;
+                      textStatus = "Diterima";
                       break;
-                    case "Dalam Proses":
+                    case "DALAM_PROSES":
                       bgColor = colors.YELLOW;
+                      textStatus = "Dalam Proses";
                       break;
                     default:
                       bgColor = colors.YELLOW;
@@ -121,7 +126,7 @@ const RequestPage = ({ navigation }) => {
                             Pengajuan
                           </Text>
                           <Text style={{ fontSize: 24, fontWeight: 600 }}>
-                            {`#${++index}`}
+                            {item.nameStore}
                           </Text>
                         </View>
 
@@ -142,7 +147,7 @@ const RequestPage = ({ navigation }) => {
                               color: colors.WHITE,
                             }}
                           >
-                            {status}
+                            {textStatus}
                           </Text>
                         </TouchableOpacity>
                       </View>

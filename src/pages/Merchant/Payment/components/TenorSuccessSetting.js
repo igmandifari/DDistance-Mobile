@@ -8,19 +8,19 @@ const TenorSuccessSetting = ({ route, navigation }) => {
   const { details } = route.params;
   console.log("Details received in TenorSuccessSetting:", details);
 
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      () => {
-        navigation.navigate("dashboard-merchant");
-        return true;
-      }
-    );
+  // useEffect(() => {
+  //   const backHandler = BackHandler.addEventListener(
+  //     "hardwareBackPress",
+  //     () => {
+  //       navigation.navigate("dashboard-merchant");
+  //       return true;
+  //     }
+  //   );
 
-    return () => {
-      backHandler.remove();
-    };
-  }, [navigation]);
+  //   return () => {
+  //     backHandler.remove();
+  //   };
+  // }, [navigation]);
 
   console.log("Rendering TenorSuccessSetting...");
 
