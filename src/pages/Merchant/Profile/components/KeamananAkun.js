@@ -15,6 +15,7 @@ import CustomButton from "../../../../components/CustomButton";
 // const vw = Dimensions.get("window").width;
 
 function KeamananAkun({navigation}) {
+
   const [form, setForm] = useState({
     name: "",
     address: "",
