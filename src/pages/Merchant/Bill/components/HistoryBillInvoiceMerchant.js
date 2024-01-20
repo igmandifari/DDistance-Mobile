@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
+  BackHandler,
 } from "react-native";
 import { colors } from "../../../../constant/colors";
 // import { historyList } from "../../Dashboard/data";
@@ -34,17 +35,19 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
   };
   console.log("cek data", data);
 
-  const filterTypes = [
-    {
-      name: "Tepat Waktu",
-    },
-    {
-      name: "Terlambat",
-    },
-    {
-      name: "Bayar",
-    },
-  ];
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        navigation.navigate("dashboard-merchant");
+        return true;
+      }
+    );
+  
+    return () => {
+      backHandler.remove();
+    };
+  }, [navigation]);
 
   const handleChangeFilter = (name) => {
     setFilter(name);
@@ -52,7 +55,7 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
 
   useEffect(() => {
     getDetail();
-  }, []);
+  }, [idInvoice]);
 
   const handleToggleProfile = () => {
     setIsProfileVisible((prev) => !prev);

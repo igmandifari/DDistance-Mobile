@@ -38,8 +38,6 @@ import CreditHistory from "./src/pages/Distributor/CreditHistory/creditHistory";
 import OtpChangePassword from "./src/pages/ChangePassword/OtpChangePassword";
 import OtpInvoiceDistributor from "./src/pages/Distributor/Bill/components/OtpInvoiceDistributor";
 import BillDistributor from "./src/pages/Distributor/Bill";
-import SuccessNewPassword from "./src/pages/ForgetPassword/components/SuccessNewPassword.js";
-import SuccessNewPIN from "./src/pages/Merchant/ForgetPIN/components/SuccessNewPIN.js";
 import ChangePin from "./src/pages/ChangePin";
 import ChangePinSuccess from "./src/pages/ChangePin/components/ChangePinSuccess";
 import OtpChangePin from "./src/pages/ChangePin/components/OtpChangePin";
@@ -49,7 +47,11 @@ import Profile from "./src/pages/Merchant/Profile";
 import HistoryTenorSet from "./src/pages/Merchant/Bill/components/HistoryTenorSet";
 import TenorSuccessSetting from "./src/pages/Merchant/Payment/components/TenorSuccessSetting";
 import ForgetPassword from "./src/pages/ForgetPassword/ForgetPassword";
-
+import OtpRequestForgetPassword from "./src/pages/ForgetPassword/components/OtpRequestForgetPassword.js";
+import ForgetPIN from "./src/pages/Merchant/ForgetPIN/ForgetPIN.js";
+import OtpRequestForgetPIN from "./src/pages/Merchant/ForgetPIN/components/OtpRequestForgetPIN.js";
+import SuccessNewPassword from "./src/pages/ForgetPassword/components/SuccessNewPassword.js";
+import SuccessNewPIN from "./src/pages/Merchant/ForgetPIN/components/SuccessNewPIN.js";
 
 const routerList = [
   {
@@ -76,11 +78,6 @@ const routerList = [
   {
     name: "register",
     component: Register,
-    headerShown: false,
-  },
-  {
-    name: "forget-password",
-    component: ForgetPassword,
     headerShown: false,
   },
   {
@@ -183,15 +180,10 @@ const routerList = [
     component: InvoiceDistributor,
     headerShown: false,
   },
-  // Payment menu
+  // Atur Tenor 
   {
     name: "tenor-setting",
     component: TenorSetting,
-    headerShown: false,
-  },
-  {
-    name: "tenor-success-setting",
-    component: TenorSuccessSetting,
     headerShown: false,
   },
   {
@@ -199,6 +191,12 @@ const routerList = [
     component: OtpTenor,
     headerShown: false,
   },
+  {
+    name: "tenor-success-setting",
+    component: TenorSuccessSetting,
+    headerShown: false,
+  },
+  // payment
   {
     name: "pin-payment",
     component: PinPayment,
@@ -255,16 +253,38 @@ const routerList = [
     component: BillDistributor,
     headerShown: false,
   },
+  // Forget password and PIN
   {
-    name: "successNewPassword",
+    name: "forget-password",
+    component: ForgetPassword,
+    headerShown: false,
+  },
+  {
+    name: "otp-forget-password",
+    component: OtpRequestForgetPassword,
+    headerShown: false,
+  },
+  {
+    name: "success-new-password",
     component: SuccessNewPassword,
     headerShown: false,
   },
   {
-    name: "successNewPIN",
+    name: "forget-PIN",
+    component: ForgetPIN,
+    headerShown: false,
+  },
+  {
+    name: "otp-forget-PIN",
+    component: OtpRequestForgetPIN,
+    headerShown: false,
+  },
+  {
+    name: "success-new-PIN",
     component: SuccessNewPIN,
     headerShown: false,
   },
+  // Change password and PIN
   {
     name: "changePin",
     component: ChangePin,
