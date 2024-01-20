@@ -3,7 +3,6 @@ import {
   Text,
   View,
   Image,
-  Icon,
   TextInput,
   ScrollView,
   TouchableOpacity,
@@ -11,14 +10,13 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";
-import { distributorList } from "./data";
 import { getDistributorsDashboard } from "../../../services/merchantServices";
 import { useSelector } from "react-redux";
 import { getUserMerchant } from "../../../services/AuthService";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../store/userSlice";
-import { Button } from "react-native-elements";
 import { formatIDRCurrency } from "../../../utils/formatIdr";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const DashboardMerchant = ({ navigation }) => {
 
@@ -29,9 +27,14 @@ const DashboardMerchant = ({ navigation }) => {
     limit: null,
   });
   const { name, balance, limit } = userDetail;
+  const [showBalance, setShowBalance] = useState(false);
   const { token } = useSelector((state) => state.user);
   const [distributors, setDistributors] = useState([]);
   const [filter, setFilter] = useState("");
+
+  const handleShowBalance = () => {
+    setShowBalance(!showBalance);
+  }
 
   const filterTypes = [
     {
@@ -108,9 +111,16 @@ const DashboardMerchant = ({ navigation }) => {
               <Text
                 style={{ fontSize: 16, fontWeight: "700", color: colors.WHITE }}
               >
-                {formatIDRCurrency(balance || "unknown")}
+                {!showBalance && formatIDRCurrency(balance || "unknown")}
               </Text>
-              <Image source={require("../../../assets/img/View.png")} />
+              {/*<Image source={require("../../../assets/img/View.png")} />*/}
+              <TouchableOpacity onPress={handleShowBalance} style={styles.eyeIcon}>
+                <Icon
+                    name={showBalance ? "eye-slash" : "eye"}
+                    size={20}
+                    color="#F36C21"
+                />
+              </TouchableOpacity>
             </View>
             <View>
               <Text>Sisa Limit: Rp. {limit || "unknown"}</Text>

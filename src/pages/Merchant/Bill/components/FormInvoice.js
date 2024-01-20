@@ -354,6 +354,7 @@ const FormInvoice = ({ navigation, route }) => {
           />
         </View>
 
+        <Text style={{marginTop:12}}> Tanggal Tagihan</Text>
         <View style={styles.inputDateContainer}>
           {!showPicker && (
             <TouchableOpacity
@@ -362,7 +363,7 @@ const FormInvoice = ({ navigation, route }) => {
             >
               <TextInput
                 placeholder="Tanggal Tagihan"
-                editable={false}
+                // editable={false}
                 value={format(date, "dd-MM-yyyy")}
                 // value={currentDate}
               />
@@ -383,6 +384,7 @@ const FormInvoice = ({ navigation, route }) => {
           )}
         </View>
 
+        <Text style={{marginTop:12}}> Tanggal Jatuh Tempo</Text>
         <View style={styles.inputDateContainer}>
           {!showPicker && (
             <TouchableOpacity
@@ -391,7 +393,7 @@ const FormInvoice = ({ navigation, route }) => {
             >
               <TextInput
                 placeholder="Tanggal Jatuh Tempo"
-                editable={false}
+                // editable={false}
                 value={format(dueDate, "dd-MM-yyyy")}
               />
               <FontAwesome
@@ -471,7 +473,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     width: "60%",
-    marginTop: 15,
+    marginTop: 7,
   },
   inputDate: {
     flex: 1,

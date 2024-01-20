@@ -55,7 +55,7 @@ function Login({ navigation }) {
       password,
     };
     try {
-      const { data } = await login(payload);
+      const {data} = await login(payload);
       const token = data.data.token;
       const role = data.data.role;
 

@@ -70,7 +70,11 @@ const RequestPage = ({ navigation }) => {
             <Text style={styles.headerTitle}>D-DISTANCE</Text>
           </View>
           <View>
+            <TouchableOpacity
+                onPress={() => navigation.navigate("notificationMerchant")}
+            >
             <Image source={require("../../../assets/img/notification.png")} />
+            </TouchableOpacity>
           </View>
         </View>
         <View style={{ padding: 25 }}>

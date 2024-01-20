@@ -6,7 +6,7 @@ import {
   TextInput,
   StyleSheet,
   Alert,
-  Button,
+  Button, TouchableOpacity,
 } from "react-native";
 import axios from "axios";
 import CustomButton from "../../components/CustomButton";
@@ -15,6 +15,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import ErrorText from "../../components/ErrorText";
 import { register } from "../../services/AuthService";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 function Register({ navigation }) {
   const SignupSchema = Yup.object().shape({
@@ -69,7 +70,6 @@ function Register({ navigation }) {
         };
         try {
           const data = await register(payload);
-          console.log(data.data);
           if (data.statusCode == 201);
           alert("Success Register");
           navigation.navigate("register-success");
@@ -79,17 +79,6 @@ function Register({ navigation }) {
       } else {
         alert("Register Failed");
       }
-      // try {
-      //   const data = await axios.post(
-      //     "http://10.0.2.2:8080/api/auth/register/merchant",
-      //     payload
-      //   );
-      //   console.log(data);
-      //   console.log("succes");
-      // } catch (error) {
-      //   console.log("error");
-      //   console.log(error);
-      // }
     },
     validationSchema: SignupSchema,
   });
@@ -104,6 +93,19 @@ function Register({ navigation }) {
     confirmPassword,
       pinTransaksi
   } = values;
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setConfirmShowPassword] = useState(false);
+  const [showPin, setShowPin] = useState(false);
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  }
+  const handleShowConfirmPassword = () => {
+    setConfirmShowPassword(!showConfirmPassword);
+  }
+  const handleShowPin = () => {
+    setShowPin(!showPin);
+  }
 
   return (
     <View style={styles.container}>
@@ -135,15 +137,25 @@ function Register({ navigation }) {
         value={phoneNumber}
       />
       <ErrorText text={errors.phoneNumber} />
+
+      <View style={styles.passwordInputContainer}>
         <TextInput
-            style={styles.input}
+            style={styles.passwordInput}
             keyboardType="number-pad"
             placeholder="Pin Transaksi"
-            secureTextEntry
+            secureTextEntry={!showPin}
             onChangeText={handleChange("pinTransaksi")}
             value={pinTransaksi}
         />
-        <ErrorText text={errors.pinTransaksi} />
+        <TouchableOpacity onPress={handleShowPin} style={styles.eyeIcon}>
+          <Icon
+              name={showPin ? "eye-slash" : "eye"}
+              size={20}
+              color="#F36C21"
+          />
+        </TouchableOpacity>
+      </View>
+      <ErrorText text={errors.pinTransaksi} />
       <TextInput
         style={styles.input}
         keyboardType="email-address"
@@ -159,23 +171,42 @@ function Register({ navigation }) {
         value={accountNumber}
       />
       <ErrorText text={errors.accountNumber} />
-      <TextInput
-        style={styles.input}
-        placeholder="Kata Sandi"
-        secureTextEntry
-        onChangeText={handleChange("password")}
-        value={password}
-      />
+
+      <View style={styles.passwordInputContainer}>
+        <TextInput
+            style={styles.passwordInput}
+            placeholder="Kata Sandi"
+            secureTextEntry={!showPassword}
+            onChangeText={handleChange("password")}
+            value={password}
+        />
+        <TouchableOpacity onPress={handleShowPassword} style={styles.eyeIcon}>
+          <Icon
+              name={showPassword ? "eye-slash" : "eye"}
+              size={20}
+              color="#F36C21"
+          />
+        </TouchableOpacity>
+      </View>
       <ErrorText text={errors.password} />
-      <TextInput
-        style={styles.input}
-        placeholder="Konfirmasi Kata Sandi"
-        secureTextEntry
-        onChangeText={handleChange("confirmPassword")}
-        value={confirmPassword}
-      />
+
+      <View style={styles.passwordInputContainer}>
+        <TextInput
+            style={styles.passwordInput}
+            placeholder="Konfirmasi Kata Sandi"
+            secureTextEntry={!showConfirmPassword}
+            onChangeText={handleChange("confirmPassword")}
+            value={confirmPassword}
+        />
+        <TouchableOpacity onPress={handleShowConfirmPassword} style={styles.eyeIcon}>
+          <Icon
+              name={showConfirmPassword ? "eye-slash" : "eye"}
+              size={20}
+              color="#F36C21"
+          />
+        </TouchableOpacity>
+      </View>
       <ErrorText text={errors.confirmPassword} />
-      {/* <Button title="Register" onPress={han} /> */}
       <CustomButton
         text={"Register"}
         disabled={!isValid}
@@ -205,6 +236,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
   },
+  passwordInput: {
+    flex: 1,
+    height: 50,
+    width: "10%",
+    padding: 8,
+    textAlign: "center",
+    marginLeft: 40,
+  },
   text: {
     color: "#F36C21",
     textAlign: "center",
@@ -221,6 +260,18 @@ const styles = StyleSheet.create({
     margin: 0,
     width: 170,
     resizeMode: "contain",
+  },
+  passwordInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 10,
+    borderColor: "#F36C21",
+    backgroundColor: "white",
+    width: "100%",
+    borderWidth: 1
+  },
+  eyeIcon: {
+    padding: 10,
   },
 });
 

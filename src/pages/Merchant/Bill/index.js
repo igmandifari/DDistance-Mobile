@@ -50,10 +50,11 @@ const Bill = ({ navigation }) => {
             <Text style={styles.headerTitle}>D-DISTANCE</Text>
           </View>
           <View>
-            <Image
-              source={require("../../../assets/img/notification.png")}
-              style={{}}
-            />
+            <TouchableOpacity
+                onPress={() => navigation.navigate("notificationMerchant")}
+            >
+            <Image source={require("../../../assets/img/notification.png")}/>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={{ padding: 25 }}>

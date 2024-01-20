@@ -25,8 +25,6 @@ const Profile = ({ navigation }) => {
 
   const dispatch = useDispatch();
   const { token,role } = useSelector((state) => state.user);
-  console.log("cek role",role)
-  console.log("token ",token);
   const handleLogout = () => {
     dispatch(logout());
     navigation.navigate("landing-page");
@@ -77,7 +75,6 @@ const Profile = ({ navigation }) => {
     },
   ];
 
-  // console.log(userProfile);
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       {popUp && (
@@ -96,10 +93,11 @@ const Profile = ({ navigation }) => {
             <Text style={styles.headerTitle}>D-DISTANCE</Text>
           </View>
           <View>
-            <Image
-              source={require("../../../assets/img/notification.png")}
-              style={{}}
-            />
+            <TouchableOpacity
+                onPress={() => navigation.navigate("notificationMerchant")}
+            >
+            <Image source={require("../../../assets/img/notification.png")} />
+            </TouchableOpacity>
           </View>
         </View>
         <View
@@ -119,7 +117,7 @@ const Profile = ({ navigation }) => {
           >
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate("edit-profile")}
+              onPress={() => navigation.navigate("edit-profile", {userProfile})}
             >
               <Text
                 style={{ color: colors.WHITE, fontWeight: "800", fontSize: 12 }}
