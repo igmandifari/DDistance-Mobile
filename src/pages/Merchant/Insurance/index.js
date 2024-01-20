@@ -14,6 +14,7 @@ import { getInsurances } from "../../../services/merchantServices";
 import { useSelector } from "react-redux";
 import { Button } from "react-native-elements";
 import { useFocusEffect } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 
 const vw = Dimensions.get("window").width;
 
@@ -47,17 +48,19 @@ const requests = [
 const RequestPage = ({ navigation }) => {
   const [insurances, setInsurances] = useState([]);
   const { token } = useSelector((state) => state.user);
-
-  getData = async () => {
+  const isFocused = useIsFocused();
+  const getData = async () => {
     const response = await getInsurances(token);
     setInsurances(response.data.data);
-    console.log("cek",response.data.data);
+    console.log("cek", response.data.data);
   };
-  useFocusEffect(
-    useCallback(() => {
+  useEffect(() => {
+    // Fetch user profile data when the screen is focused
+    if (isFocused) {
       getData();
-    }, [])
-  );
+    }
+  }, [isFocused]); 
+
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
@@ -162,12 +165,30 @@ const RequestPage = ({ navigation }) => {
                         </Text>
                         <TouchableOpacity
                           onPress={() => {
-                            navigation.navigate("detail-request-insurance", {
-                              idInsurance: item.id,
-                            });
+                            
+                            if (item.status !== "DALAM_PROSES" ) {
+                              navigation.navigate("detail-request-insurance", {
+                                idInsurance: item.id,
+                              });
+                            }
                           }}
+                          
+                          disabled={item.status === "DALAM_PROSES" }
                         >
-                          <Text>See More</Text>
+                          <Text
+                            style={{
+                              color:
+                                item.status === "DALAM_PROSES"
+                                  ? colors.GREY
+                                  : colors.ORANGE,
+                              textDecorationLine:
+                                item.status === "DALAM_PROSES"
+                                  ? "line-through"
+                                  : "none",
+                            }}
+                          >
+                            See More
+                          </Text>
                         </TouchableOpacity>
                       </View>
                     </View>

@@ -9,6 +9,7 @@ import {
   BackHandler,
 } from "react-native";
 import React, { useEffect, useState } from "react";
+import { useIsFocused } from "@react-navigation/native";
 import { colors } from "../../../constant/colors";
 import CustomButton from "../../../components/CustomButton";
 import PopUpConfirmLogout from "../../../components/PopUpConfirmLogout";
@@ -22,7 +23,7 @@ const Profile = ({ navigation }) => {
 
   const [popUp, setPopUp] = useState(false);
   const [userProfile, setUserProfile] = useState([]);
-
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const { token,role } = useSelector((state) => state.user);
   console.log("cek role",role)
@@ -45,10 +46,15 @@ const Profile = ({ navigation }) => {
       console.log("Error Fetch user profile" + error);
     }
   };
-
   useEffect(() => {
-    getUserProfileData();
-  }, [role]); 
+    // Fetch user profile data when the screen is focused
+    if (isFocused) {
+      getUserProfileData();
+    }
+  }, [isFocused]); 
+
+
+
 
   const details = [
     {

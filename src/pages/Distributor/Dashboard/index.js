@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import { getMerchantsDashboard } from "../../../services/distributorService";
 import { getUserDistributor } from "../../../services/AuthService";
 import { formatIDRCurrency } from "../../../utils/formatIdr";
+import { useIsFocused } from "@react-navigation/native";
 
 const filterTypes = [
   {
@@ -36,6 +37,7 @@ const DashboardDistributor = ({ navigation }) => {
   const { token } = useSelector((state) => state.user);
   const [filter, setFilter] = useState("");
   const [merchants, setMerchants] = useState([]);
+  const isFocused = useIsFocused();
   const getData = async () => {
     const response = await getMerchantsDashboard(token);
     console.log(response.data.data);
@@ -43,28 +45,34 @@ const DashboardDistributor = ({ navigation }) => {
       setMerchants(response.data.data);
     }
   };
+
   useEffect(() => {
-    getData();
-  }, []);
+    if (isFocused) {
+      getData();
+    }
+  }, [isFocused]);
+
   const [userDetail, setUserDetail] = useState({
     name: null,
-    balance: null,
+    belance: null,
     limit: null,
   });
+
   const { name, belance, limit } = userDetail;
+
   useEffect(() => {
     const fetchDataUser = async () => {
       try {
         const { data } = await getUserDistributor(token);
         setUserDetail(data.data);
-        console.log("Halo",data.data);
+        console.log("Halo", data.data);
       } catch (error) {
         alert(error);
       }
     };
 
     fetchDataUser();
-  }, []);
+  }, [isFocused]);
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>

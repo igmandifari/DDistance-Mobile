@@ -131,6 +131,7 @@ const DetailToko = ({ navigation, route }) => {
                   statusPembayaran,
                   jumlahTagihan,
                   tanggalJatuhTempo,
+                  judul
                 } = distributor;
 
                 let bgColor;
@@ -159,7 +160,7 @@ const DetailToko = ({ navigation, route }) => {
                   <View key={index} style={styles.item}>
                     <View style={{ height: "100%", flex: 1, gap: 5 }}>
                       <Text style={{ fontSize: 15, fontWeight: "700" }}>
-                        Invoice {id}
+                        Invoice {judul}
                       </Text>
                       <View
                         style={{
@@ -194,7 +195,7 @@ const DetailToko = ({ navigation, route }) => {
                           <TouchableOpacity
                             onPress={() => {
                               navigation.navigate("history-bill-distributor", {
-                                idInvoice: distributor.id,name
+                                idInvoice: distributor.judul,name
                               });
                             }}
                           >

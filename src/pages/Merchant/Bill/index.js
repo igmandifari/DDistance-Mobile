@@ -17,6 +17,7 @@ import { invoiceList } from "./data";
 import { useSelector } from "react-redux";
 import { getInvoice } from "../../../services/merchantServices";
 import { useFocusEffect } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 
 const vw = Dimensions.get("window").width;
 
@@ -25,17 +26,19 @@ const Bill = ({ navigation }) => {
   // const [data, setData] = useState(invoiceList);
   const [invoices, setInvoices] = useState([]);
   const { token } = useSelector((state) => state.user);
+  const isFocused = useIsFocused();
 
-
-  getData = async () => {
+ const getData = async () => {
     const response = await getInvoice(token);
     console.log(response);
     setInvoices(response.data.data);
   };
   useFocusEffect(
     useCallback(() => {
-      getData();
-    }, [])
+      if (isFocused) {
+        getData();
+      }
+    }, [isFocused])
   );
 
   return (

@@ -70,9 +70,11 @@ const DetailInvoice = ({ route }) => {
                   ? colors.GREEN
                   : data.status === "DITOLAK"
                   ? colors.RED
+                  : data.status === "DALAM_PROSES"
+                  ? colors.ORANGE
                   : null,
               color: colors.WHITE,
-              width: 100,
+              width: 150,
               height: 50,
               borderRadius: 10,
               textAlign: "center",

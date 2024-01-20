@@ -17,6 +17,8 @@ import { getInvoiceDistributor } from "../../../services/distributorService";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
 import { formatIDRCurrency } from "../../../utils/formatIdr";
+import { cekTagihan } from "../../../services/merchantServices";
+import { useIsFocused } from "@react-navigation/native";
 
 const vw = Dimensions.get("window").width;
 
@@ -31,6 +33,7 @@ const BillDistributor = ({ navigation }) => {
   const [filter, setFilter] = useState("DALAM_PROSES");
   const [invoices, setInvoices] = useState([]);
   const { token } = useSelector((state) => state.user);
+  const isFocused = useIsFocused();
   const [originalInvoices, setOriginalInvoices] = useState([]);
 
   const handleFilterChange = (selectedFilter) => {
@@ -52,12 +55,15 @@ const BillDistributor = ({ navigation }) => {
     const response = await getInvoiceDistributor(token);
     setInvoices(response.data.data);
     setOriginalInvoices(response.data.data);
+
     // console.log(response.data.data);
   };
   useFocusEffect(
     useCallback(() => {
-      getData();
-    }, [])
+      if (isFocused) {
+        getData();
+      }
+    }, [isFocused])
   );
   // console.log(invoices[0].id);
 

@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../../../store/userSlice";
 import { Button } from "react-native-elements";
 import { formatIDRCurrency } from "../../../utils/formatIdr";
+import { useIsFocused } from "@react-navigation/native";
 
 const DashboardMerchant = ({ navigation }) => {
 
@@ -31,6 +32,7 @@ const DashboardMerchant = ({ navigation }) => {
   const { name, balance, limit } = userDetail;
   const { token } = useSelector((state) => state.user);
   const [distributors, setDistributors] = useState([]);
+  const isFocused = useIsFocused();
   const [filter, setFilter] = useState("");
   const filterTypes = [
     {
@@ -54,7 +56,7 @@ const DashboardMerchant = ({ navigation }) => {
     };
 
     getData(token);
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
     const fetchDataUser = async () => {
@@ -70,7 +72,7 @@ const DashboardMerchant = ({ navigation }) => {
     };
 
     fetchDataUser();
-  }, []);
+  }, [isFocused]);
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>

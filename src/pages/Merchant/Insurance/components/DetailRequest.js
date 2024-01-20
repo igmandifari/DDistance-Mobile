@@ -69,9 +69,9 @@ const DetailRequest = ({ route }) => {
       const agunanBase64 = await blobToBase64(agunanBlob);
 
       setImages({
-        ktp: `data:image/jpeg;base64,${ktpBase64}`,
-        siu: `data:image/jpeg;base64,${siuBase64}`,
-        agunan: `data:image/jpeg;base64,${agunanBase64}`,
+        ktp: ktpBase64,
+        siu: siuBase64,
+        agunan: agunanBase64,
       });
     } catch (error) {
       console.error("Error fetching data:", error);

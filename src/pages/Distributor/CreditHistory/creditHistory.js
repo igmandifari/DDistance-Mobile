@@ -4,12 +4,12 @@ import { colors } from "../../../constant/colors";
 import { getCreditHistory } from "../../../services/distributorService";
 import { useSelector } from "react-redux";
 import { formatIDRCurrency } from "../../../utils/formatIdr";
-
+import { useIsFocused } from "@react-navigation/native";
 
 const CreditHistory = () => {
   const { token } = useSelector((state) => state.user);
   const [data, setData] = useState([]);
-  
+  const isFocused = useIsFocused();
   const getDetail = async () => {
     const response = await getCreditHistory(token);
     console.log("response",response.data.data);
@@ -17,8 +17,10 @@ const CreditHistory = () => {
   };
   
   useEffect(() => {
-    getDetail();
-  }, []);
+    if (isFocused) {
+      getDetail();
+    }
+  }, [isFocused]);
   console.log("data",data);
   
   return (
