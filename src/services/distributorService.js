@@ -1,8 +1,9 @@
 import axiosInstance from "../api/axiosInstance";
-import { BASE_URL } from "@env";
+// import { BASE_URL } from "@env";
+import baseurl from "../api/baseurl";
 
 export const getMerchantsDashboard = (token) => {
-  return axiosInstance.get(`${BASE_URL}/api/merchant/dashboard`, {
+  return axiosInstance.get(`${baseurl}/api/merchant/dashboard`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -10,7 +11,7 @@ export const getMerchantsDashboard = (token) => {
 };
 
 export const getInvoice = (token) => {
-  return axiosInstance.get(`${BASE_URL}/api/merchants`, {
+  return axiosInstance.get(`${baseurl}/api/merchants`, {
     headers: {
       Authorization: "Bearer",
     },
@@ -18,7 +19,7 @@ export const getInvoice = (token) => {
 };
 
 export const getMerchantsInvoice = (token) => {
-  return axiosInstance.get(`${BASE_URL}/api/merchants`, {
+  return axiosInstance.get(`${baseurl}/api/merchants`, {
     headers: {
       Authorization: "Bearer",
     },
@@ -26,7 +27,7 @@ export const getMerchantsInvoice = (token) => {
 };
 //1
 export const getInvoiceDistributor = (token) => {
-  return axiosInstance.get(`${BASE_URL}/api/invoice`, {
+  return axiosInstance.get(`${baseurl}/api/invoice`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -34,7 +35,7 @@ export const getInvoiceDistributor = (token) => {
 };
 
 export const getDetailInvoice = (token, id) => {
-  return axiosInstance.get(`${BASE_URL}/api/invoice/${id}`, {
+  return axiosInstance.get(`${baseurl}/api/invoice/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -42,7 +43,7 @@ export const getDetailInvoice = (token, id) => {
 };
 
 export const putInvoiceDistributor = (token, payload) => {
-  return axiosInstance.put(`${BASE_URL}/api/invoice`, payload, {
+  return axiosInstance.put(`${baseurl}/api/invoice`, payload, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -50,7 +51,7 @@ export const putInvoiceDistributor = (token, payload) => {
 };
 
 export const sendOtpInvoiceDistributor = (token) => {
-  return axiosInstance.get(`${BASE_URL}/api/invoice/email/send/token`, {
+  return axiosInstance.get(`${baseurl}/api/invoice/email/send/token`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -60,7 +61,7 @@ export const sendOtpInvoiceDistributor = (token) => {
 
 
 export const getInvoiceIdDistributor = (token, id) => {
-  return axiosInstance.get(`${BASE_URL}/api/invoice/${id}/distributor`, {
+  return axiosInstance.get(`${baseurl}/api/invoice/${id}/distributor`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -77,7 +78,7 @@ export const putChangePinDistributor = (
     confirmPin
 ) => {
   return axiosInstance.put(
-      `${BASE_URL}/api/distributor/changePin`,
+      `${baseurl}/api/distributor/changePin`,
       {
         otp,
         oldPin,
@@ -93,7 +94,7 @@ export const putChangePinDistributor = (
 };
 
 export const getInvoiceId = (token, id) => {
-  return axiosInstance.get(`${BASE_URL}/api/invoice/${id}`, {
+  return axiosInstance.get(`${baseurl}/api/invoice/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -101,14 +102,14 @@ export const getInvoiceId = (token, id) => {
 };
 
 export const getDetailMerchantInvoice = (token, id) => {
-  return axiosInstance.get(`${BASE_URL}/api/invoice/${id}/merchant`, {
+  return axiosInstance.get(`${baseurl}/api/invoice/${id}/merchant`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 };
 export const getCreditHistory = (token) => {
-  return axiosInstance.get(`${BASE_URL}/api/invoice/getCreditHistory`, {
+  return axiosInstance.get(`${baseurl}/api/invoice/getCreditHistory`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

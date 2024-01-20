@@ -1,12 +1,12 @@
 import axiosInstance from "../api/axiosInstance";
-import { BASE_URL } from "@env";
-
+// import { baseurl } from "@env";
+import baseurl from "../api/baseurl";
 export const register = (payload) => {
-  return axiosInstance.post(`${BASE_URL}/api/auth/register/merchant`, payload);
+  return axiosInstance.post(`${baseurl}/api/auth/register/merchant`, payload);
 };
 
 export const getUserMerchant = (token) => {
-  return axiosInstance.get(`${BASE_URL}/api/merchant/my`, {
+  return axiosInstance.get(`${baseurl}/api/merchant/my`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -14,7 +14,7 @@ export const getUserMerchant = (token) => {
 };
 
 export const getUserDistributor = (token) => {
-  return axiosInstance.get(`${BASE_URL}/api/distributor/my`, {
+  return axiosInstance.get(`${baseurl}/api/distributor/my`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -22,14 +22,14 @@ export const getUserDistributor = (token) => {
 };
 
 export const login = (payload) => {
-  return axiosInstance.post(`${BASE_URL}/api/auth/login`, payload);
+  return axiosInstance.post(`${baseurl}/api/auth/login`, payload);
   // return axiosInstance.post(`https://humbly-desired-stag.ngrok-free.app//api/auth/login`, payload);
 };
 
 export const sendOtpForgetPassword = async (email) => {
   try {
     const response = await axiosInstance.post(
-      `${BASE_URL}/api/auth/sendOtp`,
+      `${baseurl}/api/auth/sendOtp`,
       {
         email: email,
       }
@@ -51,7 +51,7 @@ export const sendNewPassword = async (otp, email) => {
     };
 
     const response = await axiosInstance.put(
-      `${BASE_URL}/api/auth/reset-password-mobile`,
+      `${baseurl}/api/auth/reset-password-mobile`,
       bodyRequest,
     );
 
