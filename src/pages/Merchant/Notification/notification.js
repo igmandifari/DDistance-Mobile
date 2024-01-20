@@ -40,15 +40,15 @@ const NotificationMerchant = ({ navigation }) => {
                 switch (ecolorNotif) {
                   case "GREEN":
                     bgColor = "#D2FED6";
-                    textColor = colors.GREEN;
+                    textColor = "00E817";
                     break;
                   case "RED":
                     bgColor = "#FFBEBE";
-                    textColor = colors.RED;
+                    textColor = "#F00";
                     break;
                   case "YELLOW":
                     bgColor = "#FFDB92";
-                    textColor = colors.YELLOW;
+                    textColor = "#E69D0B";
                     break;
                   default:
                     bgColor = colors.FLORAL;
@@ -77,7 +77,7 @@ const NotificationMerchant = ({ navigation }) => {
                       <View style={{ alignItems: "center" }}>
                         <Text
                           style={{
-                            fontSize: 20,
+                            fontSize: 15,
                             fontWeight: 600,
                             color: textColor,
                           }}

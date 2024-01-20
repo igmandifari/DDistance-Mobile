@@ -70,21 +70,22 @@ const BillDistributor = ({ navigation }) => {
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <View style={styles.headerLeft}>
-            <Image
-              style={{ width: 37 }}
-              source={require("../../../assets/img/logo_DD.png")}
-            />
-            <Text style={styles.headerTitle}>D-DISTANCE</Text>
-          </View>
-          <View>
-            <Image
-              source={require("../../../assets/img/notification.png")}
-              style={{}}
-            />
-          </View>
+      <View style={styles.headerContainer}>
+        <View style={styles.headerLeft}>
+          <Image
+            style={{ width: 37 }}
+            source={require("../../../assets/img/logo_DD.png")}
+          />
+          <Text style={styles.headerTitle}>D-DISTANCE</Text>
         </View>
+        <View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("notificationMerchant")}
+          >
+            <Image source={require("../../../assets/img/notification.png")} />
+          </TouchableOpacity>
+        </View>
+      </View>
         <View style={{ padding: 25 }}>
           <Text style={{ fontWeight: "700", fontSize: 20 }}>
             Persetujuan Invoice

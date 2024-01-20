@@ -88,7 +88,7 @@ const DashboardDistributor = ({ navigation }) => {
         </View>
         <View>
           <TouchableOpacity
-            onPress={() => navigation.navigate("notificationDistributor")}
+            onPress={() => navigation.navigate("notificationMerchant")}
           >
             <Image source={require("../../../assets/img/notification.png")} />
           </TouchableOpacity>
