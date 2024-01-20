@@ -30,6 +30,7 @@ const DetailRequest = ({ route }) => {
     name: null,
     status: null,
     rejection: null,
+    limit: null,
   });
   const [images, setImages] = useState({
     ktp: null,
@@ -46,6 +47,7 @@ const DetailRequest = ({ route }) => {
         nameStore: name,
         status,
         rejection,
+        limit,
         images,
       } = response.data.data;
       setData({
@@ -54,6 +56,7 @@ const DetailRequest = ({ route }) => {
         name,
         status,
         rejection,
+        limit,
       });
 
       const ktpBlob = await getKtp(token, id);
@@ -201,19 +204,58 @@ const DetailRequest = ({ route }) => {
             </View>
           </View>
 
-          <Text style={{ marginTop: 10 }}>Alasan Ditolak</Text>
-          <View style={{ marginTop: 10 }}>
-            <View
-              style={{
-                backgroundColor: colors.WHITE,
-                borderRadius: 10,
-                padding: 10,
-                elevation: 10,
-              }}
-            >
-              <Text>{data.rejection}</Text>
-            </View>
-          </View>
+          {data.limit && (
+            <>
+              <View
+                style={{
+                  borderColor: "red",
+                  marginTop: 10,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 17,
+                    fontWeight: "400",
+                  }}
+                >
+                  Limit
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "700",
+                  }}
+                >
+                  {data.limit
+                    ? `Rp. ${Intl.NumberFormat("id-ID").format(data.limit)}`
+                    : "Not specified"}
+                </Text>
+              </View>
+            </>
+          )}
+
+          {data.rejection && (
+            <>
+              <Text style={{ marginTop: 10, fontSize: 17, fontWeight: "400" }}>
+                Alasan Ditolak
+              </Text>
+              <View style={{ marginTop: 10 }}>
+                <View
+                  style={{
+                    backgroundColor: colors.WHITE,
+                    borderRadius: 10,
+                    padding: 10,
+                    elevation: 10,
+                  }}
+                >
+                  <Text>{data.rejection}</Text>
+                </View>
+              </View>
+            </>
+          )}
+          
         </View>
       </ScrollView>
     </SafeAreaView>
