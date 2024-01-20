@@ -35,7 +35,7 @@ export const getInsurances = (token) => {
 
 export const sendOtpAturTenor = (token) => {
   return axiosInstance.get(
-    "http://10.0.2.2:8080/api/invoice/email/send/token",
+    `${BASE_URL}/api/invoice/email/send/token`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

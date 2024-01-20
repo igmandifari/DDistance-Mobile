@@ -12,15 +12,18 @@ const TenorSuccessSetting = ({ route, navigation }) => {
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       () => {
-        navigation.navigate("dashboard-merchant");
+        navigation.navigate("history-bill-merchant", {
+          isSuccess: true, 
+          idInvoice: details.id, 
+        });
         return true;
       }
     );
-
+  
     return () => {
       backHandler.remove();
     };
-  }, [navigation]);
+  }, [navigation, details]);
 
   console.log("Rendering TenorSuccessSetting...");
 
@@ -119,7 +122,7 @@ const TenorSuccessSetting = ({ route, navigation }) => {
                 Tanggal Jatuh Tempo
               </Text>
               <Text style={[styles.text2, styles.textCenter, { fontSize: 24 }]}>
-                {details.tanggalJatuhTempoPayment}
+                {details.dueDateAfterApproval}
               </Text>
               <Text style={[styles.text2, styles.textCenter, { fontSize: 24 }]}>
                 Rp. {details.bayarPerBulan} per Bulan
