@@ -10,13 +10,14 @@ import {
 import { updateProfileUser } from "../../../../services/merchantServices";
 import { useSelector } from "react-redux";
 
-function EditProfile({ navigation }) {
+function EditProfile({ navigation, route }) {
+  const {userProfile} = route.params;
   const [form, setForm] = useState({
-    name: "",
-    address: "",
-    phoneNumber: "",
-    email: "",
-    pan: "",
+    name: userProfile.name,
+    address: userProfile.address,
+    phoneNumber: userProfile.phoneNumber,
+    email: userProfile.email,
+    pan: userProfile.pan,
   });
 
   const { token } = useSelector((state) => state.user);
@@ -60,7 +61,7 @@ function EditProfile({ navigation }) {
             style={styles.input}
             placeholder="No HP"
             onChangeText={(text) => handleChange("phoneNumber", text)}
-            value={form.phone}
+            value={form.phoneNumber}
           />
         </View>
         <View style={styles.inputContainer}>

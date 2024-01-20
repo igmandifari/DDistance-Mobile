@@ -5,26 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9963ca16-20c0-4600-be45-31be644f1829" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/assets/img/Forgot-password.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/img/success.svg.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/ForgetPassword/ForgetPassword.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/ForgetPassword/components/OtpRequestForgetPassword.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/ForgetPassword/components/SuccessNewPassword.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/Merchant/ForgetPIN/ForgetPIN.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/Merchant/ForgetPIN/components/OtpRequestForgetPIN.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/Merchant/ForgetPIN/components/SuccessNewPIN.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Distributor/Dashboard/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Distributor/Dashboard/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Login/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Login/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Payment/components/PinPayment.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Merchant/Payment/components/PinPayment.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Profile/components/ChangePassword.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ChangePassword/ChangePassword.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Profile/components/ChangePasswordSuccess.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ChangePassword/ChangePasswordSuccess.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Bill/components/FormInvoice.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Merchant/Bill/components/FormInvoice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Bill/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Merchant/Bill/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Dashboard/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Merchant/Dashboard/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Insurance/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Merchant/Insurance/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Notification/notification.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Merchant/Notification/notification.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Profile/components/EditProfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Merchant/Profile/components/EditProfile.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Profile/components/KeamananAkun.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Merchant/Profile/components/KeamananAkun.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Profile/components/OtpChange.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ChangePassword/OtpChangePassword.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Profile/components/UbahPin.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Merchant/Profile/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Merchant/Profile/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Register/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Register/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/AuthService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/AuthService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/distributorService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/distributorService.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/merchantServices.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/merchantServices.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -64,7 +58,7 @@
     &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Merging heru&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;heru&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Back up heru/Projek enigma/d-distance-mobile/src/pages/ChangePassword&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -98,6 +92,7 @@
       <workItem from="1705322618109" duration="5241000" />
       <workItem from="1705368805846" duration="3735000" />
       <workItem from="1705406604337" duration="20769000" />
+      <workItem from="1705723738082" duration="9513000" />
     </task>
     <servers />
   </component>

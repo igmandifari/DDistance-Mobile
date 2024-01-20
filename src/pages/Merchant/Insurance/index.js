@@ -55,7 +55,6 @@ const RequestPage = ({ navigation }) => {
     console.log("cek", response.data.data);
   };
   useEffect(() => {
-    // Fetch user profile data when the screen is focused
     if (isFocused) {
       getData();
     }
@@ -73,7 +72,11 @@ const RequestPage = ({ navigation }) => {
             <Text style={styles.headerTitle}>D-DISTANCE</Text>
           </View>
           <View>
+            <TouchableOpacity
+                onPress={() => navigation.navigate("notificationMerchant")}
+            >
             <Image source={require("../../../assets/img/notification.png")} />
+            </TouchableOpacity>
           </View>
         </View>
         <View style={{ padding: 25 }}>

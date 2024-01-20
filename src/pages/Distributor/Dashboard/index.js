@@ -16,6 +16,7 @@ import { getMerchantsDashboard } from "../../../services/distributorService";
 import { getUserDistributor } from "../../../services/AuthService";
 import { formatIDRCurrency } from "../../../utils/formatIdr";
 import { useIsFocused } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const filterTypes = [
   {
@@ -38,6 +39,7 @@ const DashboardDistributor = ({ navigation }) => {
   const [filter, setFilter] = useState("");
   const [merchants, setMerchants] = useState([]);
   const isFocused = useIsFocused();
+  const [showBalance, setShowBalance] = useState(false);
   const getData = async () => {
     const response = await getMerchantsDashboard(token);
     console.log(response.data.data);
@@ -45,6 +47,9 @@ const DashboardDistributor = ({ navigation }) => {
       setMerchants(response.data.data);
     }
   };
+  const handleShowBalance = () => {
+    setShowBalance(!showBalance);
+  }
 
   useEffect(() => {
     if (isFocused) {
@@ -57,9 +62,7 @@ const DashboardDistributor = ({ navigation }) => {
     belance: null,
     limit: null,
   });
-
   const { name, belance, limit } = userDetail;
-
   useEffect(() => {
     const fetchDataUser = async () => {
       try {
@@ -108,9 +111,16 @@ const DashboardDistributor = ({ navigation }) => {
             <Text
               style={{ fontSize: 16, fontWeight: "700", color: colors.WHITE }}
             >
-              {formatIDRCurrency(belance || null)}
+              {!showBalance && formatIDRCurrency(belance || null)}
             </Text>
-            <Image source={require("../../../assets/img/View.png")} />
+            {/*<Image source={require("../../../assets/img/View.png")} />*/}
+            <TouchableOpacity onPress={handleShowBalance} style={styles.eyeIcon}>
+              <Icon
+                  name={showBalance ? "eye-slash" : "eye"}
+                  size={20}
+                  color="#F36C21"
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </View>

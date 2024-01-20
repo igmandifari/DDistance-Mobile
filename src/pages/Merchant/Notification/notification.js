@@ -16,6 +16,7 @@ const NotificationMerchant = ({ navigation }) => {
 
   const getDetail = async () => {
     const response = await getNotification(token);
+    console.log("line 19", response.data);
     setData(response.data.data);
   };
 

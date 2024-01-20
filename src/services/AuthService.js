@@ -23,6 +23,7 @@ export const getUserDistributor = (token) => {
 
 export const login = (payload) => {
   return axiosInstance.post(`${BASE_URL}/api/auth/login`, payload);
+  // return axiosInstance.post(`https://humbly-desired-stag.ngrok-free.app//api/auth/login`, payload);
 };
 
 export const sendOtpForgetPassword = async (email) => {
