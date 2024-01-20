@@ -28,7 +28,7 @@ export const login = (payload) => {
 export const sendOtpForgetPassword = async (email) => {
   try {
     const response = await axiosInstance.post(
-      '${BASE_URL}/api/auth/sendOtp',
+      `${BASE_URL}/api/auth/sendOtp`,
       {
         email: email,
       }
@@ -50,7 +50,7 @@ export const sendNewPassword = async (otp, email) => {
     };
 
     const response = await axiosInstance.put(
-      '${BASE_URL}/api/auth/reset-password-mobile',
+      `${BASE_URL}/api/auth/reset-password-mobile`,
       bodyRequest,
     );
 
