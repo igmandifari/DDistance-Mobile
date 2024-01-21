@@ -13,6 +13,7 @@ import { getDetailDistributorInvoice } from "../../../services/merchantServices"
 import { useSelector } from "react-redux";
 import { Button } from "react-native-elements";
 import { formatIDRCurrency } from "../../../utils/formatIdr";
+import { getCombinedNodeFlags } from "typescript";
 
 const DetailDistributor = ({ navigation, route }) => {
   const {
@@ -57,6 +58,7 @@ const DetailDistributor = ({ navigation, route }) => {
   const getDetail = async () => {
     const response = await getDetailDistributorInvoice(token, idDistributor);
     setData(response.data.data);
+    // console.log(response.data.data);
   };
 
   useEffect(() => {

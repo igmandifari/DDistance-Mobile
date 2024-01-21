@@ -174,7 +174,7 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
                   const {
                     id,
                     InvoiceNo,
-                    sisaTagihan,
+                    tagihan,
                     tanggalFaktur,
                     statusPembayaran,
                     paymentAmount,
@@ -226,7 +226,7 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
                                 Total Tagihan
                               </Text>
                               <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                                {sisaTagihan}
+                                {tagihan}
                               </Text>
                             </>
                           ) : (
@@ -235,7 +235,7 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
                                 Cicilan {paymentTo}/{paymentAmount}
                               </Text>
                               <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                                {formatIDRCurrency(sisaTagihan)}
+                                {formatIDRCurrency(tagihan)}
                               </Text>
                             </>
                           )}
