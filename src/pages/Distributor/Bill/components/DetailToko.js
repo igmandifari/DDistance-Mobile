@@ -117,8 +117,8 @@ const DetailToko = ({ navigation, route }) => {
         <View id="list-merchant" style={styles.listContainer}>
           <View>
             <View>
-              <Text>Sisa Limitmu:</Text>
-              <Text>{sisaLimit ?? 0} / {limit}</Text>
+              {/* <Text>Sisa Limitmu:</Text>
+              <Text>{sisaLimit ?? 0} / {limit}</Text> */}
 
               <View style={styles.progressBar}></View>
             </View>
@@ -195,7 +195,8 @@ const DetailToko = ({ navigation, route }) => {
                           <TouchableOpacity
                             onPress={() => {
                               navigation.navigate("history-bill-distributor", {
-                                idInvoice: distributor.judul,name
+                                idInvoice: distributor.id,name,
+                                judulInvoice: distributor.judul,
                               });
                             }}
                           >

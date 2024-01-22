@@ -17,12 +17,14 @@ const HistoryInvoiceCicilanDistributor = ({ navigation, route }) => {
   const { token } = useSelector((state) => state.user);
   const [data, setData] = useState([]);
   const [isProfileVisible, setIsProfileVisible] = useState(true);
-  const { idInvoice, name } = route.params;
+  const { idInvoice, name,judulInvoice } = route.params;
 
   const getDetail = async () => {
-    const response = await getDetailInvoiceId(token, idInvoice, name);
+    const response = await getDetailInvoiceId(token, idInvoice, name,judulInvoice);
     setData(response.data.data);
-    console.log("celk",response.data.data)
+    // console.log('judul',judulInvoice);
+    // console.log('id',idInvoice);
+    // console.log("celk",response.data.data)
   };
   ;
   useEffect(() => {
@@ -49,7 +51,7 @@ const HistoryInvoiceCicilanDistributor = ({ navigation, route }) => {
           <View>
             <View>
               <Text style={{ fontSize: 20, fontWeight: 400 }}>
-                Riwayat Cicilan Invoice {idInvoice}
+                Riwayat Cicilan Invoice {judulInvoice}
               </Text>
             </View>
           </View>

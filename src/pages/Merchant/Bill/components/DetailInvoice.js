@@ -7,6 +7,7 @@ import BlankAgunan from "../../../../assets/img/blank-agunan";
 import { getDetailInvoice } from "../../../../services/merchantServices";
 import { useSelector } from "react-redux";
 import { Button } from "react-native-elements";
+import { formatIDRCurrency } from "../../../../utils/formatIdr";
 
 const DetailInvoice = ({ route }) => {
   const { token } = useSelector((state) => state.user);
@@ -42,7 +43,7 @@ const DetailInvoice = ({ route }) => {
     },
     {
       key: "Total Tagihan :",
-      value: data.jumlahTagihan,
+      value: formatIDRCurrency(data.jumlahTagihan),
     },
     {
       key: "Tanggal Jatuh Tempo :",
