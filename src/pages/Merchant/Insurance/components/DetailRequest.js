@@ -204,36 +204,34 @@ const DetailRequest = ({ route }) => {
             </View>
           </View>
 
-          {data.limit && (
-            <>
-              <View
+          {data.limit !== null && data.limit !== 0 && (
+            <View
+              style={{
+                borderColor: "red",
+                marginTop: 10,
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text
                 style={{
-                  borderColor: "red",
-                  marginTop: 10,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
+                  fontSize: 17,
+                  fontWeight: "400",
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: 17,
-                    fontWeight: "400",
-                  }}
-                >
-                  Limit
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 20,
-                    fontWeight: "700",
-                  }}
-                >
-                  {data.limit
-                    ? `Rp. ${Intl.NumberFormat("id-ID").format(data.limit)}`
-                    : "Not specified"}
-                </Text>
-              </View>
-            </>
+                Limit
+              </Text>
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: "700",
+                }}
+              >
+                {data.limit
+                  ? `Rp. ${Intl.NumberFormat("id-ID").format(data.limit)}`
+                  : "Not specified"}
+              </Text>
+            </View>
           )}
 
           {data.rejection && (
@@ -255,7 +253,6 @@ const DetailRequest = ({ route }) => {
               </View>
             </>
           )}
-          
         </View>
       </ScrollView>
     </SafeAreaView>

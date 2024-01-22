@@ -1,4 +1,4 @@
-package com.ddistance.DDistanceMobile;
+package com.igmandifari.DDistanceMobile;
 
 import android.app.Application;
 import android.content.res.Configuration;

@@ -27,7 +27,7 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>com.ddistance.DDistanceMobile</string>
+          <string>com.igmandifari.DDistanceMobile</string>
         </array>
       </dict>
     </array>

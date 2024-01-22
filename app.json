@@ -27,6 +27,15 @@
       "eas": {
         "projectId": "f882ad6b-b7c6-451e-85dc-e8af65b192e3"
       }
+    },
+    "android": {
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.igmandifari.DDistanceMobile"
+    },
+    "ios": {
+      "bundleIdentifier": "com.igmandifari.DDistanceMobile"
     }
   }
 }
