@@ -58,7 +58,7 @@ const RequestPage = ({ navigation }) => {
     if (isFocused) {
       getData();
     }
-  }, [isFocused]); 
+  }, [isFocused]);
 
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
@@ -73,9 +73,9 @@ const RequestPage = ({ navigation }) => {
           </View>
           <View>
             <TouchableOpacity
-                onPress={() => navigation.navigate("notificationMerchant")}
+              onPress={() => navigation.navigate("notificationMerchant")}
             >
-            <Image source={require("../../../assets/img/notification.png")} />
+              <Image source={require("../../../assets/img/notification.png")} />
             </TouchableOpacity>
           </View>
         </View>
@@ -106,6 +106,10 @@ const RequestPage = ({ navigation }) => {
                     case "DALAM_PROSES":
                       bgColor = colors.YELLOW;
                       textStatus = "Dalam Proses";
+                      break;
+                      case "ON_SURVEY":
+                      bgColor = colors.YELLOW;
+                      textStatus = "On Survey";
                       break;
                     default:
                       bgColor = colors.YELLOW;
@@ -168,24 +172,30 @@ const RequestPage = ({ navigation }) => {
                         </Text>
                         <TouchableOpacity
                           onPress={() => {
-                            
-                            if (item.status !== "DALAM_PROSES" ) {
+                            if (
+                              item.status !== "DALAM_PROSES" &&
+                              item.status !== "ON_SURVEY"
+                            ) {
                               navigation.navigate("detail-request-insurance", {
                                 idInsurance: item.id,
                               });
                             }
                           }}
-                          
-                          disabled={item.status === "DALAM_PROSES" }
+                          disabled={
+                            item.status === "DALAM_PROSES" ||
+                            item.status === "ON_SURVEY"
+                          }
                         >
                           <Text
                             style={{
                               color:
-                                item.status === "DALAM_PROSES"
+                                item.status === "DALAM_PROSES" ||
+                                item.status === "ON_SURVEY"
                                   ? colors.GREY
                                   : colors.ORANGE,
                               textDecorationLine:
-                                item.status === "DALAM_PROSES"
+                                item.status === "DALAM_PROSES" ||
+                                item.status === "ON_SURVEY"
                                   ? "line-through"
                                   : "none",
                             }}

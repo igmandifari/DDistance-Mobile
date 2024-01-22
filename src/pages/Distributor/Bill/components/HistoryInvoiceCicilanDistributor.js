@@ -22,6 +22,7 @@ const HistoryInvoiceCicilanDistributor = ({ navigation, route }) => {
   const getDetail = async () => {
     const response = await getDetailInvoiceId(token, idInvoice, name);
     setData(response.data.data);
+    console.log("celk",response.data.data)
   };
   ;
   useEffect(() => {

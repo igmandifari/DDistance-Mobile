@@ -57,7 +57,7 @@ const OtpInvoiceMerchant = ({ navigation, route }) => {
         setPopUpSuccess(true);
         setTimeout(() => {
           setPopUpSuccess(false);
-          navigation.navigate("Bill");
+          navigation.navigate("dashboard-merchant");
         }, 2000);
       } else {
         setPopUpFailed(true);
