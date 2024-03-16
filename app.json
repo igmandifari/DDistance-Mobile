@@ -20,18 +20,13 @@
       "backgroundColor": "#ffffff"
     },
     "entryPoint": "./src/App.js",
-    "assetBundlePatterns": ["**/*"],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./src/assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "f882ad6b-b7c6-451e-85dc-e8af65b192e3"
       }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
     }
   }
 }

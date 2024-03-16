@@ -9,16 +9,37 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
+  BackHandler,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";
 import { invoiceList } from "./data";
+import { useSelector } from "react-redux";
+import { getInvoice } from "../../../services/merchantServices";
+import { useFocusEffect } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 
 const vw = Dimensions.get("window").width;
 
+
 const Bill = ({ navigation }) => {
-  const [filter, setFilter] = useState("");
-  const [data, setData] = useState(invoiceList);
+  // const [data, setData] = useState(invoiceList);
+  const [invoices, setInvoices] = useState([]);
+  const { token } = useSelector((state) => state.user);
+  const isFocused = useIsFocused();
+
+ const getData = async () => {
+    const response = await getInvoice(token);
+    console.log(response);
+    setInvoices(response.data.data);
+  };
+  useFocusEffect(
+    useCallback(() => {
+      if (isFocused) {
+        getData();
+      }
+    }, [isFocused])
+  );
 
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
@@ -32,10 +53,11 @@ const Bill = ({ navigation }) => {
             <Text style={styles.headerTitle}>D-DISTANCE</Text>
           </View>
           <View>
-            <Image
-              source={require("../../../assets/img/notification.png")}
-              style={{}}
-            />
+            <TouchableOpacity
+                onPress={() => navigation.navigate("notificationMerchant")}
+            >
+            <Image source={require("../../../assets/img/notification.png")}/>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={{ padding: 25 }}>
@@ -45,19 +67,23 @@ const Bill = ({ navigation }) => {
           <View style={{ height: "85%" }}>
             <ScrollView>
               <View style={{ gap: 10 }}>
-                {data.map((item, index) => {
-                  const { name, invoiceNo, date, status } = item;
+                {invoices && invoices.map((item, index) => {
+                  const {status } = item;
 
                   let bgColor;
+                  let textStatus;
                   switch (status) {
-                    case "Ditolak":
+                    case "DITOLAK":
                       bgColor = colors.RED;
+                      textStatus = "Ditolak"
                       break;
-                    case "Diterima":
+                    case "DITERIMA":
                       bgColor = colors.GREEN;
+                      textStatus = "Diterima"
                       break;
-                    case "Dalam Proses":
+                    case "DALAM_PROSES":
                       bgColor = colors.YELLOW;
+                      textStatus = "Dalam Proses"
                       break;
 
                     default:
@@ -82,10 +108,10 @@ const Bill = ({ navigation }) => {
                       >
                         <View style={{ alignItems: "center" }}>
                           <Text style={{ fontSize: 24, fontWeight: 600 }}>
-                            {name}
+                            Invoice
                           </Text>
                           <Text style={{ fontSize: 24, fontWeight: 600 }}>
-                            {invoiceNo}
+                            {item.judul}
                           </Text>
                         </View>
 
@@ -99,8 +125,8 @@ const Bill = ({ navigation }) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Text style={{ fontSize: 16, fontWeight: 600 }}>
-                            {status}
+                          <Text style={{ fontSize: 16, fontWeight: 600,color: colors.WHITE, }}>
+                            {textStatus}
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -111,10 +137,14 @@ const Bill = ({ navigation }) => {
                         }}
                       >
                         <Text style={{ fontSize: 13, fontWeight: "600" }}>
-                          {date}
+                          {item.tanggalTagihan}
                         </Text>
                         <TouchableOpacity
-                          onPress={() => navigation.navigate("detail-invoice")}
+                          onPress={() =>{
+                          navigation.navigate("detail-invoice",{
+                            idInvoice: item.id,
+                          });
+                          }}
                         >
                           <Text>See More</Text>
                         </TouchableOpacity>

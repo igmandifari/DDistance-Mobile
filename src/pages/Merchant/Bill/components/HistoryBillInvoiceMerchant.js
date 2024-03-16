@@ -6,69 +6,70 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
+  BackHandler,
 } from "react-native";
 import { colors } from "../../../../constant/colors";
-import { historyList } from "../../Dashboard/data";
+// import { historyList } from "../../Dashboard/data";
 import { BottomSheet } from "react-native-sheet";
 import SheetPay from "../../Payment/components/SheetPay";
 import { Button } from "react-native-elements";
 import PaymentSuccess from "../../Payment/components/PaymentSuccess";
+import { useSelector } from "react-redux";
 import PaymentFailed from "../../Payment/components/PaymentFailed";
+import { getDetailInvoiceId } from "../../../../services/merchantServices";
+import { formatIDRCurrency } from "../../../../utils/formatIdr";
 
 const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
-  const { isSuccess } = route.params;
+  const { token } = useSelector((state) => state.user);
+  const { isSuccess, idInvoice } = route.params;
+  console.log("Invoice ID:", idInvoice);
   const [filter, setFilter] = useState("");
-  const [data, setData] = useState(historyList);
+  const [data, setData] = useState([]);
   const [isProfileVisible, setIsProfileVisible] = useState(true);
   const sheetPay = useRef(null);
   const paySuccess = useRef(null);
   const payFailed = useRef(null);
+  const getDetail = async () => {
+    const response = await getDetailInvoiceId(token, idInvoice);
+    setData(response.data.data);
+  };
+  console.log("cek data", data);
 
-  const filterTypes = [
-    {
-      name: "Tepat Waktu",
-    },
-    {
-      name: "Terlambat",
-    },
-    {
-      name: "Bayar",
-    },
-  ];
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        navigation.navigate("dashboard-merchant");
+        return true;
+      }
+    );
+  
+    return () => {
+      backHandler.remove();
+    };
+  }, [navigation]);
 
   const handleChangeFilter = (name) => {
     setFilter(name);
   };
 
   useEffect(() => {
-    if (!filter) {
-      setData(historyList);
-      return;
-    }
-    const filtered = historyList.filter((item) => item.status === filter);
-    setData(filtered);
-  }, [filter]);
+    getDetail();
+  }, [idInvoice]);
 
   const handleToggleProfile = () => {
     setIsProfileVisible((prev) => !prev);
   };
 
-  const handleClickStatus = (status) => {
-    switch (status) {
-      case "Atur Tenor":
-        navigation.navigate("tenor-setting");
-        break;
-      case "Bayar":
-        sheetPay.current.show();
-        break;
-      default:
-        break;
-    }
+  const handleClickStatus = (statusPembayaran, paymentId) => {
+    setSelectedPaymentId(paymentId);
+    sheetPay.current.show();
   };
 
   if (isSuccess) {
     console.log("success");
   }
+  const [selectedPaymentId, setSelectedPaymentId] = useState(null);
 
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
@@ -85,10 +86,17 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
           ref={sheetPay}
         >
           <SheetPay
-            handlePayAll={() => {
-              console.log("pay all");
-            }}
-            handlePay={() => navigation.navigate("pin-payment")}
+            handlePayAll={() =>
+              navigation.navigate("pin-payment-all", {
+                selectedPaymentId: selectedPaymentId,
+              })
+            }
+            handlePay={() =>
+              navigation.navigate("pin-payment", {
+                selectedPaymentId: selectedPaymentId,
+              })
+            }
+            selectedPaymentId={selectedPaymentId}
           />
         </BottomSheet>
         <BottomSheet
@@ -121,9 +129,9 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
           <View id="profile" style={{}}>
             <View style={styles.profileContainer}>
               <Text style={{ fontSize: 32, fontWeight: "700" }}>
-                Distributor A
+                Distributor {data.namaDistributor}
               </Text>
-              <Button
+              {/* <Button
                 title={"pay success"}
                 onPress={() => {
                   paySuccess.current.show();
@@ -132,7 +140,7 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
               <Button
                 title={"pay failed"}
                 onPress={() => payFailed.current.show()}
-              />
+              /> */}
             </View>
           </View>
         )}
@@ -155,89 +163,85 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
           <View>
             <View>
               <Text style={{ fontSize: 20, fontWeight: 400 }}>
-                Riwayat Cicilan Invoice 00000000
+                Riwayat Cicilan Invoice
               </Text>
             </View>
           </View>
           <ScrollView>
             <View id="merchants" style={styles.merchantContainer}>
-              {data.map((distributor, index) => {
-                const { InvoiceNo, month, status, total, date } = distributor;
+              {data.length > 0 ? (
+                data.map((distributor, index) => {
+                  const {
+                    id,
+                    InvoiceNo,
+                    tagihan,
+                    tanggalFaktur,
+                    statusPembayaran,
+                    paymentAmount,
+                    paymentTo,
+                  } = distributor;
 
-                let bgColor;
-                switch (status) {
-                  case "Tepat Waktu":
-                    bgColor = colors.GREEN;
-                    break;
-                  case "Terlambat":
-                    bgColor = colors.YELLOW_STATUS;
-                    break;
-                  case "Bayar":
-                    bgColor = colors.BUTTON_ORANGE;
-                    break;
-                  case "Atur Tenor":
-                    bgColor = colors.BUTTON_ORANGE;
-                    break;
-                }
+                  let bgColor;
+                  let textStatus;
+                  let isButtonDisabled = false;
+                  switch (statusPembayaran) {
+                    case true:
+                      bgColor = colors.GREEN;
+                      textStatus = "Tepat Waktu";
+                      break;
+                    case false:
+                      bgColor = colors.YELLOW_STATUS;
+                      textStatus = "Terlambat";
+                      break;
+                    case null:
+                      bgColor = colors.BUTTON_ORANGE;
+                      textStatus = "Bayar";
+                      break;
+                    case "Atur Tenor":
+                      bgColor = colors.BUTTON_ORANGE;
+                      break;
+                    default:
+                      isButtonDisabled = true;
+                  }
 
-                return (
-                  <View key={index} style={styles.item}>
-                    <View style={{ height: "100%", flex: 1 }}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        {status === "Atur Tenor" ? (
-                          <>
-                            <Text
-                              style={{
-                                fontSize: 15,
-                                fontWeight: "700",
-                                flex: 1,
-                              }}
-                            >
-                              Total Tagihan
-                            </Text>
-                            <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                              {total}
-                            </Text>
-                          </>
-                        ) : (
-                          <>
-                            <Text style={{ fontSize: 15, fontWeight: "700" }}>
-                              Cicilan {month}
-                            </Text>
-                            <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                              {total}
-                            </Text>
-                          </>
-                        )}
-                      </View>
-                      <View style={{ alignItems: "start" }}>
-                        {status === "Atur Tenor" && (
-                          <Text
-                            style={{
-                              fontSize: 15,
-                              fontWeight: "700",
-                              color: colors.ORANGE,
-                            }}
-                          >
-                            Jatuh Tempo Pilih Tenor:
-                          </Text>
-                        )}
-                        {/* <Text style={{ fontSize: 14, color: colors.BUTTON_ORANGE }}>{date}</Text> */}
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <View style={{ alignItems: "center" }}>
-                          {status === "Bayar" && (
+                  return (
+                    <View key={index} style={styles.item}>
+                      <View style={{ height: "100%", flex: 1 }}>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          {statusPembayaran === "Atur Tenor" ? (
+                            <>
+                              <Text
+                                style={{
+                                  fontSize: 15,
+                                  fontWeight: "700",
+                                  flex: 1,
+                                }}
+                              >
+                                Total Tagihan
+                              </Text>
+                              <Text style={{ fontSize: 20, fontWeight: "600" }}>
+                                {tagihan}
+                              </Text>
+                            </>
+                          ) : (
+                            <>
+                              <Text style={{ fontSize: 15, fontWeight: "700" }}>
+                                Cicilan {paymentTo}/{paymentAmount}
+                              </Text>
+                              <Text style={{ fontSize: 20, fontWeight: "600" }}>
+                                {formatIDRCurrency(tagihan)}
+                              </Text>
+                            </>
+                          )}
+                        </View>
+                        <View style={{ alignItems: "start" }}>
+                          {statusPembayaran === "Atur Tenor" && (
                             <Text
                               style={{
                                 fontSize: 15,
@@ -245,47 +249,84 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
                                 color: colors.ORANGE,
                               }}
                             >
-                              Jatuh Tempo :
+                              Jatuh Tempo Pilih Tenor:
                             </Text>
                           )}
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              color: colors.BUTTON_ORANGE,
-                            }}
-                          >
-                            {date}
-                          </Text>
                         </View>
                         <View
                           style={{
-                            width: 120,
-                            borderRadius: 10,
-                            backgroundColor: bgColor,
                             flexDirection: "row",
-                            justifyContent: "center",
-                            paddingVertical: 5,
+                            justifyContent: "space-between",
                           }}
                         >
-                          <TouchableOpacity
-                            onPress={() => handleClickStatus(status)}
-                          >
+                          <View style={{ alignItems: "center" }}>
+                            {statusPembayaran === null && (
+                              <Text
+                                style={{
+                                  fontSize: 15,
+                                  fontWeight: "700",
+                                  color: colors.ORANGE,
+                                }}
+                              >
+                                Jatuh Tempo :
+                              </Text>
+                            )}
                             <Text
                               style={{
-                                fontSize: 16,
-                                fontWeight: "600",
-                                color: "white",
+                                fontSize: 14,
+                                color: colors.BUTTON_ORANGE,
                               }}
                             >
-                              {status}
+                              {tanggalFaktur}
                             </Text>
-                          </TouchableOpacity>
+                          </View>
+                          <View
+                            style={{
+                              width: 120,
+                              borderRadius: 10,
+                              backgroundColor: bgColor,
+                              flexDirection: "row",
+                              justifyContent: "center",
+                              paddingVertical: 5,
+                            }}
+                          >
+                            {statusPembayaran === null ? (
+                              <TouchableOpacity
+                                onPress={() =>
+                                  handleClickStatus(statusPembayaran, id)
+                                }
+                                disabled={isButtonDisabled}
+                              >
+                                <Text
+                                  style={{
+                                    fontSize: 16,
+                                    fontWeight: "600",
+                                    color: "white",
+                                  }}
+                                >
+                                  {textStatus}
+                                </Text>
+                              </TouchableOpacity>
+                            ) : (
+                              <Text
+                                style={{
+                                  fontSize: 16,
+                                  fontWeight: "600",
+                                  color: "white",
+                                }}
+                              >
+                                {textStatus}
+                              </Text>
+                            )}
+                          </View>
                         </View>
                       </View>
                     </View>
-                  </View>
-                );
-              })}
+                  );
+                })
+              ) : (
+                <Text>Belum bisa bayar</Text>
+              )}
             </View>
           </ScrollView>
           <View
@@ -296,7 +337,9 @@ const HistoryBillInvoiceMerchant = ({ navigation, route }) => {
           >
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("detail-invoice-bill-merchant")
+                navigation.navigate("detail-invoice-bill-merchant", {
+                  idInvoice: idInvoice,
+                })
               }
               style={{
                 backgroundColor: colors.ORANGE,

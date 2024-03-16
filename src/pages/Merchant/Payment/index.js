@@ -3,65 +3,145 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
 } from "react-native";
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { colors } from "../../../constant/colors";
 import CustomButton from "../../../components/CustomButton";
+import { sendOtpAturTenor } from "../../../services/merchantServices";
 import { Dropdown } from "react-native-element-dropdown";
 import { BottomSheet } from "react-native-sheet";
-import SuccessIcon from "../../../assets/img/popUpSuccess.svg";
+import TenorSuccessSetting from "./components/TenorSuccessSetting";
 import BillIcon from "../../../assets/img/bill.svg";
-import { Button } from "react-native-elements";
+
+import {
+  cekTagihan,
+  getDetailTagihan,
+} from "../../../services/merchantServices";
+import { useSelector } from "react-redux";
+import { getInvoiceId } from "../../../services/distributorService";
+import { formatIDRCurrency } from "../../../utils/formatIdr";
 const data = [
-  { label: "Bulan 1", value: "1" },
-  { label: "Bulan 2", value: "2" },
-  { label: "Bulan 3", value: "3" },
-  { label: "Bulan 6", value: "6" },
-  { label: "Bulan 12", value: "12" },
+  { label: "3 Bulan", value: 3 },
+  { label: "6 Bulan", value: 6 },
+  { label: "12 Bulan", value: 12 },
+  { label: "Lunas", value: 1 },
 ];
 
-const details = [
-  {
-    key: "No. Faktur:",
-    value: "1234567890-",
-  },
-  {
-    key: "Tanggal Faktur:",
-    value: "08/09/2023",
-  },
-  {
-    key: "Nama Toko",
-    value: "Toko A",
-  },
-  {
-    key: "Nama Distributor:",
-    value: "Distributor A",
-  },
-  {
-    key: "Tanggal Jatuh Tempo",
-    value: "08/12/2023",
-  },
-];
 const TenorSetting = ({ navigation, route }) => {
-  const { isSuccess } = route.params;
+  const { token } = useSelector((state) => state.user);
+  const { isSuccess,idInvoice } = route.params;
+  console.log("ID Invoice",idInvoice);
   const sheetSuccess = useRef(null);
-  const sheetPay = useRef(null);
+  const [hasilCekTagihan, setHasilCekTagihan] = useState(null);
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
+  const [detail, setDetail] = useState({
+    id: "",
+    dateFaktur: "",
+    merchantName: "",
+    distributorName: "",
+    expiredDate: "",
+    totalTagihan: "",
+  });
 
-  const handleSubmitTenor = () => {
+  const handleSubmitTenor = async () => {
     if (!value) {
       alert("tenor must be not null");
       return;
     }
-    navigation.navigate("otp-tenor");
-    return;
+    try {
+      await sendOtpAturTenor(token);
+      navigation.navigate("otp-tenor", {
+        formData: {
+          id: detail.id,         
+          tenor: value,
+        },
+      });
+    } catch (error) {
+      console.error("Error sending OTP for tenor adjustment:", error);
+      alert("Failed to send OTP for tenor adjustment. Please try again.");
+    }
   };
 
   if (isSuccess) {
     sheetSuccess.current.show();
   }
+
+  const getData = async () => {
+    const response = await getInvoiceId(token,idInvoice);
+    const {
+      namaToko,
+      namaDistributor,
+      tanggalJatuhTempo,
+      jumlahTagihan,
+      id,
+      tanggalTagihan,
+    } = response.data.data;
+
+    setDetail({
+      id,
+      dateFaktur: tanggalTagihan,
+      merchantName: namaToko,
+      distributorName: namaDistributor,
+      expiredDate: tanggalJatuhTempo,
+      totalTagihan: jumlahTagihan,
+    });
+  };
+
+  useEffect(() => {
+    // console.log(token);
+    // console.log("test use effect");
+    getData();
+  }, []);
+
+  const details = [
+    {
+      key: "No. Faktur:",
+      value: detail.id || "unknown",
+    },
+    {
+      key: "Tanggal Faktur:",
+      value: detail.dateFaktur || "unknown",
+    },
+    {
+      key: "Nama Toko",
+      value: detail.merchantName || "unknown",
+    },
+    {
+      key: "Nama Distributor:",
+      value: detail.distributorName || "unknown",
+    },
+    {
+      key: "Tanggal Jatuh Tempo",
+      value: detail.expiredDate || "unknown",
+    },
+    {
+      key: "Total Tagihan",
+      value: formatIDRCurrency(detail.totalTagihan) || "unknown",
+    },
+  ];
+
+  const handleCekTagihan = async () => {
+    if (!value) {
+      alert("Jumlah tenor harus diatur terlebih dahulu");
+      return;
+    }
+
+    const bodyRequest = {
+      id: detail.id,
+      tenor: value,
+    };
+
+    try {
+      const response = await cekTagihan(token, bodyRequest);
+      console.log("body request", bodyRequest);;
+      setHasilCekTagihan(response.data); // menyimpan hasil cek tagihan
+    } catch (error) {
+      console.error("Error saat cek tagihan:", error);
+      alert("Terjadi kesalahan saat cek tagihan");
+    }
+  };
+
   return (
     <SafeAreaView style={{ marginTop: 25, height: "100%" }}>
       <View style={styles.container}>
@@ -76,11 +156,11 @@ const TenorSetting = ({ navigation, route }) => {
           }}
           ref={sheetSuccess}
         >
-          <SuccessTenorSetting />
+          <TenorSuccessSetting/>
         </BottomSheet>
-        <TouchableOpacity onPress={() => sheetPay.current.show()}>
+        {/* <TouchableOpacity onPress={() => sheetPay.current.show()}>
           <Text>open shet pay</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Text style={{ fontWeight: "700", fontSize: 32 }}>
           Pengaturan Tenor
         </Text>
@@ -114,15 +194,7 @@ const TenorSetting = ({ navigation, route }) => {
               </View>
             );
           })}
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <Text style={styles.text2}>Total Tagihan</Text>
-            <Text style={styles.text2}>10.00.00</Text>
-          </View>
+
         </View>
         {/* dropdown */}
         <View>
@@ -149,6 +221,7 @@ const TenorSetting = ({ navigation, route }) => {
             }}
           />
         </View>
+
         <View
           style={{
             backgroundColor: colors.WHITE,
@@ -158,17 +231,25 @@ const TenorSetting = ({ navigation, route }) => {
             borderWidth: 2,
           }}
         >
-          <Text style={[styles.text2, styles.textCenter]}>
-            Bunga 2.00% (Gross Per Tahun)
-          </Text>
-          <Text style={[styles.textCenter, styles.text2, { marginTop: 15 }]}>
-            Total Rp. 10.100.000
-          </Text>
-          <Text style={[styles.textCenter, { fontSize: 24 }]}>
-            Rp. 1.683.333 per Bulan
-          </Text>
+          {hasilCekTagihan && (
+            <View>
+              <Text style={[styles.text2, styles.textCenter]}>
+                {hasilCekTagihan.data.bunga}% (Gross Per Tahun)
+              </Text>
+              <Text style={[styles.textCenter, styles.text2, { marginTop: 6 }]}>
+                Total Rp. {hasilCekTagihan.data.grandTotal}
+              </Text>
+              <Text style={[styles.textCenter, { fontSize: 20 }]}>
+                Rp. {hasilCekTagihan.data.bayarPerBulan} per Bulan
+              </Text>
+            </View>
+          )}
         </View>
-        <CustomButton text={"Cek Tagihan + Bunga / Bulan"} />
+
+        <CustomButton
+          text={"Cek Tagihan + Bunga / Bulan"}
+          handleClick={() => handleCekTagihan()}
+        />
         <CustomButton
           text={"Lanjut"}
           bgColor={colors.GREEN}
@@ -194,7 +275,7 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
   text2: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "400",
   },
   textCenter: {
@@ -214,71 +295,3 @@ const styles = StyleSheet.create({
   },
 });
 
-const SuccessTenorSetting = () => {
-  return (
-    <View>
-      <Text style={{ fontSize: 24, fontWeight: "700" }}>
-        Pengaturan Tenor #376
-      </Text>
-      <View
-        style={{
-          marginTop: 10,
-          borderBottomColor: "black",
-          borderWidth: 2,
-          elevation: 2,
-        }}
-      />
-      <View style={{ alignItems: "center", padding: 10 }}>
-        <SuccessIcon />
-        <Text style={{ fontSize: 20, fontWeight: "700" }}>
-          Atur Cicilan Berhasil
-        </Text>
-      </View>
-      <View style={{ gap: 18 }}>
-        {details.map((item, index) => {
-          return (
-            <View
-              key={index}
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={styles.text}>{item.key}</Text>
-              <Text style={styles.text}>{item.value}</Text>
-            </View>
-          );
-        })}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <Text style={styles.text2}>Total Tagihan</Text>
-          <Text style={styles.text2}>10.00.00</Text>
-        </View>
-      </View>
-      <View
-        style={{
-          marginTop: 20,
-          backgroundColor: colors.WHITE,
-          borderColor: colors.GRAY,
-          borderWidth: 1,
-          padding: 15,
-          borderRadius: 20,
-        }}
-      >
-        <Text style={[styles.text2, styles.textCenter, { fontSize: 24 }]}>
-          Tanggal Jatuh Tempo
-        </Text>
-        <Text style={[styles.text2, styles.textCenter, { fontSize: 24 }]}>
-          15/12/2023
-        </Text>
-        <Text style={[styles.text2, styles.textCenter, { fontSize: 24 }]}>
-          Rp. 1.683.333 per Bulan
-        </Text>
-      </View>
-    </View>
-  );
-};

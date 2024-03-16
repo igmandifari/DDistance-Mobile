@@ -6,43 +6,89 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  BackHandler,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useIsFocused } from "@react-navigation/native";
 import { colors } from "../../../constant/colors";
 import CustomButton from "../../../components/CustomButton";
+import PopUpConfirmLogout from "../../../components/PopUpConfirmLogout";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../../store/userSlice";
+import { getUserMerchant,getUserDistributor } from "../../../services/AuthService";
 
 const vw = Dimensions.get("window").width;
 
-const details = [
-  {
-    key: "Name Lengkap",
-    value: "Joshua",
-  },
-  {
-    key: "Alamat",
-    value: "Jl. Ciawi",
-  },
-  {
-    key: "No. HP",
-    value: "-859-6678-6370",
-  },
-  {
-    key: "Email",
-    value: "joshua@gmail.com",
-  },
-  {
-    key: "No. Rekening Danamon",
-    value: "12939482",
-  },
-  {
-    key: "Nama Pemilik Rekening",
-    value: "Joshua",
-  },
-];
+const Profile = ({ navigation }) => {
 
-const Profile = ({navigation}) => {
+  const [popUp, setPopUp] = useState(false);
+  const [userProfile, setUserProfile] = useState([]);
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+  const { token,role } = useSelector((state) => state.user);
+  const handleLogout = () => {
+    dispatch(logout());
+    navigation.navigate("landing-page");
+  };
+
+  const getUserProfileData = async () => {
+    try {
+      if (role === "ROLE_MERCHANT") {
+        const response = await getUserMerchant(token);
+        setUserProfile(response.data.data);
+      } else if (role === "ROLE_DISTRIBUTOR") {
+        const response = await getUserDistributor(token);
+        setUserProfile(response.data.data);
+      }
+    } catch (error) {
+      console.log("Error Fetch user profile" + error);
+    }
+  };
+  useEffect(() => {
+    // Fetch user profile data when the screen is focused
+    if (isFocused) {
+      getUserProfileData();
+    }
+  }, [isFocused]); 
+
+
+
+
+  const details = [
+    {
+      key: "Name Lengkap",
+      value: userProfile.name,
+    },
+    {
+      key: "Alamat",
+      value: userProfile.address,
+    },
+    {
+      key: "No. HP",
+      value: userProfile.phoneNumber,
+    },
+    {
+      key: "Email",
+      value: userProfile.email,
+    },
+    {
+      key: "No. Rekening Danamon",
+      value: userProfile.pan,
+    },
+    {
+      key: "Nama Pemilik Rekening",
+      value: userProfile.name,
+    },
+  ];
+
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
+      {popUp && (
+        <PopUpConfirmLogout
+          handleReject={() => setPopUp(false)}
+          handleOK={() => handleLogout()}
+        />
+      )}
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <View style={styles.headerLeft}>
@@ -53,10 +99,11 @@ const Profile = ({navigation}) => {
             <Text style={styles.headerTitle}>D-DISTANCE</Text>
           </View>
           <View>
-            <Image
-              source={require("../../../assets/img/notification.png")}
-              style={{}}
-            />
+            <TouchableOpacity
+                onPress={() => navigation.navigate("notificationMerchant")}
+            >
+            <Image source={require("../../../assets/img/notification.png")} />
+            </TouchableOpacity>
           </View>
         </View>
         <View
@@ -74,16 +121,20 @@ const Profile = ({navigation}) => {
               justifyContent: "space-evenly",
             }}
           >
-            <TouchableOpacity style={styles.button}
-            onPress={() => navigation.navigate("edit-profile")}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("edit-profile", {userProfile})}
+            >
               <Text
                 style={{ color: colors.WHITE, fontWeight: "800", fontSize: 12 }}
               >
                 Edit Profil
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}
-            onPress={() => navigation.navigate("keamanan-akun")}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("keamanan-akun")}
+            >
               <Text
                 style={{ color: colors.WHITE, fontWeight: "800", fontSize: 12 }}
               >
@@ -113,7 +164,11 @@ const Profile = ({navigation}) => {
               justifyContent: "flex-end",
             }}
           >
-            <CustomButton bgColor={colors.RED} text={"Keluar"} />
+            <CustomButton
+              handleClick={() => setPopUp(true)}
+              bgColor={colors.RED}
+              text={"Keluar"}
+            />
           </View>
         </View>
       </View>

@@ -1,43 +1,80 @@
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { SafeAreaView, StyleSheet, Text, View, Image } from "react-native";
 import { colors } from "../../../../constant/colors";
-import BlankKtp from "../../../../assets/img/blank-ktp";
-import BlankSIUP from "../../../../assets/img/blank-siup";
-import BlankAgunan from "../../../../assets/img/blank-agunan";
+import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { getInvoiceId } from "../../../../services/distributorService";
+import { formatIDRCurrency } from "../../../../utils/formatIdr";
+import { blobToBase64, getInvoiceImage } from "../../../../services/merchantServices";
 
-const details = [
-  {
-    key: "No Faktur :",
-    value: "123456789",
-  },
-  {
-    key: "Tanggal Faktur :",
-    value: "08/09/2023",
-  },
-  {
-    key: "Nama Toko :",
-    value: "Toko A",
-  },
-  {
-    key: "Nama Distributor :",
-    value: "Distributor A",
-  },
-  {
-    key: "Total Tagihan :",
-    value: "Rp. 10.000.000",
-  },
-  {
-    key: "Tanggal Jatuh Tempo :",
-    value: "08/12/2023",
-  },
-];
+const InvoiceDistributor = ({ route, navigation }) => {
+  const { token } = useSelector((state) => state.user);
+  const [data, setData] = useState({});
+  const { idInvoice } = route.params;
+  // console.log("id invoice", idInvoice);
+  const [images, setImages] = useState({
+    fileInvoice: null,
+  });
+  const getDetail = async () => {
+    try {
+      const response = await getInvoiceId(token, idInvoice);
+      const {
+        namaDistributor,
+        namaToko,
+        jumlahTagihan,
+        tanggalJatuhTempo,
+        id,
+        judul,
+      } = response.data.data;
+      setData({
+        id,
+        namaDistributor,
+        jumlahTagihan,
+        tanggalJatuhTempo,
+        namaToko,
+        judul,
+      });
 
+      const invoiceBlob = await getInvoiceImage(token, id);
+      const invoiceBase64 = await blobToBase64(invoiceBlob);
+      setImages({
+        fileInvoice: `data:image/jpeg;base64,${invoiceBase64}`,
+      });
+    } catch (error) {
+      console.log("Error fetching image",error);
+    }
+  };
 
-const InvoiceDistributor = () => {
+  useEffect(() => {
+    getDetail();
+  }, []);
+  const details = [
+    {
+      key: "ID Invoice:",
+      value: data.id || "unknown",
+    },
+    {
+      key: "Tanggal Jatuh Tempo:",
+      value: data.tanggalJatuhTempo || "unknown",
+    },
+    {
+      key: "Nama Toko:",
+      value: data.namaToko || "unknown",
+    },
+    {
+      key: "Nama Distributor:",
+      value: data.namaDistributor || "unknown",
+    },
+    {
+      key: "Total Tagihan:",
+      value: formatIDRCurrency(data.jumlahTagihan),
+    },
+  ];
+
+  console.log("data", data);
   return (
     <SafeAreaView style={{ marginTop: 20 }}>
       <View style={styles.container}>
-        <Text style={styles.title}>Invoice 0000000</Text>
+        <Text style={styles.title}>Invoice {data.judul}</Text>
         <View
           style={{
             borderBottomColor: "black",
@@ -45,6 +82,10 @@ const InvoiceDistributor = () => {
             elevation: 2,
             borderBottomWidth: StyleSheet.hairlineWidth,
           }}
+        />
+        <Image
+          source={{ uri: images.fileInvoice }}
+          style={{ width: "100%", height: 300 }}
         />
         {details.map((item, idx) => {
           return (
@@ -63,7 +104,7 @@ const InvoiceDistributor = () => {
               <Text>{item.value}</Text>
             </View>
           );
-        })} 
+        })}
       </View>
     </SafeAreaView>
   );

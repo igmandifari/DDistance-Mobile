@@ -14,6 +14,7 @@ import { getInsurances } from "../../../services/merchantServices";
 import { useSelector } from "react-redux";
 import { Button } from "react-native-elements";
 import { useFocusEffect } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 
 const vw = Dimensions.get("window").width;
 
@@ -47,16 +48,18 @@ const requests = [
 const RequestPage = ({ navigation }) => {
   const [insurances, setInsurances] = useState([]);
   const { token } = useSelector((state) => state.user);
-
-  getData = async () => {
+  const isFocused = useIsFocused();
+  const getData = async () => {
     const response = await getInsurances(token);
     setInsurances(response.data.data);
+    console.log("cek", response.data.data);
   };
-  useFocusEffect(
-    useCallback(() => {
+  useEffect(() => {
+    if (isFocused) {
       getData();
-    }, [])
-  );
+    }
+  }, [isFocused]);
+
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
@@ -69,17 +72,20 @@ const RequestPage = ({ navigation }) => {
             <Text style={styles.headerTitle}>D-DISTANCE</Text>
           </View>
           <View>
-            <Image source={require("../../../assets/img/notification.png")} />
+            <TouchableOpacity
+              onPress={() => navigation.navigate("notificationMerchant")}
+            >
+              <Image source={require("../../../assets/img/notification.png")} />
+            </TouchableOpacity>
           </View>
         </View>
         <View style={{ padding: 25 }}>
           <Text style={{ fontWeight: "700", fontSize: 32 }}>
             Pengajuan ke {"\n"}Danamon
           </Text>
-          <Button title={"test"} onPress={() => console.log(insurances)} />
         </View>
         {/* <View style={styles.detailContainer}> */}
-        <View style={{ height: "85%", padding: 20 }}>
+        <View style={{ padding: 20, flex: 1 }}>
           <ScrollView>
             <View style={{ gap: 20 }}>
               {insurances &&
@@ -87,15 +93,23 @@ const RequestPage = ({ navigation }) => {
                   const { status } = item;
 
                   let bgColor;
+                  let textStatus;
                   switch (status) {
-                    case "Ditolak":
+                    case "DITOLAK":
                       bgColor = colors.RED;
+                      textStatus = "Ditolak";
                       break;
-                    case "Diterima":
+                    case "DITERIMA":
                       bgColor = colors.GREEN;
+                      textStatus = "Diterima";
                       break;
-                    case "Dalam Proses":
+                    case "DALAM_PROSES":
                       bgColor = colors.YELLOW;
+                      textStatus = "Dalam Proses";
+                      break;
+                      case "ON_SURVEY":
+                      bgColor = colors.YELLOW;
+                      textStatus = "On Survey";
                       break;
                     default:
                       bgColor = colors.YELLOW;
@@ -122,7 +136,7 @@ const RequestPage = ({ navigation }) => {
                             Pengajuan
                           </Text>
                           <Text style={{ fontSize: 24, fontWeight: 600 }}>
-                            {`#${++index}`}
+                            {item.nameStore}
                           </Text>
                         </View>
 
@@ -143,7 +157,7 @@ const RequestPage = ({ navigation }) => {
                               color: colors.WHITE,
                             }}
                           >
-                            {status}
+                            {textStatus}
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -158,46 +172,75 @@ const RequestPage = ({ navigation }) => {
                         </Text>
                         <TouchableOpacity
                           onPress={() => {
-                            navigation.navigate("detail-request-insurance", {
-                              idInsurance: item.id,
-                            });
+                            if (
+                              item.status !== "DALAM_PROSES" &&
+                              item.status !== "ON_SURVEY"
+                            ) {
+                              navigation.navigate("detail-request-insurance", {
+                                idInsurance: item.id,
+                              });
+                            }
                           }}
+                          disabled={
+                            item.status === "DALAM_PROSES" ||
+                            item.status === "ON_SURVEY"
+                          }
                         >
-                          <Text>See More</Text>
+                          <Text
+                            style={{
+                              color:
+                                item.status === "DALAM_PROSES" ||
+                                item.status === "ON_SURVEY"
+                                  ? colors.GREY
+                                  : colors.ORANGE,
+                              textDecorationLine:
+                                item.status === "DALAM_PROSES" ||
+                                item.status === "ON_SURVEY"
+                                  ? "line-through"
+                                  : "none",
+                            }}
+                          >
+                            See More
+                          </Text>
                         </TouchableOpacity>
                       </View>
                     </View>
                   );
                 })}
             </View>
-          </ScrollView>
-          {/* </View> */}
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              alignItems: "center",
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => navigation.navigate("form-request-assurance")}
+            <View
               style={{
-                backgroundColor: colors.ORANGE,
-                height: 49,
-                width: 49,
-                justifyContent: "center",
+                marginTop: 10,
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "flex-end",
                 alignItems: "center",
-                borderRadius: 10,
               }}
             >
-              <Text
-                style={{ color: colors.WHITE, fontSize: 36, fontWeight: "800" }}
+              <TouchableOpacity
+                onPress={() => navigation.navigate("form-request-assurance")}
+                style={{
+                  backgroundColor: colors.ORANGE,
+                  height: 49,
+                  width: 49,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 10,
+                }}
               >
-                +
-              </Text>
-            </TouchableOpacity>
-          </View>
+                <Text
+                  style={{
+                    color: colors.WHITE,
+                    fontSize: 36,
+                    fontWeight: "800",
+                  }}
+                >
+                  +
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+          {/* </View> */}
         </View>
       </View>
     </SafeAreaView>

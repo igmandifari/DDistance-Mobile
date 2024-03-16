@@ -9,13 +9,22 @@ import React, { useState, useEffect } from "react";
 import { colors } from "../../../../constant/colors";
 import OtpInputs from "react-native-otp-inputs";
 import CustomButton from "../../../../components/CustomButton";
-import { sendOtpInsurance } from "../../../../services/merchantServices";
+import {
+  createInsurance,
+  sendOtpInsurance,
+} from "../../../../services/merchantServices";
 import PopUpSuccess from "../../../../components/PopUpSuccess";
+import { useSelector } from "react-redux";
+import { Button } from "react-native-elements";
+import PopUpFailed from "../../../../components/PopUpFailed";
 
 const OtpRequestInsurance = ({ navigation, route }) => {
+  const { token } = useSelector((state) => state.user);
   const [popUp, setPopUp] = useState(false);
   const [timer, setTimer] = useState(60);
-  const { payload } = route.params;
+  const { formData } = route.params;
+  const [popUpSuccess, setPopUpSuccess] = useState(false);
+  const [popUpFailed, setPopUpFailed] = useState(false);
 
   useEffect(() => {
     if (!timer) return;
@@ -34,31 +43,54 @@ const OtpRequestInsurance = ({ navigation, route }) => {
     otpRef.current.clear();
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const otp = this.otpRef.current.state.otpCode.join("");
     if (otp.length != 6) {
       alert("OTP Not Valid");
       return;
     }
-    const bodyValue = {
-      ...payload,
-      otp: otp,
-    };
-    console.log("payload", bodyValue);
-    setPopUp(true);
-    setTimeout(() => {
-      navigation.navigate("dashboard-merchant");
-    }, 3000);
+    // setPopUp(true);
+
+    try {
+      const response = await createInsurance(token, formData, otp);
+      if (response.data.statusCode == 201) {
+        setPopUpSuccess(true);
+        setTimeout(() => {
+          setPopUpSuccess(false);
+          navigation.navigate("dashboard-merchant");
+        }, 2000);
+      } else {
+        setPopUpFailed(true);
+        setTimeout(() => {
+          setPopUpFailed(false);
+        }, 2000);
+      }
+    } catch (error) {
+      setPopUpFailed(true);
+      setTimeout(() => {
+        setPopUpFailed(false);
+      }, 2000);
+    }
+    // setTimeout(() => {
+    //   navigation.navigate("dashboard-merchant");
+    // }, 3000);
   };
 
   const sendOtp = async () => {
-    console.log("first");
-    await sendOtpInsurance();
-    this.otpRef.current.setState({ otpCode: [] });
-    setTimer(60);
+    try {
+      const response = await sendOtpInsurance(token);
+      console.log(response);
+      this.otpRef.current.setState({ otpCode: [] });
+      setTimer(60);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
+      {popUpSuccess && <PopUpSuccess />}
+      {popUpFailed && <PopUpFailed />}
       <View style={styles.container}>
         {popUp && <PopUpSuccess />}
         <View>
@@ -69,7 +101,11 @@ const OtpRequestInsurance = ({ navigation, route }) => {
             untuk {"\n"}
             verifikasi pengajuan ke Danamon:
           </Text>
-          <View style={{ position: "relative" }}>
+          {/* <Button
+            title={"test"}
+            onPress={() => console.log(formData, "payload")}
+          /> */}
+          <View style={styles.otp}>
             <OtpInputs
               ref={this.otpRef}
               handleChange={(code) => setOtp(code)}
@@ -114,5 +150,8 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: colors.FLORAL_WHITE,
     padding: 25,
+  },
+  otp: {
+    alignItems: "center",
   },
 });

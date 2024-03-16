@@ -9,34 +9,70 @@ import React, { useState, useEffect } from "react";
 import { colors } from "../../../../constant/colors";
 import OtpInputs from "react-native-otp-inputs";
 import CustomButton from "../../../../components/CustomButton";
+import { useSelector } from "react-redux";
+import PopUpSuccess from "../../../../components/PopUpSuccess";
+import PopUpFailed from "../../../../components/PopUpFailed";
+import { paymentAll } from "../../../../services/merchantServices";
 
-const OtpPaymentInvoice = ({ navigation }) => {
+const OtpPaymentInvoice = ({ navigation, route }) => {
+  const { token } = useSelector((state) => state.user);
+  const { selectedPaymentId, isSuccess } = route.params;
+  // console.log("id ni",selectedPaymentId);
+  const [popUpSuccess, setPopUpSuccess] = useState(false);
+  const [popUpFailed, setPopUpFailed] = useState(false);
   const [timer, setTimer] = useState(60);
-
-  useEffect(() => {
-    if (!timer) return;
-
-    const intervalId = setInterval(() => {
-      setTimer(timer - 1);
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, [timer]);
-
   const [otp, setOtp] = useState("");
   otpRef = React.createRef();
 
-  clearOTP = () => {
+useEffect(() => {
+  if (!timer) return;
+
+  const intervalId = setInterval(() => {
+    setTimer((prevTimer) => prevTimer - 1);
+  }, 1000);
+
+  return () => clearInterval(intervalId);
+}, [timer]);
+  const clearOTP = () => {
     otpRef.current.clear();
   };
 
-  const handleSubmit = () => {
-    if (otp.length != 6) {
-      alert("Otp is not valid");
+  const handleSubmit = async () => {
+    const otp = otpRef.current.state.otpCode.join("");
+    const dataSumbit = {
+      id:selectedPaymentId,
+      otp,
+    };
+    console.log("apa",dataSumbit);
+    if (otp.length !== 6) {
+      alert("OTP Not Valid");
       return;
     }
-    navigation.navigate("history-bill-merchant", { isSuccess: true });
+
+    try {
+      const response = await paymentAll(token, dataSumbit);
+      if (response.data.statusCode === 201) {
+        setPopUpSuccess(true);
+        setTimeout(() => {
+          setPopUpSuccess(false);
+          navigation.navigate("dashboard-merchant");
+        }, 2000);
+      } else {
+        setPopUpFailed(true);
+        setTimeout(() => {
+          setPopUpFailed(false);
+        }, 2000);
+      }
+      navigation.navigate("dashboard-merchant");
+    } catch (error) {
+      console.error("Error updating invoice:", error);
+      setPopUpFailed(true);
+      setTimeout(() => {
+        setPopUpFailed(false);
+      }, 2000);
+    }
   };
+
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
@@ -46,7 +82,7 @@ const OtpPaymentInvoice = ({ navigation }) => {
         </Text>
         <View style={styles.otp}>
           <OtpInputs
-            ref={this.otpRef}
+            ref={otpRef}
             handleChange={(code) => setOtp(code)}
             numberOfInputs={6}
           />

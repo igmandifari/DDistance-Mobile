@@ -1,41 +1,75 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import BillIcon from "../../../../assets/img/bill.svg";
 import CustomButton from "../../../../components/CustomButton";
 import { colors } from "../../../../constant/colors";
+import { useSelector } from "react-redux";
+import { getPaymentId } from "../../../../services/merchantServices";
+import { formatIDRCurrency } from "../../../../utils/formatIdr";
 
-const payDetails = [
-  {
-    key: "No. Faktur:",
-    value: "1234567890-",
-  },
-  {
-    key: "Tanggal Faktur:",
-    value: "08/09/2023",
-  },
-  {
-    key: "Nama Toko",
-    value: "Toko A",
-  },
-  {
-    key: "Nama Distributor:",
-    value: "Distributor A",
-  },
-  {
-    key: "Sisa Tagihan:",
-    value: "Rp.4.100.00",
-  },
-  {
-    key: "Cicilan Tagihan",
-    value: "Rp.5.100.456",
-  },
-  {
-    key: "Tanggal Jatuh Tempo",
-    value: "08/12/2023",
-  },
-];
+const SheetPay = ({ handlePay, handlePayAll,selectedPaymentId }) => {
+  const { token } = useSelector((state) => state.user);
+  const [data, setData] = useState({});
+  const getDetail = async () => {
+    const response = await getPaymentId(token,selectedPaymentId);
+    const {
+      id,
+      namaToko,
+      namaDistributor,
+      sisaTagihan,
+      tagihan,
+      tanggalFaktur,
+      statusPembayaran,
+      tanggalPembayaran,
+    } = response.data.data;
+    setData({
+      id,
+      namaToko,
+      namaDistributor,
+      sisaTagihan,
+      tagihan,
+      tanggalFaktur,
+      statusPembayaran,
+      tanggalPembayaran,
+    });
+  };
 
-const SheetPay = ({ handlePay, handlePayAll }) => {
+  useEffect(() => {
+    getDetail(selectedPaymentId);
+  }, [selectedPaymentId]);
+  console.log("cek data pay", data);
+
+  const payDetails = [
+    {
+      key: "No. Faktur:",
+      value: data.id || "unknown",
+    },
+    {
+      key: "Tanggal Faktur:",
+      value: data.tanggalFaktur || "unknown",
+    },
+    {
+      key: "Nama Toko",
+      value: data.namaToko || "unknown",
+    },
+    {
+      key: "Nama Distributor:",
+      value: data.namaDistributor || "unknown",
+    },
+    {
+      key: "Sisa Tagihan:",
+      value: formatIDRCurrency(data.sisaTagihan) || "unknown",
+    },
+    {
+      key: "Cicilan Tagihan",
+      value: formatIDRCurrency(data.tagihan) || "unknown",
+    },
+    {
+      key: "Tanggal Jatuh Tempo",
+      value: data.tanggalPembayaran || "unknown",
+    },
+  ];
+
   const handleClickPay = () => {
     handlePay();
   };

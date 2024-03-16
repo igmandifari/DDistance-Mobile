@@ -4,6 +4,7 @@ import Bill from "../Bill/index";
 import DashboardMerchant from "../Dashboard";
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
 import RequestPage from "../Insurance";
+import { useFocusEffect } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 

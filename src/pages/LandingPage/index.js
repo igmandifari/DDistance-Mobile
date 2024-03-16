@@ -11,11 +11,13 @@ import {
 
 import Svg from "react-native-svg";
 import Polygon from "../../assets/img/Polygon.svg";
+import { useSelector } from "react-redux";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 const LandingPage = ({ navigation }) => {
+  const user = useSelector((state) => state.user);
   return (
     <View style={styles.container}>
       <View style={styles.polygon}>
@@ -34,7 +36,7 @@ const LandingPage = ({ navigation }) => {
         source={require("../../assets/img/LogoDD2.png")}
         style={styles.logo}
       />
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => navigation.navigate("dashboard-distributor")}
       >
         <Text style={styles.buttonText}>Ke dashboard distributor</Text>
@@ -44,6 +46,9 @@ const LandingPage = ({ navigation }) => {
       >
         <Text style={styles.buttonText}>Ke dashboard merchant</Text>
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => console.log(user)}>
+        <Text style={styles.buttonText}>cek user</Text>
+      </TouchableOpacity> */}
       <View style={styles.bawah}>
         <TouchableOpacity
           style={styles.masuk}

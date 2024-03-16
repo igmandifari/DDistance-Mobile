@@ -13,8 +13,11 @@ import CustomButton from "../../components/CustomButton";
 import { login } from "../../services/AuthService";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsAuthentication } from "../../store/userSlice";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
 
 function Login({ navigation }) {
+  const { isAuthenticated = false, role } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [form, setForm] = useState({
     email: "",
@@ -37,8 +40,13 @@ function Login({ navigation }) {
   };
 
   const handleForgotPassword = () => {
-    navigation.navigate("ForgotPassword");
+    navigation.navigate("forget-password");
   };
+
+  const handleRegister = () => {
+    navigation.navigate("register");
+  };
+
 
   const handleLogin = async () => {
     const { email, password } = form;
@@ -47,20 +55,19 @@ function Login({ navigation }) {
       password,
     };
     try {
-      const { data } = await login(payload);
+      const {data} = await login(payload);
       const token = data.data.token;
       const role = data.data.role;
 
       if (token) {
-        alert("Success login");
         if (role === "ROLE_MERCHANT") {
-          // console.log("token ==>", token);
-          dispatch(setIsAuthentication({ token: token }));
+          dispatch(setIsAuthentication({ token: token, role: role }));
           navigation.navigate("dashboard-merchant");
         } else if (role === "ROLE_DISTRIBUTOR") {
           dispatch(
             setIsAuthentication({
               token: token,
+              role: role,
             })
           );
           navigation.navigate("dashboard-distributor");
@@ -104,12 +111,31 @@ function Login({ navigation }) {
           />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        style={styles.forgetPassword}
-        onPress={handleForgotPassword}
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
       >
-        <Text style={styles.textLink}>Lupa Kata Sandi?</Text>
-      </TouchableOpacity>
+        <View style={{ flexDirection: "cols" }}>
+          <TouchableOpacity
+            style={styles.forgetPassword}
+            onPress={handleRegister}
+          >
+            <Text style={styles.textLink}>Register</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{ flexDirection: "cols" }}>
+          <TouchableOpacity
+            style={styles.forgetPassword}
+            onPress={handleForgotPassword}
+          >
+            <Text style={styles.textLink}>Lupa Kata Sandi?</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
       <CustomButton text={"Masuk"} handleClick={handleLogin} />
     </View>
   );
@@ -191,7 +217,12 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   textLink: {
-    textAlign: "right",
+    textAlign: "left",
+    color: "blue",
+    textDecorationLine: "underline",
+  },
+  textLink2: {
+    textAlign: "left",
     color: "blue",
     textDecorationLine: "underline",
   },

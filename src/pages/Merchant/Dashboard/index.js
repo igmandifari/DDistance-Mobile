@@ -3,7 +3,6 @@ import {
   Text,
   View,
   Image,
-  Icon,
   TextInput,
   ScrollView,
   TouchableOpacity,
@@ -11,37 +10,73 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";
-import { distributorList } from "./data";
+import { getDistributorsDashboard } from "../../../services/merchantServices";
+import { useSelector } from "react-redux";
+import { getUserMerchant } from "../../../services/AuthService";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../store/userSlice";
+import { formatIDRCurrency } from "../../../utils/formatIdr";
+import { useIsFocused } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const DashboardMerchant = ({ navigation }) => {
+
+  const dispatch = useDispatch();
+  const [userDetail, setUserDetail] = useState({
+    name: null,
+    balance: null,
+    limit: null,
+  });
+  const { name, balance, limit } = userDetail;
+  const [showBalance, setShowBalance] = useState(false);
+  const { token } = useSelector((state) => state.user);
+  const [distributors, setDistributors] = useState([]);
+  const isFocused = useIsFocused();
   const [filter, setFilter] = useState("");
-  const [data, setData] = useState(distributorList);
+
+  const handleShowBalance = () => {
+    setShowBalance(!showBalance);
+  }
 
   const filterTypes = [
     {
       name: "Lancar",
+      value: "LANCAR",
     },
     {
       name: "Tidak Lancar",
+      value: "TIDAK_LANCAR",
     },
     {
       name: "Gagal",
+      value: "GAGAL",
     },
   ];
 
-  handleChangeFilter = (name) => {
-    setFilter(name);
-  };
+  useEffect(() => {
+    const getData = async (token) => {
+      const { data } = await getDistributorsDashboard(token);
+      setDistributors(data.data);
+    };
+
+    getData(token);
+  }, [isFocused]);
 
   useEffect(() => {
-    if (!filter) {
-      setData(distributorList);
-      return;
-    }
-    const filtered = distributorList.filter((item) => item.status == filter);
-    setData(filtered);
-  }, [filter]);
+    const fetchDataUser = async () => {
+      try {
+        const { data } = await getUserMerchant(token);
+        dispatch(setUser({ user: data.data }));
+        setUserDetail({
+          ...data.data,
+        });
+      } catch (error) {
+        alert(error);
+      }
+    };
 
+    fetchDataUser();
+  }, [isFocused]);
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
@@ -72,21 +107,25 @@ const DashboardMerchant = ({ navigation }) => {
               }}
             >
               Halo,
-              <Text style={{ fontSize: 20, color: colors.ORANGE }}>
-                {" "}
-                Joshua
-              </Text>
+              <Text style={{ fontSize: 20, color: colors.ORANGE }}>{name}</Text>
             </Text>
             <View style={styles.balance}>
               <Text
                 style={{ fontSize: 16, fontWeight: "700", color: colors.WHITE }}
               >
-                Rp 10,855,297,353.00
+                {!showBalance && formatIDRCurrency(balance || "unknown")}
               </Text>
-              <Image source={require("../../../assets/img/View.png")} />
+              {/*<Image source={require("../../../assets/img/View.png")} />*/}
+              <TouchableOpacity onPress={handleShowBalance} style={styles.eyeIcon}>
+                <Icon
+                    name={showBalance ? "eye-slash" : "eye"}
+                    size={20}
+                    color="#F36C21"
+                />
+              </TouchableOpacity>
             </View>
             <View>
-              <Text>Sisa Limit: Rp. 70.000.0000/100/000/000</Text>
+              <Text>Sisa Limit: {formatIDRCurrency(limit ?? 0)}</Text>
               <View style={styles.progressBar}></View>
             </View>
           </View>
@@ -105,130 +144,152 @@ const DashboardMerchant = ({ navigation }) => {
               />
             </View>
             <View style={styles.filterContainer}>
-              {filterTypes.map((filter, index) => (
+              {filterTypes.map((item, index) => (
                 <TouchableOpacity
-                  onPress={() => setFilter(filter.name)}
+                  onPress={() => {
+                    if (item.value == filter) {
+                      setFilter("");
+                    } else {
+                      setFilter(item.value);
+                    }
+                  }}
                   key={index}
                   style={styles.filter}
                 >
-                  <Text>{filter.name}</Text>
+                  <Text>{item.name}</Text>
                 </TouchableOpacity>
               ))}
             </View>
           </View>
           <ScrollView>
             <View id="merchants" style={styles.merchantContainer}>
-              {data.map((distributor, index) => {
-                const { name, totalTagihan, status } = distributor;
+              {distributors
+                .filter((item) => !filter || filter === item.status)
+                .map((distributor, index) => {
+                  const { name, address, status, tagihan, id } = distributor;
+                  console.log(distributor);
 
-                let bgColor;
-                switch (status) {
-                  case "Lancar":
-                    bgColor = colors.GREEN;
-                    break;
-                  case "Tidak Lancar":
-                    bgColor = colors.YELLOW_STATUS;
-                    break;
-                  case "Gagal":
-                    bgColor = colors.RED;
-                    break;
-                }
+                  let bgColor;
+                  switch (status) {
+                    case "LANCAR":
+                      bgColor = colors.GREEN;
+                      break;
+                    case "TIDAK_LANCAR":
+                      bgColor = colors.YELLOW_STATUS;
+                      break;
+                    case "GAGAL":
+                      bgColor = colors.RED;
+                      break;
+                  }
 
-                return (
-                  <View key={index} style={styles.item}>
-                    <View
-                      style={{
-                        width: 65,
-                        height: 65,
-                        backgroundColor: colors.GRAY,
-                        borderRadius: 100,
-                      }}
-                    ></View>
-                    <View
-                      style={{
-                        height: "100%",
-                        flex: 1,
-                        gap: 5,
-                      }}
+                  return (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() =>
+                        navigation.navigate("detail-distributor-merchant", {
+                          idDistributor: id,
+                          detail: distributor,
+                        })
+                      }
                     >
-                      <Text style={styles.city}>Jakarta</Text>
-                      <Text
-                        style={{
-                          fontSize: 15,
-                          fontWeight: "700",
-                        }}
-                      >
-                        Distributor A
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: 14,
-                            fontWeight: "700",
-                          }}
-                        >
-                          Jumlah Tagihan
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: 14,
-                            fontWeight: "600",
-                            color: "rgba(0,0,0,0.25)",
-                          }}
-                        >
-                          Rp. 10,000,000
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: 10,
-                          }}
-                        >
-                          Status Pembayaran
-                        </Text>
+                      <View key={index} style={styles.item}>
                         <View
                           style={{
-                            width: 120,
-                            bgColor: "red",
-                            borderRadius: 10,
-                            backgroundColor: bgColor,
-                            flexDirection: "row",
-                            justifyContent: "center",
-                            paddingVertical: 5,
+                            width: 65,
+                            height: 65,
+                            backgroundColor: colors.GRAY,
+                            borderRadius: 100,
+                          }}
+                        ></View>
+                        <View
+                          style={{
+                            height: "100%",
+                            flex: 1,
+                            gap: 5,
                           }}
                         >
-                          <TouchableOpacity
-                            onPress={() =>
-                              navigation.navigate("detail-distributor-merchant")
-                            }
+                          <Text style={styles.city}>{address}</Text>
+                          <Text
+                            style={{
+                              fontSize: 15,
+                              fontWeight: "700",
+                            }}
+                          >
+                            {name}
+                          </Text>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
                           >
                             <Text
                               style={{
-                                fontSize: 16,
-                                fontWeight: "600",
-                                color: "white",
+                                fontSize: 14,
+                                fontWeight: "700",
                               }}
                             >
-                              {status}
+                              Jumlah Tagihan
                             </Text>
-                          </TouchableOpacity>
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                fontWeight: "600",
+                                color: "rgba(0,0,0,0.25)",
+                              }}
+                            >
+                              {formatIDRCurrency(tagihan)}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Text
+                              style={{
+                                fontSize: 10,
+                              }}
+                            >
+                              Status Pembayaran
+                            </Text>
+                            <View
+                              style={{
+                                width: 120,
+                                bgColor: "red",
+                                borderRadius: 15,
+                                backgroundColor: bgColor,
+                                flexDirection: "row",
+                                justifyContent: "center",
+                                paddingVertical: 5,
+                              }}
+                            >
+                              <TouchableOpacity
+                              // onPress={() =>
+                              //   navigation.navigate(
+                              //     "detail-distributor-merchant"
+                              //   )
+                              // }
+                              >
+                                <Text
+                                  style={{
+                                    fontSize: 16,
+                                    fontWeight: "600",
+                                    color: "white",
+                                    
+                                  }}
+                                >
+                                  {status}
+                                </Text>
+                              </TouchableOpacity>
+                            </View>
+                          </View>
                         </View>
                       </View>
-                    </View>
-                  </View>
-                );
-              })}
+                    </TouchableOpacity>
+                  );
+                })}
             </View>
           </ScrollView>
         </View>

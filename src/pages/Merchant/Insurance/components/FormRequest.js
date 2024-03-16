@@ -16,8 +16,10 @@ import * as ImagePicker from "expo-image-picker";
 import { useValidateRequestAssurance } from "../../../../utils/useValidateRequestAssurance";
 import PopUpConfirm from "../../../../components/PopUpConfirm";
 import { sendOtpInsurance } from "../../../../services/merchantServices";
+import { useSelector } from "react-redux";
 
 const FormRequest = ({ navigation }) => {
+  const { token } = useSelector((state) => state.user);
   const [agree, setAgree] = useState(false);
   const [images, setImages] = useState({
     ktp: null,
@@ -37,6 +39,7 @@ const FormRequest = ({ navigation }) => {
     });
 
     if (!result.canceled) {
+      console.log(result.assets[0].uri.split("/").pop());
       setImages((ps) => ({
         ...ps,
         [id]: result.assets[0].uri,
@@ -48,19 +51,19 @@ const FormRequest = ({ navigation }) => {
     {
       id: "ktp",
       title: "KTP",
-      subtitle: "(KTP (Max. 10 MB, .jpg, .pdf)  )",
+      subtitle: "(KTP (Max. 1 MB, .jpg)  )",
       preview: images.ktp,
     },
     {
       id: "siup",
       title: "Surat Izin Usaha",
-      subtitle: "(KTP (Max. 10 MB, .jpg, .pdf)  )",
+      subtitle: "(KTP (Max. 1 MB, .jpg)  )",
       preview: images.siup,
     },
     {
       id: "agunan",
       title: "Daftar Agunan",
-      subtitle: "",
+      subtitle: "(KTP (Max. 1 MB, .jpg)  )",
       preview: images.agunan,
     },
   ];
@@ -78,13 +81,43 @@ const FormRequest = ({ navigation }) => {
       return;
     }
     setPopUp(false);
-    await sendOtpInsurance("Bearer");
-    console.log("send otp");
-    navigation.navigate("otp-request-insurance", {
-      payload,
-    });
-  };
+    // await sendOtpInsurance("Bearer");
+    // console.log("send otp");
 
+    const { agunan, ktp, siup } = images;
+    try {
+      const formData = new FormData();
+      formData.append("ktp", {
+        uri: ktp,
+        type: "image/jpeg",
+        name: "ktp.jpeg",
+      });
+      formData.append("agunan", {
+        uri: agunan,
+        type: "image/jpeg",
+        name: "agunan.jpeg",
+      });
+      formData.append("siu", {
+        uri: siup,
+        type: "image/jpeg",
+        name: "siu.jpeg",
+      });
+
+      try {
+        const response = await sendOtpInsurance(token);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+      navigation.navigate("otp-request-insurance", {
+        formData,
+      });
+      // console.log(formData);
+    } catch (error) {
+      console.error("Error uploading insurance data:", error);
+      throw error;
+    }
+  };
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>

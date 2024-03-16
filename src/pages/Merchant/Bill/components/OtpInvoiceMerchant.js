@@ -8,9 +8,21 @@ import {
 import React, { useState, useEffect } from "react";
 import { colors } from "../../../../constant/colors";
 import OtpInputs from "react-native-otp-inputs";
+import { postInvoice,sendOtpInvoiceMerhant } from "../../../../services/merchantServices";
+import PopUpSuccess from "../../../../components/PopUpSuccess";
+import CustomButton from "../../../../components/CustomButton";
+import { useSelector } from "react-redux";
+import { Button } from "react-native-elements";
+import PopUpFailed from "../../../../components/PopUpFailed";
 
-const OtpInvoiceMerchant = ({ navigation }) => {
+const OtpInvoiceMerchant = ({ navigation, route }) => {
+  const { token } = useSelector((state) => state.user);
+  const [popUp, setPopUp] = useState(false);
   const [timer, setTimer] = useState(60);
+  const { formData } = route.params;
+  const [popUpSuccess, setPopUpSuccess] = useState(false);
+  const [popUpFailed, setPopUpFailed] = useState(false);
+
 
   useEffect(() => {
     if (!timer) return;
@@ -29,13 +41,54 @@ const OtpInvoiceMerchant = ({ navigation }) => {
     otpRef.current.clear();
   };
 
-  const handleSubmit = () => {
-    console.log("otp", otp);
-    navigation.navigate("dashboard-distributor");
+  const handleSubmit = async () => {
+    const otp = this.otpRef.current.state.otpCode.join("");
+    if (otp.length != 6) {
+      alert("OTP Not Valid");
+      return;
+    }
+    // setPopUp(true);
+    // console.log("otp",otp);
+    // console.log("test",formData);
+    // console.log("token:", token); 
+    try {
+      const response = await postInvoice(token, formData, otp);
+        if (response.data.statusCode == 201) {
+        setPopUpSuccess(true);
+        setTimeout(() => {
+          setPopUpSuccess(false);
+          navigation.navigate("dashboard-merchant");
+        }, 2000);
+      } else {
+        setPopUpFailed(true);
+        setTimeout(() => {
+          setPopUpFailed(false);
+        }, 2000);
+      }
+    } catch (error) {
+      setPopUpFailed(true);
+      setTimeout(() => {
+        setPopUpFailed(false);
+      }, 2000);
+    }
+  };
+
+  const sendOtp = async () => {
+    try {
+      const response = await sendOtpInvoiceMerhant(token);
+      console.log(response);
+      this.otpRef.current.setState({ otpCode: [] });
+      setTimer(60);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
+      {popUpSuccess && <PopUpSuccess />}
+      {popUpFailed && <PopUpFailed />}
       <View style={styles.container}>
+      {popUp && <PopUpSuccess />}
         <View>
           <Text
             style={{ textAlign: "center", fontSize: 20, fontWeight: "400" }}
@@ -44,6 +97,10 @@ const OtpInvoiceMerchant = ({ navigation }) => {
             untuk {"\n"}
             verifikasi pengajuan ke Danamon:
           </Text>
+          {/* <Button
+            title={"test"}
+            onPress={() => console.log(formData, "payload")}
+          /> */}
           <View style={styles.otp}>
             <OtpInputs
               ref={this.otpRef}
@@ -52,7 +109,7 @@ const OtpInvoiceMerchant = ({ navigation }) => {
             />
           </View>
           <View>
-            <TouchableOpacity onPress={() => handleSubmit()}>
+            <TouchableOpacity onPress={() => sendOtp()}>
               <Text
                 style={{
                   textDecorationLine: "underline",
@@ -65,6 +122,17 @@ const OtpInvoiceMerchant = ({ navigation }) => {
               </Text>
             </TouchableOpacity>
           </View>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "flex-end",
+          }}
+        >
+          <CustomButton
+            text={"Kirim Permohonan"}
+            handleClick={() => handleSubmit()}
+          />
         </View>
       </View>
     </SafeAreaView>

@@ -12,7 +12,13 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { colors } from "../../../constant/colors";
-import { distributorList,historyList } from "./components/data";
+import { useSelector } from "react-redux";
+import { getInvoiceDistributor } from "../../../services/distributorService";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
+import { formatIDRCurrency } from "../../../utils/formatIdr";
+import { cekTagihan } from "../../../services/merchantServices";
+import { useIsFocused } from "@react-navigation/native";
 
 const vw = Dimensions.get("window").width;
 
@@ -23,32 +29,63 @@ const vw = Dimensions.get("window").width;
 // };
 
 const BillDistributor = ({ navigation }) => {
-  const [filter, setFilter] = useState("Pending");
-  const [data, setData] = useState(distributorList);
+  // const [data, setData] = useState(invoiceList);
+  const [filter, setFilter] = useState("DALAM_PROSES");
+  const [invoices, setInvoices] = useState([]);
+  const { token } = useSelector((state) => state.user);
+  const isFocused = useIsFocused();
+  const [originalInvoices, setOriginalInvoices] = useState([]);
 
   const handleFilterChange = (selectedFilter) => {
     setFilter(selectedFilter);
-    setData(selectedFilter === "Pending" ? distributorList : historyList);
+    if (selectedFilter === "DALAM_PROSES") {
+      const filteredInvoices = originalInvoices.filter(
+        (item) => item.status === "DALAM_PROSES"
+      );
+      setInvoices(filteredInvoices);
+    } else if (selectedFilter === "History") {
+      const filteredInvoices = originalInvoices.filter(
+        (item) => item.status !== "DALAM_PROSES"
+      );
+      setInvoices(filteredInvoices);
+    }
   };
+
+  const getData = async () => {
+    const response = await getInvoiceDistributor(token);
+    setInvoices(response.data.data);
+    setOriginalInvoices(response.data.data);
+
+    // console.log(response.data.data);
+  };
+  useFocusEffect(
+    useCallback(() => {
+      if (isFocused) {
+        getData();
+      }
+    }, [isFocused])
+  );
+  // console.log(invoices[0].id);
 
   return (
     <SafeAreaView style={{ marginTop: 25 }}>
       <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <View style={styles.headerLeft}>
-            <Image
-              style={{ width: 37 }}
-              source={require("../../../assets/img/logo_DD.png")}
-            />
-            <Text style={styles.headerTitle}>D-DISTANCE</Text>
-          </View>
-          <View>
-            <Image
-              source={require("../../../assets/img/notification.png")}
-              style={{}}
-            />
-          </View>
+      <View style={styles.headerContainer}>
+        <View style={styles.headerLeft}>
+          <Image
+            style={{ width: 37 }}
+            source={require("../../../assets/img/logo_DD.png")}
+          />
+          <Text style={styles.headerTitle}>D-DISTANCE</Text>
         </View>
+        <View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("notificationMerchant")}
+          >
+            <Image source={require("../../../assets/img/notification.png")} />
+          </TouchableOpacity>
+        </View>
+      </View>
         <View style={{ padding: 25 }}>
           <Text style={{ fontWeight: "700", fontSize: 20 }}>
             Persetujuan Invoice
@@ -56,118 +93,161 @@ const BillDistributor = ({ navigation }) => {
         </View>
         <View style={styles.detailContainer}>
           <View style={styles.menuBar}>
-          <TouchableOpacity
-            onPress={() => handleFilterChange("Pending")}
-            style={[styles.menuBarItem, filter === "Pending" && styles.activeFilter]}
-          >
-            <Text style={{fontSize:15,fontWeight:700,}}>Pending </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => handleFilterChange("History")}
-            style={[styles.menuBarItem, filter === "History" && styles.activeFilter]}
-          >
-            <Text style={{fontSize:15,fontWeight:700,}}>History</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleFilterChange("DALAM_PROSES")}
+              style={[
+                styles.menuBarItem,
+                filter === "DALAM_PROSES" && styles.activeFilter,
+              ]}
+            >
+              <Text style={{ fontSize: 15, fontWeight: 700 }}>Pending </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleFilterChange("History")}
+              style={[
+                styles.menuBarItem,
+                filter === "History" && styles.activeFilter,
+              ]}
+            >
+              <Text style={{ fontSize: 15, fontWeight: 700 }}>History</Text>
+            </TouchableOpacity>
           </View>
           <View style={{ height: "100%" }}>
             <ScrollView>
               <View style={{ gap: 10 }}>
-                {data.map((item, index) => {
-                  const {
-                    name,
-                    store,
-                    invoiceNo,
-                    date,
-                    status,
-                    amount,
-                    rejected,
-                  } = item;
+                {invoices &&
+                  invoices.map((item, index) => {
+                    const {
+                      judul,
+                      namaToko,
+                      tanggalTagihan,
+                      status,
+                      jumlahTagihan,
+                      otomatisReject,
+                    } = item;
 
-                  let bgColor;
-                  switch (status) {
-                    case "Ditolak":
-                      bgColor = colors.RED;
-                      break;
-                    case "Diterima":
-                      bgColor = colors.GREEN;
-                      break;
-                    case "Pending":
-                      bgColor = colors.YELLOW;
-                      break;
-
-                    default:
-                      break;
-                  }
-                  return (
-                    <View
-                      key={index}
-                      style={{
-                        backgroundColor: colors.FLORAL,
-                        padding: 20,
-                        elevation: 10,
-                        gap: 10,
-                      }}
-                    >
+                    let bgColor;
+                    switch (status) {
+                      case "DITOLAK":
+                        bgColor = colors.RED;
+                        break;
+                      case "DITERIMA":
+                        bgColor = colors.GREEN;
+                        break;
+                      case "DALAM_PROSES":
+                        bgColor = colors.YELLOW;
+                        break;
+                      default:
+                        break;
+                    }
+                    if (
+                      filter === "DALAM_PROSES" &&
+                      status !== "DALAM_PROSES"
+                    ) {
+                      return null;
+                    }
+                    return (
                       <View
+                        key={index}
                         style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "flex-start",
+                          backgroundColor: colors.FLORAL,
+                          padding: 20,
+                          elevation: 10,
+                          gap: 10,
                         }}
                       >
-                        <View style={{}}>
-                          <Text style={{ fontSize: 24, fontWeight: 600 }}>
-                            {name} {invoiceNo}
-                          </Text>
-                          <Text style={{ fontSize: 13, fontWeight: "600" }}>
-                            {date}
-                          </Text>
-                        </View>
-                        <View style={{}}>
-                          <TouchableOpacity
-                            onPress={() =>
-                              navigation.navigate("detail-invoice")
-                            }
-                          >
-                            <Text style={{ textAlign: "right" }}>{store}</Text>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "flex-start",
+                          }}
+                        >
+                          <View style={{}}>
+                            <Text style={{ fontSize: 24, fontWeight: 600 }}>
+                              {judul}
+                              {/* <Text>Nomer Invoice</Text> */}
+                            </Text>
+
+                            <Text style={{ fontSize: 13, fontWeight: "600" }}>
+                              {tanggalTagihan}
+                            </Text>
+                          </View>
+                          <View style={{}}>
+                            <Text style={{ textAlign: "right" }}>
+                              {namaToko}
+                            </Text>
+
                             <Text style={{ fontSize: 20, fontWeight: 600 }}>
-                              {amount}
+                              {formatIDRCurrency(jumlahTagihan)}
+                              <Text>,-</Text>
+                            </Text>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          {filter === "History" ? (
+                            <View>
+                              {status === "DITERIMA" ? (
+                                <>
+                                  <Text>Disetujui pada:</Text>
+                                  <Text>{tanggalTagihan}</Text>
+                                </>
+                              ) : (
+                                <>
+                                  <Text>Ditolak pada:</Text>
+                                  <Text>{tanggalTagihan}</Text>
+                                </>
+                              )}
+                            </View>
+                          ) : (
+                            <View>
+                              <Text>Otomatis Ditolak:</Text>
+                              <Text style={{ color: "red" }}>
+                                {otomatisReject}
+                              </Text>
+                            </View>
+                          )}
+                          <TouchableOpacity
+                            onPress={() => {
+                              if (status === "DALAM_PROSES") {
+                                navigation.navigate(
+                                  "detail-invoice-distributor",
+                                  { idInvoice: item.id }
+                                );
+                              } else if (status === "DITERIMA" || "DITOLAK") {
+                                navigation.navigate("detail-invoice",{
+                                  idInvoice: item.id
+                                });
+                              }
+                            }}
+                            style={{
+                              borderRadius: 10,
+                              backgroundColor: bgColor,
+                              paddingVertical: 10,
+                              width: 160,
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Text
+                              style={{
+                                fontSize: 16,
+                                fontWeight: 600,
+                                color: "white",
+                              }}
+                            >
+                              {status === "DALAM_PROSES" ? "PENDING" : status}
                             </Text>
                           </TouchableOpacity>
                         </View>
                       </View>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <View>
-                          <Text>Otomatis DItolak:</Text>
-                          <Text style={{color:"red"}}>{rejected}</Text>
-                        </View>
-
-                        <TouchableOpacity
-                         onPress={() =>
-                              navigation.navigate("detail-invoice-distributor")
-                          }
-                          style={{
-                            borderRadius: 10,
-                            backgroundColor: bgColor,
-                            paddingVertical: 10,
-                            width: 160,
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <Text style={{ fontSize: 16, fontWeight: 600,color:"white" }}>
-                            {status}
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  );
-                })}
+                    );
+                  })}
               </View>
             </ScrollView>
           </View>
@@ -264,7 +344,29 @@ const styles = StyleSheet.create({
   },
   menuBar: {
     flexDirection: "row",
-    fontSize:15,
-    fontWeight:700,
+    fontSize: 15,
+    fontWeight: 700,
+  },
+  menuBarItem: {
+    borderBottomWidth: 2, // Tambahkan baris ini untuk memberikan garis bawah default
+    borderColor: "transparent", // Warna garis bawah default (bisa disesuaikan)
+  },
+  activeFilter: {
+    borderBottomColor: "black", // Warna garis bawah saat tombol aktif
+    borderBottomWidth: 2,
+  },
+  menuBar: {
+    flexDirection: "row",
+    fontSize: 15,
+    fontWeight: 700,
+  },
+  menuBarItem: {
+    borderBottomWidth: 2,
+    borderColor: "transparent",
+    paddingBottom: 5, // Tambahkan paddingBottom untuk memberikan ruang untuk garis bawah
+  },
+  activeFilter: {
+    borderBottomColor: "black",
+    borderBottomWidth: 2,
   },
 });

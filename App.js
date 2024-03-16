@@ -9,8 +9,8 @@ import MyTabsDashboard from "./src/pages/Distributor/Navigator/NavigatorDashboar
 import MyTabsMerchant from "./src/pages/Merchant/Navigator/Navigator";
 import EditProfile from "./src/pages/Merchant/Profile/components/EditProfile";
 import KeamananAkun from "./src/pages/Merchant/Profile/components/KeamananAkun";
-import ChangePassword from "./src/pages/Merchant/Profile/components/ChangePassword";
-import ChangePasswordSuccess from "./src/pages/Merchant/Profile/components/ChangePasswordSuccess";
+import ChangePassword from "./src/pages/ChangePassword/ChangePassword";
+import ChangePasswordSuccess from "./src/pages/ChangePassword/ChangePasswordSuccess";
 import FormInvoice from "./src/pages/Merchant/Bill/components/FormInvoice";
 import Bill from "./src/pages/Merchant/Bill";
 import DetailInvoice from "./src/pages/Merchant/Bill/components/DetailInvoice";
@@ -30,10 +30,28 @@ import InvoiceDistributor from "./src/pages/Distributor/Bill/components/InvoiceD
 import TenorSetting from "./src/pages/Merchant/Payment";
 import OtpTenor from "./src/pages/Merchant/Payment/components/OtpTenor";
 import PinPayment from "./src/pages/Merchant/Payment/components/PinPayment.js";
+import OtpPaymentInvoiceAll from "./src/pages/Merchant/Payment/components/OtpPaymentInvoiceAll.js";
 import OtpPaymentInvoice from "./src/pages/Merchant/Payment/components/OtpPaymentInvoice.js";
 import NotificationDistributor from "./src/pages/Distributor/Notification/notification";
 import NotificationMerchant from "./src/pages/Merchant/Notification/notification";
 import CreditHistory from "./src/pages/Distributor/CreditHistory/creditHistory";
+import OtpChangePassword from "./src/pages/ChangePassword/OtpChangePassword";
+import OtpInvoiceDistributor from "./src/pages/Distributor/Bill/components/OtpInvoiceDistributor";
+import BillDistributor from "./src/pages/Distributor/Bill";
+import ChangePin from "./src/pages/ChangePin";
+import ChangePinSuccess from "./src/pages/ChangePin/components/ChangePinSuccess";
+import OtpChangePin from "./src/pages/ChangePin/components/OtpChangePin";
+
+import PinPaymentAll from "./src/pages/Merchant/Payment/components/PinPaymentAll";
+import Profile from "./src/pages/Merchant/Profile";
+import HistoryTenorSet from "./src/pages/Merchant/Bill/components/HistoryTenorSet";
+import TenorSuccessSetting from "./src/pages/Merchant/Payment/components/TenorSuccessSetting";
+import ForgetPassword from "./src/pages/ForgetPassword/ForgetPassword";
+import OtpRequestForgetPassword from "./src/pages/ForgetPassword/components/OtpRequestForgetPassword.js";
+import ForgetPIN from "./src/pages/Merchant/ForgetPIN/ForgetPIN.js";
+import OtpRequestForgetPIN from "./src/pages/Merchant/ForgetPIN/components/OtpRequestForgetPIN.js";
+import SuccessNewPassword from "./src/pages/ForgetPassword/components/SuccessNewPassword.js";
+import SuccessNewPIN from "./src/pages/Merchant/ForgetPIN/components/SuccessNewPIN.js";
 
 const routerList = [
   {
@@ -85,6 +103,11 @@ const routerList = [
   {
     name: "edit-profile",
     component: EditProfile,
+    headerShown: false,
+  },
+  {
+    name: "profile",
+    component: Profile,
     headerShown: false,
   },
   {
@@ -155,8 +178,9 @@ const routerList = [
   {
     name: "invoice-distributor",
     component: InvoiceDistributor,
+    headerShown: false,
   },
-  // Payment menu
+  // Atur Tenor 
   {
     name: "tenor-setting",
     component: TenorSetting,
@@ -168,15 +192,40 @@ const routerList = [
     headerShown: false,
   },
   {
+    name: "tenor-success-setting",
+    component: TenorSuccessSetting,
+    headerShown: false,
+  },
+  // payment
+  {
     name: "pin-payment",
     component: PinPayment,
     headerShown: false,
   },
   {
+    name: "pin-payment-all",
+    component: PinPaymentAll,
+    headerShown: false,
+  },
+  {
+    name: "otp-change-merchant",
+    component: OtpChangePassword,
+    headerShown: false,
+  },
+  {
     name: "otp-payment-invoice",
     component: OtpPaymentInvoice,
+    headerShown: false,
+  },
+
+  {
     name: "notificationDistributor",
     component: NotificationDistributor,
+    headerShown: false,
+  },
+  {
+    name: "tenor-setting-history",
+    component: HistoryTenorSet,
     headerShown: false,
   },
   {
@@ -187,6 +236,68 @@ const routerList = [
   {
     name: "creditHistory",
     component: CreditHistory,
+    headerShown: false,
+  },
+  {
+    name: "otp-invoice-ditributor",
+    component: OtpInvoiceDistributor,
+    headerShown: false,
+  },
+  {
+    name: "otp-payment-invoice-all",
+    component: OtpPaymentInvoiceAll,
+    headerShown: false,
+  },
+  {
+    name: "bill-distributor",
+    component: BillDistributor,
+    headerShown: false,
+  },
+  // Forget password and PIN
+  {
+    name: "forget-password",
+    component: ForgetPassword,
+    headerShown: false,
+  },
+  {
+    name: "otp-forget-password",
+    component: OtpRequestForgetPassword,
+    headerShown: false,
+  },
+  {
+    name: "success-new-password",
+    component: SuccessNewPassword,
+    headerShown: false,
+  },
+  {
+    name: "forget-PIN",
+    component: ForgetPIN,
+    headerShown: false,
+  },
+  {
+    name: "otp-forget-PIN",
+    component: OtpRequestForgetPIN,
+    headerShown: false,
+  },
+  {
+    name: "success-new-PIN",
+    component: SuccessNewPIN,
+    headerShown: false,
+  },
+  // Change password and PIN
+  {
+    name: "changePin",
+    component: ChangePin,
+    headerShown: false,
+  },
+  {
+    name: "changePinSuccess",
+    component: ChangePinSuccess,
+    headerShown: false,
+  },
+  {
+    name: "otpChangePin",
+    component: OtpChangePin,
     headerShown: false,
   },
 ];
@@ -216,3 +327,5 @@ function App() {
 }
 
 export default App;
+
+// /home/user/Android/Sdk

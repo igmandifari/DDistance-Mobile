@@ -10,82 +10,72 @@ import {
 import React, { useState } from "react";
 import { colors } from "../../../constant/colors";
 import { Button } from "react-native-elements/dist/buttons/Button";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { getMerchants } from "../../../services/distributorService";
+import { getMerchantsDashboard } from "../../../services/distributorService";
+import { getUserDistributor } from "../../../services/AuthService";
+import { formatIDRCurrency } from "../../../utils/formatIdr";
+import { useIsFocused } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const filterTypes = [
   {
     name: "Lancar",
+    value: "LANCAR",
   },
   {
     name: "Tidak Lancar",
+    value: "TIDAK_LANCAR",
   },
   {
     name: "Gagal",
+    value: "GAGAL",
   },
 ];
 
-const merchantList = [
-  {
-    name: "Distributor A",
-    limit: "Rp. 70,000,000/100,000,000",
-    status: "Lancar",
-  },
-  {
-    name: "Distributor B",
-    limit: "Rp. 70,000,000/100,000,000",
-    status: "Tidak Lancar",
-  },
-  {
-    name: "Distributor C",
-    limit: "Rp. 70,000,000/100,000,000",
-    status: "Gagal",
-  },
-  {
-    name: "Distributor A",
-    limit: "Rp. 70,000,000/100,000,000",
-    status: "Lancar",
-  },
-  {
-    name: "Distributor B",
-    limit: "Rp. 70,000,000/100,000,000",
-    status: "Tidak Lancar",
-  },
-  {
-    name: "Distributor C",
-    limit: "Rp. 70,000,000/100,000,000",
-    status: "Gagal",
-  },
-  {
-    name: "Distributor A",
-    limit: "Rp. 70,000,000/100,000,000",
-    status: "Lancar",
-  },
-  {
-    name: "Distributor B",
-    limit: "Rp. 70,000,000/100,000,000",
-    status: "Tidak Lancar",
-  },
-  {
-    name: "Distributor C",
-    limit: "Rp. 70,000,000/100,000,000",
-    status: "Gagal",
-  },
-];
-
-const DashboardDistributor = () => {
+const DashboardDistributor = ({ navigation }) => {
+  const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user);
-  const [merchants, setMerchants] = useState(merchantList);
+  const [filter, setFilter] = useState("");
+  const [merchants, setMerchants] = useState([]);
+  const isFocused = useIsFocused();
+  const [showBalance, setShowBalance] = useState(false);
   const getData = async () => {
-    const response = await getMerchants(token);
-    setMerchants(response.data.data);
+    const response = await getMerchantsDashboard(token);
+    console.log(response.data.data);
+    if (response.data) {
+      setMerchants(response.data.data);
+    }
   };
+  const handleShowBalance = () => {
+    setShowBalance(!showBalance);
+  }
 
   useEffect(() => {
-    getData();
-  }, []);
+    if (isFocused) {
+      getData();
+    }
+  }, [isFocused]);
 
+  const [userDetail, setUserDetail] = useState({
+    name: null,
+    belance: null,
+    limit: null,
+  });
+  const { name, belance, limit } = userDetail;
+  useEffect(() => {
+    const fetchDataUser = async () => {
+      try {
+        const { data } = await getUserDistributor(token);
+        setUserDetail(data.data);
+        console.log("Halo", data.data);
+      } catch (error) {
+        alert(error);
+      }
+    };
+
+    fetchDataUser();
+  }, [isFocused]);
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -98,7 +88,7 @@ const DashboardDistributor = () => {
         </View>
         <View>
           <TouchableOpacity
-            onPress={() => navigation.navigate("notificationDistributor")}
+            onPress={() => navigation.navigate("notificationMerchant")}
           >
             <Image source={require("../../../assets/img/notification.png")} />
           </TouchableOpacity>
@@ -115,16 +105,22 @@ const DashboardDistributor = () => {
             }}
           >
             Halo,
-            <Text style={{ fontSize: 20, color: colors.ORANGE }}> Joshua</Text>
+            <Text style={{ fontSize: 20, color: colors.ORANGE }}>{name} </Text>
           </Text>
           <View style={styles.balance}>
             <Text
               style={{ fontSize: 16, fontWeight: "700", color: colors.WHITE }}
             >
-              Rp 10,855,297,353.00
+              {!showBalance && formatIDRCurrency(belance || null)}
             </Text>
-            <Button title={"test"} onPress={() => console.log(token)} />
-            <Image source={require("../../../assets/img/View.png")} />
+            {/*<Image source={require("../../../assets/img/View.png")} />*/}
+            <TouchableOpacity onPress={handleShowBalance} style={styles.eyeIcon}>
+              <Icon
+                  name={showBalance ? "eye-slash" : "eye"}
+                  size={20}
+                  color="#F36C21"
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -142,70 +138,83 @@ const DashboardDistributor = () => {
           <View style={styles.filterContainer}>
             {filterTypes.map((filter, index) => (
               <TouchableOpacity
-                onPress={() => setFilter(filter.name)}
+                onPress={() => setFilter(filter.value)}
                 key={index}
-                style={styles.filter}
+                style={[
+                  styles.filter,
+                  filter.value === filter && { backgroundColor: colors.YELLOW },
+                ]}
               >
                 <Text>{filter.name}</Text>
               </TouchableOpacity>
             ))}
           </View>
         </View>
-        <Button title={"test"} onPress={() => console.log(merchants)} />
         <ScrollView>
           <View id="merchants" style={styles.merchantContainer}>
-            {merchants &&
-              merchants.map((item, index) => {
-                const { status } = item;
+            {merchants
+              .filter((item) => !filter || item.status === filter)
+              .map((item, index) => {
+                console.log(item);
+                const { status, name, limit, id } = item;
 
-                let bgColor = colors.GREEN;
-                // switch (status) {
-                //   case "Lancar":
-                //     bgColor = colors.GREEN;
-                //     break;
-                //   case "Tidak Lancar":
-                //     bgColor = colors.YELLOW_STATUS;
-                //     break;
-                //   case "Gagal":
-                //     bgColor = colors.RED;
-                //     break;
-                // }
+                let bgColor;
+                let textStatus;
+                switch (status) {
+                  case "LANCAR":
+                    bgColor = colors.GREEN;
+                    textStatus = "Lancar";
+                    break;
+                  case "TIDAK_LANCAR":
+                    bgColor = colors.YELLOW_STATUS;
+                    textStatus = "Tidak Lancar";
+                    break;
+                  case "GAGAL":
+                    bgColor = colors.RED;
+                    textStatus = "Gagal";
+                    break;
+                }
                 return (
-                  <View key={index} style={styles.item}>
-                    <View
-                      style={{
-                        width: 65,
-                        height: 65,
-                        backgroundColor: colors.GRAY,
-                        borderRadius: 100,
-                      }}
-                    ></View>
-                    <View
-                      style={{
-                        height: "100%",
-                        flex: 1,
-                        gap: 5,
-                        padding: 5,
-                      }}
-                    >
-                      <Text style={styles.cityText}>{item.address}</Text>
-                      <Text
-                        style={{
-                          fontSize: 15,
-                          fontWeight: "700",
-                        }}
-                      >
-                        {item.name}
-                      </Text>
+                  <TouchableOpacity
+                    key={id}
+                    onPress={() =>
+                      navigation.navigate("detail-toko", {
+                        details: item,
+                      })
+                    }
+                  >
+                    <View key={index} style={styles.item}>
                       <View
                         style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center",
+                          width: 65,
+                          height: 65,
+                          backgroundColor: colors.GRAY,
+                          borderRadius: 100,
+                        }}
+                      ></View>
+                      <View
+                        style={{
+                          height: "100%",
+                          flex: 1,
+                          gap: 5,
+                          padding: 5,
                         }}
                       >
-                        <TouchableOpacity
-                          onPress={() => navigation.navigate("detail-toko")}
+                        <Text style={styles.cityText}>{item.address}</Text>
+                        <Text
+                          style={{
+                            fontSize: 15,
+                            fontWeight: "700",
+                          }}
+                        >
+                          {name}
+                        </Text>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
                         >
                           <Text
                             style={{
@@ -215,10 +224,58 @@ const DashboardDistributor = () => {
                           >
                             Sisa Limit:
                           </Text>
-                        </TouchableOpacity>
+                          <Text
+                            style={{
+                              fontSize: 13,
+                              fontWeight: "400",
+                              color: "rgba(0,0,0,0.25)",
+                            }}
+                          >
+                            {!limit && "unknown"}
+                          </Text>
+                        </View>
+                        
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 10,
+                            }}
+                          >
+                            Status Pembayaran
+                          </Text>
+                          <View
+                            style={{
+                              width: 120,
+                              bgColor: "red",
+                              borderRadius: 10,
+                              backgroundColor: bgColor,
+                              flexDirection: "row",
+                              justifyContent: "center",
+                              paddingVertical: 5,
+                              alignItems: "center",
+                            }}
+                          >
+                            <Text
+                              style={{
+                                fontSize: 16,
+                                fontWeight: "600",
+                                color: "white",
+                              }}
+                            >
+                            {textStatus}
+                              {/* {!status && "unknown"} */}
+                            </Text>
+                          </View>
+                        </View>
                       </View>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 );
               })}
           </View>
@@ -325,8 +382,9 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   merchantContainer: {
+    height: "100%",
     gap: 20,
-    padding: 3,
+    padding: 5,
   },
   item: {
     backgroundColor: colors.FLORAL,
@@ -335,7 +393,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 5,
     alignItems: "center",
-    gap: 20,
+    gap: 5,
     position: "relative",
   },
   cityText: {

@@ -1,43 +1,59 @@
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { colors } from "../../../../constant/colors";
 import BlankKtp from "../../../../assets/img/blank-ktp";
 import BlankSIUP from "../../../../assets/img/blank-siup";
 import BlankAgunan from "../../../../assets/img/blank-agunan";
+import { getDetailInvoice } from "../../../../services/merchantServices";
+import { useSelector } from "react-redux";
+import { Button } from "react-native-elements";
+import { formatIDRCurrency } from "../../../../utils/formatIdr";
 
-const details = [
-  {
-    key: "No Invoice :",
-    value: "123456789",
-  },
-  {
-    key: "Nama Toko :",
-    value: "Toko A",
-  },
-  {
-    key: "Nama Distributor :",
-    value: "Distributor A",
-  },
-  {
-    key: "Tanggal Faktur :",
-    value: "08/09/2023",
-  },
-  {
-    key: "Total Tagihan :",
-    value: "Rp. 10.000.000",
-  },
-  {
-    key: "Tanggal Jatuh Tempo :",
-    value: "08/12/2023",
-  },
-];
+const DetailInvoice = ({ route }) => {
+  const { token } = useSelector((state) => state.user);
+  const { idInvoice } = route.params;
+  const [data, setData] = useState({});
 
+  const getDetail = async () => {
+    const response = await getDetailInvoice(token, idInvoice);
+    setData(response.data.data);
+    console.log("cek", response.data.data);
+  };
 
-const DetailInvoice = () => {
+  useEffect(() => {
+    getDetail();
+  }, []);
+
+  const details = [
+    {
+      key: "No Invoice :",
+      value: data.id,
+    },
+    {
+      key: "Nama Toko :",
+      value: data.namaToko,
+    },
+    {
+      key: "Nama Distributor :",
+      value: data.namaDistributor,
+    },
+    {
+      key: "Tanggal Tagihan :",
+      value: data.tanggalTagihan,
+    },
+    {
+      key: "Total Tagihan :",
+      value: formatIDRCurrency(data.jumlahTagihan),
+    },
+    {
+      key: "Tanggal Jatuh Tempo :",
+      value: data.tanggalJatuhTempo,
+    },
+  ];
   return (
     <SafeAreaView style={{ marginTop: 20 }}>
       <View style={styles.container}>
-        <Text style={styles.title}>Pengajuan 0000000</Text>
+        <Text style={styles.title}>Invoice {data.judul}</Text>
         <View
           style={{
             borderBottomColor: "black",
@@ -46,6 +62,31 @@ const DetailInvoice = () => {
             borderBottomWidth: StyleSheet.hairlineWidth,
           }}
         />
+
+        <View style={{ alignItems: "center" }}>
+          <Text
+            style={{
+              backgroundColor:
+                data.status === "DITERIMA"
+                  ? colors.GREEN
+                  : data.status === "DITOLAK"
+                  ? colors.RED
+                  : data.status === "DALAM_PROSES"
+                  ? colors.ORANGE
+                  : null,
+              color: colors.WHITE,
+              width: 150,
+              height: 50,
+              borderRadius: 10,
+              textAlign: "center",
+              textAlignVertical: "center",
+              fontSize:17,
+            }}
+          >
+            {data.status}
+          </Text>
+        </View>
+
         {details.map((item, idx) => {
           return (
             <View
@@ -64,21 +105,6 @@ const DetailInvoice = () => {
             </View>
           );
         })}
-        <Text>Alasan Ditolak:</Text>
-        <View style={{ flex: 1 }}>
-          <View
-            style={{
-              backgroundColor: colors.WHITE,
-              borderRadius: 10,
-              padding: 10,
-              // flex: 1,
-              elevation: 10,
-              height:"20%",
-            }}
-          >
-            <Text>Dokumen belum lengkap</Text>
-          </View>
-        </View>
       </View>
     </SafeAreaView>
   );

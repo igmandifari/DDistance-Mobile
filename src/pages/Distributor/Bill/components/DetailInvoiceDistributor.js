@@ -4,67 +4,160 @@ import {
   Text,
   View,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
-import React,{useState} from "react";
+import React, { useState, useEffect } from "react";
 import { colors } from "../../../../constant/colors";
-import BlankKtp from "../../../../assets/img/blank-ktp";
-import BlankSIUP from "../../../../assets/img/blank-siup";
-import BlankAgunan from "../../../../assets/img/blank-agunan";
+import { getDetailInvoice } from "../../../../services/distributorService";
+import { useSelector } from "react-redux";
 import CustomButton from "../../../../components/CustomButton";
 import PopUpConfirm from "../../../../components/PopUpConfirm";
+import {
+  putInvoiceDistributor,
+  sendOtpInvoiceDistributor,
+} from "../../../../services/distributorService";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { formatIDRCurrency } from "../../../../utils/formatIdr";
+import { blobToBase64, getInvoiceImage } from "../../../../services/merchantServices";
 
-const details = [
-  {
-    key: "No Invoice :",
-    value: "00000000",
-  },
-  {
-    key: "Tanggal Invoice :",
-    value: "08/09/2023",
-  },
-  {
-    key: "Nama Toko :",
-    value: "Toko A",
-  },
-  {
-    key: "Nama Distributor :",
-    value: "Distributor A",
-  },
-  {
-    key: "Total Tagihan :",
-    value: "Rp. 10.000.000",
-  },
-  {
-    key: "Tanggal Jatuh Tempo :",
-    value: "08/12/2023",
-  },
-];
-
-
-const DetailInvoiceDistributor = ({navigation}) => {
+const DetailInvoiceDistributor = ({ route, navigation }) => {
+  const { token } = useSelector((state) => state.user);
+  const { idInvoice } = route?.params;
+  const [data, setData] = useState({
+    image:null,
+    id: null,
+    judul: null,
+    namaToko: null,
+    namaDistributor: null,
+    tanggalTagihan: null,
+    jumlahTagihan: null,
+    tanggalJatuhTempo: null,
+    rejection: null,
+    status: null,
+  });
   const [popUp, setPopUp] = useState(false);
-  const handleSubmit = () => {
-    // const payload = {
 
-    // };
-  
-    // if (!useValidate(payload)) {
-    //   alert("data must not empty");
-    //   return;
-    // }
-    setPopUp(true);
-    navigation.navigate("otp-invoice-merchant");
+  const getDetail = async () => {
+    try {
+      const response = await getDetailInvoice(token, idInvoice);
+      // console.log("=========>", response.data);
+      const {
+        id,
+        judul,
+        namaToko,
+        namaDistributor,
+        tanggalTagihan,
+        jumlahTagihan,
+        tanggalJatuhTempo,
+        rejection: alasanPenolakan,
+        status: installment,
+      } = response.data.data;
+
+      setData({
+        id,
+        judul,
+        namaToko,
+        namaDistributor,
+        tanggalTagihan,
+        jumlahTagihan,
+        tanggalJatuhTempo,
+        rejection: alasanPenolakan,
+        status: installment,
+      });
+
+      const invoiceBlob = await getInvoiceImage(token, id);
+      const invoiceBase64 = await blobToBase64(invoiceBlob);
+
+      // setImages({
+      //   file: `data:image/jpeg;base64,${invoiceBase64}`,
+      // });
+    } catch (error) {
+      console.error("Error fetching invoice data:", error);
+    }
   };
+
+  useEffect(() => {
+    getDetail();
+  }, []);
+
+  const details = [
+    {
+      key: "No Invoice :",
+      value: data.judul,
+    },
+    {
+      key: "Tanggal Invoice :",
+      value: data.tanggalTagihan,
+    },
+    {
+      key: "Nama Toko :",
+      value: data.namaToko,
+    },
+    {
+      key: "Nama Distributor :",
+      value: data.namaDistributor,
+    },
+    {
+      key: "Total Tagihan :",
+      value: formatIDRCurrency(data.jumlahTagihan),
+    },
+    {
+      key: "Tanggal Jatuh Tempo :",
+      value: data.tanggalJatuhTempo,
+    },
+    {
+      key: "Rejection",
+      value: data.rejection,
+    },
+  ];
+
+  const handleSetuju = () => {
+    console.log("Setuju");
+    if (isValid) {
+      setData({ ...data, status: "DITERIMA" });
+    }
+  };
+
+  const handleTolak = () => {
+    console.log("Tolak");
+    if (isValid) {
+      setData({ ...data, status: "DITOLAK" });
+    }
+  };
+
+  const { handleSubmit, values, handleChange, isValid } = useFormik({
+    initialValues: {
+      installment: data.status,
+      alasanPenolakan: data.rejection,
+    },
+    onSubmit: async (values) => {
+      try {
+        const formData = {
+          id: data.id,
+          alasanPenolakan: values.rejection,
+          installemnt: data.status,
+        };
+
+        await sendOtpInvoiceDistributor(token);
+
+        navigation.navigate("otp-invoice-ditributor", { formData });
+      } catch (error) {
+        console.error("Error sending OTP:", error);
+      }
+    },
+  });
+
   return (
     <SafeAreaView style={{ marginTop: 20 }}>
       <View style={styles.container}>
-      {popUp && (
+        {popUp && (
           <PopUpConfirm
             handleOK={() => handleSubmit()}
-            handleReject={() => setPopUp(false)}
+            handleReject={() => handleSubmit(false)}
           />
         )}
-        <Text style={styles.title}>Pengajuan 0000000</Text>
+        <Text style={styles.title}>Pengajuan</Text>
         <View
           style={{
             borderBottomColor: "black",
@@ -83,11 +176,12 @@ const DetailInvoiceDistributor = ({navigation}) => {
                 borderColor: "green",
                 marginTop: 10,
               }}
+              onPress={() => navigation.navigate("")}
             >
               <Text style={{ fontSize: 13, fontWeight: "400" }}>
                 {item.key}
               </Text>
-              <Text>{item.value}</Text>
+              <Text>{item.value} </Text>
             </View>
           );
         })}
@@ -99,7 +193,7 @@ const DetailInvoiceDistributor = ({navigation}) => {
           }}
         >
           <TouchableOpacity
-            onPress={() => navigation.navigate("")}
+            onPress={handleSetuju}
             style={{
               borderRadius: 10,
               backgroundColor: "#00E817",
@@ -114,7 +208,7 @@ const DetailInvoiceDistributor = ({navigation}) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate("")}
+            onPress={handleTolak}
             style={{
               borderRadius: 10,
               backgroundColor: "#FC0000",
@@ -136,32 +230,22 @@ const DetailInvoiceDistributor = ({navigation}) => {
               backgroundColor: colors.WHITE,
               borderRadius: 10,
               padding: 10,
-              // flex: 1,
               elevation: 10,
               height: "20%",
             }}
           >
-            <Text>Dokumen belum lengkap</Text>
+            <TextInput
+              placeholder="Dokumen Belum Lengkap"
+              onChangeText={handleChange("rejection")}
+              value={values.rejection}
+            />
           </View>
-          <View style={{ marginTop: 20 }}>
-            <Text>Lainnya:</Text>
-            <View
-              style={{
-                backgroundColor: colors.WHITE,
-                borderRadius: 10,
-                elevation: 10,
-                height: "35%",
-                marginTop: 8,
-              }}
-            >
-              <Text></Text>
-            </View>
-          </View>
+          <View style={{ marginTop: 20 }}></View>
           <View style={{ alignItems: "center" }}>
-          <CustomButton
-           handleClick={() => setPopUp(true)}
-           text={"Kirim"}
-          />
+            {isValid.rejection && (
+              <Text style={{ color: "red" }}>{isValid.rejection}</Text>
+            )}
+            <CustomButton handleClick={handleSubmit} text={"Kirim"} />
           </View>
         </View>
       </View>

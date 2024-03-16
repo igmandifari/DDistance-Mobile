@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { colors } from "../../../../constant/colors";
 import {
   Dimensions,
@@ -11,10 +11,20 @@ import {
   TextInput,
 } from "react-native";
 import CustomButton from "../../../../components/CustomButton";
+import {useSelector} from "react-redux";
 
 // const vw = Dimensions.get("window").width;
 
 function KeamananAkun({navigation}) {
+  const { role } = useSelector((state) => state.user);
+  const [roleMerchant, setRoleMerchat] = useState(false);
+
+  useEffect(() => {
+    if (role === "ROLE_MERCHANT") {
+      setRoleMerchat(true);
+    }
+  }, [role]);
+
   const [form, setForm] = useState({
     name: "",
     address: "",
@@ -46,18 +56,22 @@ function KeamananAkun({navigation}) {
           </Text>
         </TouchableOpacity>
         </View>
-        <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("")}
-        >
-          <Text
-            style={{ color:'black', fontWeight: "600", fontSize: 16 }}
-          >
-            Ubah PIN Transaksi
-          </Text>
-        </TouchableOpacity>
-      </View>
+
+        {roleMerchant && (
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => navigation.navigate("changePin")}
+              >
+                <Text
+                    style={{ color:'black', fontWeight: "600", fontSize: 16 }}
+                >
+                  Ubah PIN Transaksi
+                </Text>
+              </TouchableOpacity>
+            </View>
+        )}
+
       </View>
 
       
@@ -89,7 +103,7 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: "row",
     justifyContent: "start",
-    width: 138,
+    width: 150,
     height: 38,
     paddingVertical: 9,
     borderRadius: 10,
